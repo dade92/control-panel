@@ -23,7 +23,7 @@ interface Props {
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
 }
 
-export const ThingsTab: FC<Props> = ({things, onChangeStatus}) => {
+export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) => {
     return (
         <AppWrapper>
             {things.map((t) => {

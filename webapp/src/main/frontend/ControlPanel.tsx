@@ -3,7 +3,7 @@ import {staticRestClient} from "./logic/RestClient";
 import {Thing} from "./Thing";
 import {Loader} from "./Loader";
 import {FeedbackMessage} from "./FeedbackMessage";
-import {ThingsTab} from "./ThingsTab";
+import {ThingsPanel} from "./ThingsPanel";
 
 interface ApiResponse {
     things: Thing[];
@@ -15,7 +15,11 @@ export const ControlPanel: FC = () => {
     const [error, setError] = useState<boolean>(false);
     //TODO need to know which thing changed status!
     const giveFeedback = (isSuccess: boolean, thing: Thing) => {
-        setSuccess(isSuccess);
+        if(isSuccess) {
+            setSuccess(isSuccess);
+        } else {
+            setError(true);
+        }
     }
 
     useEffect(() => {
@@ -27,9 +31,9 @@ export const ControlPanel: FC = () => {
     }, []);
 
     return things == null ? <Loader/> : <>
-        <ThingsTab things={things}
-                   onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}/>
+        <ThingsPanel things={things}
+                     onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}/>
         {success && <FeedbackMessage onClose={() => setSuccess(false)} isSuccess={success}/>}
-        {error && <FeedbackMessage onClose={() => setSuccess(false)} isSuccess={success}/>}
+        {error && <FeedbackMessage onClose={() => setError(false)} isSuccess={success}/>}
     </>;
 }

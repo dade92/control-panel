@@ -3,7 +3,6 @@ import {Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
 import {Switch} from "@mui/material";
 import {staticRestClient} from "./logic/RestClient";
-import {FeedbackMessage} from "./FeedbackMessage";
 
 interface Props {
     thing: Thing;
@@ -22,6 +21,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
 
     const changeStatus = () => {
         let newStatus = "";
+        let oldStatus = status.switch;
         if (status.switch == "ON") {
             newStatus = "OFF";
         } else {
@@ -31,7 +31,11 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
         setStatus({switch: newStatus});
         staticRestClient.post(`/v1/switch/${thing.deviceId}/${thing.id}`, status)
             .then(() => onChangeStatus(true, thing))
-            .catch(() => onChangeStatus(false, thing));
+            .catch(() => {
+                onChangeStatus(false, thing);
+                status.switch = oldStatus;
+                setStatus({switch: oldStatus});
+            });
     }
 
     return <>
@@ -39,7 +43,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
             <span>{thing.id}</span>
             <span>{thing.type}</span>
             <span>{status.switch}</span>
-            <Switch onChange={changeStatus}/>
+            <Switch checked={status.switch === "ON"} onChange={changeStatus}/>
         </Wrapper>
     </>
 }
