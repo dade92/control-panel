@@ -30,3 +30,6 @@ jobs:
       -
         name: Test
         run: mvn verify
+
+      - name: Test frontend
+        run: cd webapp && npm run test

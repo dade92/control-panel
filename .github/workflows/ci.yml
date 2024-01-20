@@ -31,8 +31,12 @@ jobs:
       run: mvn -B package -DskipTests --file pom.xml
 
     -
-      name: Test
+      name: Test backend
       run: mvn verify
+
+    -
+      name: Test frontend
+      run: cd webapp && npm run test
 
     -
       name: Set up Docker Buildx
