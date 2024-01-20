@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {App} from "./App";
 
 ReactDOM.render(
-    <span>This is React!</span>,
+    <App randomText={'Hello from control panel'}/>,
     document.getElementById('react')
 )
