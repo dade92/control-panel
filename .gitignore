@@ -2,6 +2,7 @@ adapters/target
 domain/target
 webapp/target
 webapp/node_modules
+webapp/src/main/resources/static/*.bundle.js
 .classpath
 .project
 spring-example1.iml
