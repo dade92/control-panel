@@ -1,0 +1,28 @@
+services:
+  app:
+    image: davide92/control-panel
+    container_name: app
+    depends_on:
+      - mongo
+    ports:
+      - "8080:8080"
+    restart:
+      always
+  mongo:
+    image: mongo:4.4.18   # 4.4.18 is the last working version for raspberryPI (ARM64 bit)..
+    container_name: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: password
+    volumes:
+      - control-panel-data-db:/data/db
+      - control-panel-data-db-prod:/Databases/production
+
+volumes:
+  control-panel-data-db:
+    driver: local
+  control-panel-data-db-prod:
+    driver: local

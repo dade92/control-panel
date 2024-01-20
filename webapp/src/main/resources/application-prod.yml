@@ -1,0 +1,2 @@
+mongo:
+  url: mongodb://root:password@mongo:27017/authSource=admin

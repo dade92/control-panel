@@ -1,0 +1,13 @@
+{
+  "products": [
+    {
+      "name": "Chair"
+    },
+    {
+      "name": "Sofa"
+    },
+    {
+      "name": "Television"
+    }
+  ]
+}

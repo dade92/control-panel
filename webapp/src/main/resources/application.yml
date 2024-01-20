@@ -1,0 +1,8 @@
+mongo:
+  url: mongodb://root:password@localhost:27017/?authSource=admin
+
+spring:
+  graphql:
+    graphiql:
+      enabled:
+        true

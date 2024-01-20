@@ -1,0 +1,11 @@
+{
+  "name": "Davide",
+  "age": 30,
+  "favouriteDestinations": {
+    "destinations": [
+      {
+        "city": "Milan"
+      }
+    ]
+  }
+}
