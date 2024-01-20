@@ -2,7 +2,6 @@ let host = '';
 
 if (process.env.NODE_ENV === 'development') {
     host = "http://localhost:8080/api";
-    console.log('Development mode active');
 } else if (process.env.NODE_ENV === 'production') {
     //Modify the host here to deploy on a different "server"
     host = "http://raspberrypi:8080/api";
