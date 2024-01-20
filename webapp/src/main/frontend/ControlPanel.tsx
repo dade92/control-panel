@@ -1,25 +1,11 @@
 import {FC, useEffect, useState} from "react";
 import {staticRestClient} from "./logic/RestClient";
+import {Thing} from "./Thing";
+import {ThingDetails} from "./ThingDetails";
+import {Loader} from "./Loader";
 
 interface ApiResponse {
     things: Thing[];
-}
-
-interface Thing {
-    id: number,
-    device: string,
-    deviceId: string,
-    type: ThingType,
-    status: ThingStatus
-}
-
-enum ThingType {
-    LAMP = "LAMP",
-    ALARM = "ALARM"
-}
-
-interface ThingStatus {
-    switch: string;
 }
 
 export const ControlPanel: FC = () => {
@@ -33,10 +19,9 @@ export const ControlPanel: FC = () => {
             .catch(() => console.log('Error retrieving things'))
     }, []);
 
-    return things == null ? <span>Loading</span> : <>
-        {things?.map((t) => {
-            return <><span>{t.id}</span><br></br></>
-        })
-        }
+    return things == null ? <Loader/> : <>
+        {things.map((t) => {
+            return <ThingDetails thing={t}/>
+        })}
     </>;
 }
