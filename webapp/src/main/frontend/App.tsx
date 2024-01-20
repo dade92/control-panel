@@ -12,23 +12,7 @@ if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'd
     server();
 }
 
-const AppWrapper = styled.div`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
-  width: 40%;
-  @media screen and (max-width: 600px) {
-    width: 50%;
-  }
-  display: flex;
-  flex-direction: column;
-  row-gap: 16px;
-`
 
 export const App: FC = () => {
-    return <AppWrapper>
-        <ControlPanel/>
-    </AppWrapper>;
+    return <ControlPanel/>
 }
