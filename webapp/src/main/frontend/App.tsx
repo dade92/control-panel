@@ -4,7 +4,6 @@ interface Props {
     randomText: string;
 }
 
-export const App: FC<Props> = ({randomText}) =>
-    (
+export const App: FC<Props> = ({randomText}) => (
         <span data-testid={'title'}>{randomText}</span>
     )

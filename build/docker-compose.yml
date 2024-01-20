@@ -1,9 +1,0 @@
-services:
-  builder:
-    image: maven:3.9.3-amazoncorretto-20
-    command: mvn install
-    working_dir: /usr/src/mymaven
-    volumes:
-      - ${PWD}/../.:/usr/src/mymaven
-      - ${HOME}/.m2:/root/.m2
-      - ${PWD}/../webapp/target:/usr/src/mymaven/webapp/target

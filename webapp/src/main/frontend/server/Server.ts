@@ -1,31 +1,34 @@
 import {createServer, Server, Response} from "miragejs";
 
-const aliveResponse = {
-    alive: true,
-    message: "Hey!"
-};
-
-const eventsResponse = {
-    events: [
+const thingsResponse = {
+    things: [
         {
-            message: 'first event'
+            id: 123,
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "LAMP",
+            status: {
+                switch: "OFF"
+            }
         },
         {
-            message: 'second event'
+            id: 456,
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "ALARM",
+            status: {
+                switch: "OFF"
+            }
         }
     ]
 };
 
-
-const alive200 = (): Response => new Response(200, {}, aliveResponse);
-const events200 = (): Response => new Response(200, {}, eventsResponse);
-const events500 = (): Response => new Response(500, {});
+const things200 = (): Response => new Response(200, {}, thingsResponse);
 
 export const server: () => Server = () =>
     createServer({
         logging: true,
         routes() {
-            this.get('/api/alive', alive200, {timing: 1000});
-            this.get('/api/events', events200, {timing: 1000});
+            this.get('/api/v1/things', things200, {timing: 1000});
         },
     });
