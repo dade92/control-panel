@@ -13,6 +13,7 @@ export const ControlPanel: FC = () => {
     const [things, setThings] = useState<Thing[] | null>(null);
     const [success, setSuccess] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
+    const [changedThing, setChangedThing] = useState<Thing>();
 
     useEffect(() => {
         staticRestClient.get<ApiResponse>('/v1/things')
@@ -24,6 +25,7 @@ export const ControlPanel: FC = () => {
 
     //TODO need to know which thing changed status!
     const giveFeedback = (isSuccess: boolean, thing: Thing) => {
+        setChangedThing(thing);
         if(isSuccess) {
             setSuccess(isSuccess);
         } else {
@@ -34,7 +36,7 @@ export const ControlPanel: FC = () => {
     return things == null ? <Loader/> : <>
         <ThingsPanel things={things}
                      onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}/>
-        {success && <FeedbackMessage onClose={() => setSuccess(false)} isSuccess={success}/>}
-        {error && <FeedbackMessage onClose={() => setError(false)} isSuccess={success}/>}
+        {success && <FeedbackMessage thing={changedThing!} onClose={() => setSuccess(false)} isSuccess={success}/>}
+        {error && <FeedbackMessage thing={changedThing!} onClose={() => setError(false)} isSuccess={success}/>}
     </>;
 }

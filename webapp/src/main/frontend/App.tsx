@@ -13,6 +13,4 @@ if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'd
 }
 
 
-export const App: FC = () => {
-    return <ControlPanel/>
-}
+export const App: FC = () => <ControlPanel/>
