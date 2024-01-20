@@ -13,14 +13,6 @@ export const ControlPanel: FC = () => {
     const [things, setThings] = useState<Thing[] | null>(null);
     const [success, setSuccess] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
-    //TODO need to know which thing changed status!
-    const giveFeedback = (isSuccess: boolean, thing: Thing) => {
-        if(isSuccess) {
-            setSuccess(isSuccess);
-        } else {
-            setError(true);
-        }
-    }
 
     useEffect(() => {
         staticRestClient.get<ApiResponse>('/v1/things')
@@ -29,6 +21,15 @@ export const ControlPanel: FC = () => {
             })
             .catch(() => console.log('Error retrieving things'))
     }, []);
+
+    //TODO need to know which thing changed status!
+    const giveFeedback = (isSuccess: boolean, thing: Thing) => {
+        if(isSuccess) {
+            setSuccess(isSuccess);
+        } else {
+            setError(true);
+        }
+    }
 
     return things == null ? <Loader/> : <>
         <ThingsPanel things={things}

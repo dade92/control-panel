@@ -19,6 +19,7 @@ const Wrapper = styled.div`
 
 export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
     const [status, setStatus] = useState<ThingStatus>(thing.status);
+    const [disabled, setDisabled] = useState<boolean>(false);
 
     const changeStatus = () => {
         let newStatus = "";
@@ -30,13 +31,16 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
         }
         thing.status.switch = newStatus;
         setStatus({switch: newStatus});
+        setDisabled(true);
         staticRestClient.post(`/v1/switch/${thing.deviceId}/${thing.id}`, status)
             .then(() => onChangeStatus(true, thing))
             .catch(() => {
                 onChangeStatus(false, thing);
                 status.switch = oldStatus;
                 setStatus({switch: oldStatus});
-            });
+            }).finally(() => {
+                setDisabled(false);
+        });
     }
 
     return <>
@@ -44,7 +48,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
             <span>{thing.id}</span>
             <span>{thing.type}</span>
             <span>{status.switch}</span>
-            <Switch checked={status.switch === "ON"} onChange={changeStatus}/>
+            <Switch checked={status.switch === "ON"} disabled={disabled} onChange={changeStatus}/>
         </Wrapper>
     </>
 }
