@@ -23,20 +23,19 @@ export const ControlPanel: FC = () => {
             .catch(() => console.log('Error retrieving things'))
     }, []);
 
-    //TODO need to know which thing changed status!
     const giveFeedback = (isSuccess: boolean, thing: Thing) => {
         setChangedThing(thing);
-        if(isSuccess) {
+        if (isSuccess) {
             setSuccess(isSuccess);
         } else {
             setError(true);
         }
     }
 
-    return things == null ? <Loader/> : <>
-        <ThingsPanel things={things}
-                     onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}/>
-        {success && <FeedbackMessage thing={changedThing!} onClose={() => setSuccess(false)} isSuccess={success}/>}
-        {error && <FeedbackMessage thing={changedThing!} onClose={() => setError(false)} isSuccess={success}/>}
-    </>;
+    return things == null ? <Loader/> :
+        <> <ThingsPanel things={things}
+                        onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}/>
+            {success && <FeedbackMessage thing={changedThing!} onClose={() => setSuccess(false)} isSuccess={success}/>}
+            {error && <FeedbackMessage thing={changedThing!} onClose={() => setError(false)} isSuccess={success}/>}
+        </>;
 }

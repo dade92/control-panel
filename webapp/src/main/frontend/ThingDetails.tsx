@@ -3,6 +3,7 @@ import {Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
 import {Card, Switch} from "@mui/material";
 import {staticRestClient} from "./logic/RestClient";
+import {Paragraph} from "./Texts";
 
 interface Props {
     thing: Thing;
@@ -45,9 +46,9 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
 
     return <>
         <Wrapper>
-            <span>{thing.id}</span>
-            <span>{thing.type}</span>
-            <span>{status.switch}</span>
+            <Paragraph>{thing.id}</Paragraph>
+            <Paragraph>{thing.type}</Paragraph>
+            <Paragraph>{status.switch}</Paragraph>
             <Switch checked={status.switch === "ON"} disabled={disabled} onChange={changeStatus}/>
         </Wrapper>
     </>

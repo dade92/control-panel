@@ -2,9 +2,9 @@ import {FC} from "react";
 import {ThingDetails} from "./ThingDetails";
 import {Thing} from "./Thing";
 import styled from "styled-components";
-import {List, ListItem} from "@mui/material";
+import {List} from "@mui/material";
 
-const AppWrapper = styled.div`
+const ThingsPanelWrapper = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -24,9 +24,9 @@ interface Props {
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
 }
 
-export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) => {
-    return (
-        <AppWrapper>
+export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) =>
+    (
+        <ThingsPanelWrapper>
             <List
                 sx={{
                     width: '100%',
@@ -34,10 +34,9 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) => {
                     maxHeight: 250,
                 }}
             >
-                {things.map((t) => {
-                    return <ThingDetails thing={t} onChangeStatus={onChangeStatus}/>
+                {things.map((thing) => {
+                    return <ThingDetails thing={thing} onChangeStatus={onChangeStatus}/>
                 })}
             </List>
-        </AppWrapper>
+        </ThingsPanelWrapper>
     )
-}
