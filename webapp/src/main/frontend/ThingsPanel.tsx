@@ -2,6 +2,7 @@ import {FC} from "react";
 import {ThingDetails} from "./ThingDetails";
 import {Thing} from "./Thing";
 import styled from "styled-components";
+import {List, ListItem} from "@mui/material";
 
 const AppWrapper = styled.div`
   position: absolute;
@@ -26,9 +27,17 @@ interface Props {
 export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) => {
     return (
         <AppWrapper>
-            {things.map((t) => {
-                return <ThingDetails thing={t} onChangeStatus={onChangeStatus}/>
-            })}
+            <List
+                sx={{
+                    width: '100%',
+                    overflow: 'auto',
+                    maxHeight: 250,
+                }}
+            >
+                {things.map((t) => {
+                    return <ThingDetails thing={t} onChangeStatus={onChangeStatus}/>
+                })}
+            </List>
         </AppWrapper>
     )
 }

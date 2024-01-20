@@ -1,7 +1,7 @@
 import {FC, useState} from "react";
 import {Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
-import {Switch} from "@mui/material";
+import {Card, Switch} from "@mui/material";
 import {staticRestClient} from "./logic/RestClient";
 
 interface Props {
@@ -14,6 +14,7 @@ const Wrapper = styled.div`
   flex-direction: row;
   justify-content: space-between;
   align-items: baseline;
+  padding: 8px;
 `
 
 export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
