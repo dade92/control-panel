@@ -3,6 +3,7 @@ import {ThingDetails} from "./ThingDetails";
 import {Thing} from "./Thing";
 import styled from "styled-components";
 import {List} from "@mui/material";
+import {Subtitle} from "./Texts";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -27,6 +28,7 @@ interface Props {
 export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) =>
     (
         <ThingsPanelWrapper>
+            <Subtitle>Control Panel</Subtitle>
             <List
                 sx={{
                     width: '100%',
