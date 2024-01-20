@@ -1,6 +1,6 @@
-import {FC, useEffect} from "react";
-import {staticRestClient} from "./logic/RestClient";
+import {FC} from "react";
 import {server} from "./server/Server";
+import {ControlPanel} from "./ControlPanel";
 
 interface Props {
     randomText: string;
@@ -12,11 +12,5 @@ if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'd
 }
 
 export const App: FC<Props> = ({randomText}) => {
-    useEffect(() => {
-        staticRestClient.get('/v1/things')
-    }, []);
-
-    return (
-        <span data-testid={'title'}>{randomText}</span>
-    );
+    return (<ControlPanel/>);
 }
