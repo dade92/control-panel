@@ -27,7 +27,7 @@ const AppWrapper = styled.div`
   row-gap: 16px;
 `
 
-export const App: FC<Props> = ({randomText}) => {
+export const App: FC = () => {
     return <AppWrapper>
         <ControlPanel/>
     </AppWrapper>;
