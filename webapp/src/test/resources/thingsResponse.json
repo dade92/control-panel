@@ -1,0 +1,13 @@
+{
+  "things": [
+    {
+      "id": "123",
+      "device": "arduino uno",
+      "deviceId": "XYZ",
+      "type": "LAMP",
+      "management": {
+        "switch": "ON"
+      }
+    }
+  ]
+}

@@ -28,7 +28,7 @@ jobs:
         run: mvn -B package -DskipTests --file pom.xml
 
       -
-        name: Test
+        name: Test backend
         run: mvn verify -Dskip.webpack -Dskip.npm
 
       - name: Test frontend
