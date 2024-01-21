@@ -1,16 +1,22 @@
 export interface Thing {
     id: string,
-    device: string,
+    deviceName: string,
     deviceId: string,
     type: ThingType,
-    status: ThingStatus
+    management: Management
 }
 
 export enum ThingType {
     LAMP = "LAMP",
     ALARM = "ALARM"
 }
-//TODO express this better
-export interface ThingStatus {
-    switch: string;
+
+export interface Management {
+    switch: ThingStatus;
 }
+
+export enum ThingStatus {
+    ON = "ON",
+    OFF = "OFF"
+}
+

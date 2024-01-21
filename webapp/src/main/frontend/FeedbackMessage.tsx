@@ -17,7 +17,7 @@ const Wrapper = styled.div`
 
 export const FeedbackMessage: FC<Props> = ({onClose, isSuccess, thing}) => {
     const severity = isSuccess ? "success" : "error";
-    const message = isSuccess ? `${thing.type} turned ${thing.status.switch}` :
+    const message = isSuccess ? `${thing.type} turned ${thing.management.switch}` :
         `${thing.type} couldn't be switched due to some problems with server`;
 
     return <Wrapper>

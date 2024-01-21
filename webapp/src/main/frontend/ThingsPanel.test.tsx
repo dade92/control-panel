@@ -2,7 +2,7 @@ import {render, screen, waitFor} from "@testing-library/react";
 import {ThingsPanel} from "./ThingsPanel";
 import '@testing-library/jest-dom';
 import {Builder} from "builder-pattern";
-import {Thing, ThingType} from "./Thing";
+import {ThingStatus, Thing, ThingType} from "./Thing";
 
 describe('ThingsPanel', () => {
     it('Shows the list of things correctly', async () => {
@@ -10,8 +10,8 @@ describe('ThingsPanel', () => {
 
         render(<ThingsPanel
             things={[
-                Builder<Thing>().id('123').type(ThingType.LAMP).status({switch: "ON"}).build(),
-                Builder<Thing>().id('456').type(ThingType.LAMP).status({switch: "OFF"}).build()
+                Builder<Thing>().id('123').type(ThingType.LAMP).management({switch: ThingStatus.ON}).build(),
+                Builder<Thing>().id('456').type(ThingType.LAMP).management({switch: ThingStatus.OFF}).build()
             ]}
             onChangeStatus={onChangeStatus}/>
         )

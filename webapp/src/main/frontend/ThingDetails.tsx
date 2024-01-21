@@ -1,5 +1,5 @@
 import {FC, useState} from "react";
-import {Thing, ThingStatus} from "./Thing";
+import {Management, Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
 import {Switch} from "@mui/material";
 import {Paragraph} from "./Texts";
@@ -20,22 +20,24 @@ const Wrapper = styled.div`
 `
 
 export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider}) => {
-    const [status, setStatus] = useState<ThingStatus>(thing.status);
+    const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
 
     const changeStatus = () => {
-        let newStatus = "";
+        let newStatus = ThingStatus.OFF;
         let oldStatus = status.switch;
+
         if (status.switch == "ON") {
-            newStatus = "OFF";
+            newStatus = ThingStatus.OFF;
         } else {
-            newStatus = "ON";
+            newStatus = ThingStatus.ON;
         }
         setStatus({switch: newStatus});
         setDisabled(true);
+
         switchStatusProvider(thing, {switch: newStatus})
             .then(() => {
-                thing.status.switch = newStatus;
+                thing.management.switch = newStatus;
                 onChangeStatus(true, thing)
             })
             .catch(() => {

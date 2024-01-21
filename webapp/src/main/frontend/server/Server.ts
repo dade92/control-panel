@@ -7,7 +7,7 @@ const thingsResponse = {
             device: "arduino uno",
             deviceId: "XYZ",
             type: "LAMP",
-            status: {
+            management: {
                 switch: "OFF"
             }
         },
@@ -16,7 +16,7 @@ const thingsResponse = {
             device: "arduino uno",
             deviceId: "XYZ",
             type: "ALARM",
-            status: {
+            management: {
                 switch: "OFF"
             }
         }

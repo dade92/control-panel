@@ -1,7 +1,7 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import {ThingDetails} from "./ThingDetails";
 import {Builder} from "builder-pattern";
-import {Thing, ThingStatus, ThingType} from "./Thing";
+import {Management, ThingStatus, Thing, ThingType} from "./Thing";
 import '@testing-library/jest-dom';
 
 describe('ThingDetails', () => {
@@ -11,9 +11,9 @@ describe('ThingDetails', () => {
         const switchStatusProvider = jest.fn(
             () => Promise.resolve()
         );
-        const statusOFF = Builder<ThingStatus>().switch("OFF").build();
-        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).status(statusOFF).build();
-        const statusON = Builder<ThingStatus>().switch("ON").build();
+        const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
+        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
+        const statusON = Builder<Management>().switch(ThingStatus.ON).build();
 
         render(<ThingDetails
                 thing={thing}
@@ -38,9 +38,9 @@ describe('ThingDetails', () => {
         const switchStatusProvider = jest.fn(
             () => Promise.reject()
         );
-        const statusOFF = Builder<ThingStatus>().switch("OFF").build();
-        const statusON = Builder<ThingStatus>().switch("ON").build();
-        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).status(statusON).build();
+        const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
+        const statusON = Builder<Management>().switch(ThingStatus.ON).build();
+        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusON).build();
 
         render(<ThingDetails
                 thing={thing}
