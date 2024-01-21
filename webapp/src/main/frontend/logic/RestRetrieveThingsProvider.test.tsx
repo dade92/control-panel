@@ -1,6 +1,6 @@
 import {RestRetrieveThingsProvider} from "./RetrieveThingsProvider";
 import {createServer, Response} from "miragejs";
-import {Thing} from "./Thing";
+import {Thing} from "../Thing";
 import {waitFor} from "@testing-library/react";
 
 describe('RestRetrieveThingsProvider', () => {

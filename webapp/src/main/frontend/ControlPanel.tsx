@@ -4,7 +4,7 @@ import {Thing} from "./Thing";
 import {Loader} from "./Loader";
 import {FeedbackMessage} from "./FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
-import {RetrieveThingsProvider} from "./RetrieveThingsProvider";
+import {RetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
