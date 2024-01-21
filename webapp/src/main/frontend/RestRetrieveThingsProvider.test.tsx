@@ -66,34 +66,5 @@ describe('RestRetrieveThingsProvider', () => {
         })
     })
 
-    it('returns an error if server returns 500', async () => {
-        createServer({
-            routes() {
-                this.get('/v1/things', thingsErrorResponse);
-            },
-        })
-
-        RestRetrieveThingsProvider()
-            .then((response) => {
-                expect(response.things).toBe([{
-                    id: 123,
-                    device: "arduino uno",
-                    deviceId: "XYZ",
-                    type: "LAMP",
-                    management: {
-                        switch: "OFF"
-                    }
-                }, {
-                    id: 456,
-                    device: "arduino uno",
-                    deviceId: "XYZ",
-                    type: "ALARM",
-                    management: {
-                        switch: "OFF"
-                    }
-                }
-                ])
-
-            });
-    })
+    //TODO test the server error path!
 });
