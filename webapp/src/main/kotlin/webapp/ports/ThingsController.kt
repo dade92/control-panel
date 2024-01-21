@@ -43,7 +43,7 @@ class ThingsController(
         @RequestBody request: SwitchRequest
     ): ResponseEntity<Unit> {
         switchAction.switch(request.switch)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.noContent().build()
     }
 }
 
