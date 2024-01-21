@@ -3,6 +3,7 @@ import {server} from "./server/Server";
 import {ControlPanel} from "./ControlPanel";
 import {Typography} from "@mui/material";
 import styled from "styled-components";
+import {RestRetrieveThingsProvider} from "./RetrieveThingsProvider";
 
 if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'dev') {
     console.log('Local dev mode detected, starting mirage server...');
@@ -18,6 +19,6 @@ const Wrapper = styled.div`
 export const App: FC = () => {
 
     return <Wrapper>
-        <ControlPanel/>
+        <ControlPanel retrieveThingsProvider={RestRetrieveThingsProvider}/>
     </Wrapper>
 }
