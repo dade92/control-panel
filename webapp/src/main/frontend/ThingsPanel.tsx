@@ -38,7 +38,11 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) =>
                 }}
             >
                 {things.map((thing) => {
-                    return <ThingDetails data-testid={`details-${thing.id}`} thing={thing} onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}/>
+                    return <ThingDetails
+                        data-testid={`details-${thing.id}`}
+                        thing={thing}
+                        onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
+                    />
                 })}
             </List>
         </ThingsPanelWrapper>

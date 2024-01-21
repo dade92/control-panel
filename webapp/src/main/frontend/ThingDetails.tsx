@@ -23,7 +23,10 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
 
+    console.log('rendering ')
+
     const changeStatus = () => {
+        console.log('status changed')
         let newStatus = ThingStatus.OFF;
         let oldStatus = status.switch;
 
@@ -53,7 +56,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
             <Paragraph data-testid={'thing-id'}>{thing.id}</Paragraph>
             <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
             <Paragraph data-testid={'status'}>{status.switch}</Paragraph>
-            <Switch checked={status.switch === "ON"} disabled={disabled} onChange={changeStatus}/>
+            <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
         </Wrapper>
     </>
 }
