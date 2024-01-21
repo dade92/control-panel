@@ -3,7 +3,7 @@ package domain.thing
 import java.util.*
 
 data class Thing(
-    val id: String,
+    val id: UUID,
     val device: String,
     val deviceId: String,
     val type: ThingType,

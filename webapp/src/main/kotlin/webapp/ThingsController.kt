@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 class ThingsController : BaseApiController() {
@@ -18,7 +19,7 @@ class ThingsController : BaseApiController() {
             ThingsResponse(
                 listOf(
                     Thing(
-                        id = "123",
+                        id = UUID.fromString("cf318036-99ec-4875-9f5d-212d27ffb315"),
                         device = "arduino uno",
                         deviceId = "XYZ",
                         type = ThingType.LAMP,
