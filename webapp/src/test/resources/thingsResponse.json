@@ -6,7 +6,7 @@
       "deviceId": "XYZ",
       "type": "LAMP",
       "management": {
-        "switch": "ON"
+        "switch": "OFF"
       }
     }
   ]

@@ -24,7 +24,7 @@ class ThingsController : BaseApiController() {
                         deviceId = "XYZ",
                         type = ThingType.LAMP,
                         management = ThingManagement(
-                            switch = Status.ON
+                            switch = Status.OFF
                         )
                     )
                 )
