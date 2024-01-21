@@ -4,6 +4,7 @@ import {Thing} from "./Thing";
 import styled from "styled-components";
 import {List} from "@mui/material";
 import {Subtitle} from "./Texts";
+import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -37,7 +38,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) =>
                 }}
             >
                 {things.map((thing) => {
-                    return <ThingDetails thing={thing} onChangeStatus={onChangeStatus}/>
+                    return <ThingDetails thing={thing} onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}/>
                 })}
             </List>
         </ThingsPanelWrapper>

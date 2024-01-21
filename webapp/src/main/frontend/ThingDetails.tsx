@@ -1,12 +1,13 @@
 import {FC, useState} from "react";
 import {Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
-import {Card, Switch} from "@mui/material";
-import {staticRestClient} from "./logic/RestClient";
+import {Switch} from "@mui/material";
 import {Paragraph} from "./Texts";
+import {SwitchStatusProvider} from "./SwitchStatusProvider";
 
 interface Props {
     thing: Thing;
+    switchStatusProvider: SwitchStatusProvider;
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
 }
 
@@ -18,7 +19,7 @@ const Wrapper = styled.div`
   padding: 8px;
 `
 
-export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
+export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider}) => {
     const [status, setStatus] = useState<ThingStatus>(thing.status);
     const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -33,22 +34,22 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus}) => {
         thing.status.switch = newStatus;
         setStatus({switch: newStatus});
         setDisabled(true);
-        staticRestClient.post(`/v1/switch/${thing.deviceId}/${thing.id}`, status)
+        switchStatusProvider(thing, {switch: newStatus})
             .then(() => onChangeStatus(true, thing))
             .catch(() => {
                 onChangeStatus(false, thing);
                 status.switch = oldStatus;
                 setStatus({switch: oldStatus});
             }).finally(() => {
-                setDisabled(false);
+            setDisabled(false);
         });
     }
 
     return <>
-        <Wrapper>
-            <Paragraph>{thing.id}</Paragraph>
-            <Paragraph>{thing.type}</Paragraph>
-            <Paragraph>{status.switch}</Paragraph>
+        <Wrapper data-testid={'thing-wrapper'}>
+            <Paragraph data-testid={'thing-id'}>{thing.id}</Paragraph>
+            <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
+            <Paragraph data-testid={'status'}>{status.switch}</Paragraph>
             <Switch checked={status.switch === "ON"} disabled={disabled} onChange={changeStatus}/>
         </Wrapper>
     </>
