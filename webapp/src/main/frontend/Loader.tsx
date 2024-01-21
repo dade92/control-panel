@@ -11,7 +11,7 @@ const LoaderWrapper = styled.div`
 `
 
 export const Loader: FC = () =>
-    <LoaderWrapper>
+    <LoaderWrapper data-testid={'loader-wrapper'}>
         <CircularProgress
             data-testid={'loader'}
             variant="indeterminate"

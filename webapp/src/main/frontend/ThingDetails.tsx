@@ -31,14 +31,15 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
         } else {
             newStatus = "ON";
         }
-        thing.status.switch = newStatus;
         setStatus({switch: newStatus});
         setDisabled(true);
         switchStatusProvider(thing, {switch: newStatus})
-            .then(() => onChangeStatus(true, thing))
+            .then(() => {
+                thing.status.switch = newStatus;
+                onChangeStatus(true, thing)
+            })
             .catch(() => {
                 onChangeStatus(false, thing);
-                status.switch = oldStatus;
                 setStatus({switch: oldStatus});
             }).finally(() => {
             setDisabled(false);
@@ -46,7 +47,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
     }
 
     return <>
-        <Wrapper data-testid={'thing-wrapper'}>
+        <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
             <Paragraph data-testid={'thing-id'}>{thing.id}</Paragraph>
             <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
             <Paragraph data-testid={'status'}>{status.switch}</Paragraph>

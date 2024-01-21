@@ -10,10 +10,10 @@ describe('ThingDetails', () => {
         const changeStatusCallback = jest.fn()
         const switchStatusProvider = jest.fn(
             () => Promise.resolve()
-        )
+        );
         const statusOFF = Builder<ThingStatus>().switch("OFF").build();
+        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).status(statusOFF).build();
         const statusON = Builder<ThingStatus>().switch("ON").build();
-        const thing = Builder<Thing>().id(123).type(ThingType.LAMP).status(statusOFF).build();
 
         render(<ThingDetails
                 thing={thing}
@@ -22,7 +22,7 @@ describe('ThingDetails', () => {
             />
         )
 
-        expect(screen.getByTestId('thing-wrapper')).toBeVisible();
+        expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
 
         fireEvent.click(screen.getByRole('checkbox'));
 
@@ -37,10 +37,10 @@ describe('ThingDetails', () => {
         const changeStatusCallback = jest.fn()
         const switchStatusProvider = jest.fn(
             () => Promise.reject()
-        )
+        );
         const statusOFF = Builder<ThingStatus>().switch("OFF").build();
         const statusON = Builder<ThingStatus>().switch("ON").build();
-        const thing = Builder<Thing>().id(123).type(ThingType.LAMP).status(statusOFF).build();
+        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).status(statusON).build();
 
         render(<ThingDetails
                 thing={thing}
@@ -49,12 +49,12 @@ describe('ThingDetails', () => {
             />
         )
 
-        expect(screen.getByTestId('thing-wrapper')).toBeVisible();
+        expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
 
         fireEvent.click(screen.getByRole('checkbox'));
 
         await waitFor(() => {
-            expect(switchStatusProvider).toHaveBeenCalledWith(thing, statusON)
+            expect(switchStatusProvider).toHaveBeenCalledWith(thing, statusOFF);
             expect(changeStatusCallback).toHaveBeenCalledTimes(1);
             expect(changeStatusCallback).toHaveBeenCalledWith(false, thing);
         });

@@ -4,19 +4,20 @@ import {Thing} from "./Thing";
 import {Loader} from "./Loader";
 import {FeedbackMessage} from "./FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
+import {RetrieveThingsProvider} from "./RetrieveThingsProvider";
 
-interface ApiResponse {
-    things: Thing[];
+interface Props {
+    retrieveThingsProvider: RetrieveThingsProvider;
 }
 
-export const ControlPanel: FC = () => {
+export const ControlPanel: FC<Props> = ({retrieveThingsProvider}) => {
     const [things, setThings] = useState<Thing[] | null>(null);
     const [success, setSuccess] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
     const [changedThing, setChangedThing] = useState<Thing>();
 
     useEffect(() => {
-        staticRestClient.get<ApiResponse>('/v1/things')
+        retrieveThingsProvider()
             .then((response) => {
                 setThings(response.things);
             })
