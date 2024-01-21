@@ -4,13 +4,9 @@ import '@testing-library/jest-dom';
 
 describe('App', () => {
     it('should render properly', () => {
-        const randomText = 'title text';
-
         render(<App/>)
 
-        const title = screen.getByTestId('title');
-        expect(title).toBeVisible();
-        expect(title).toHaveTextContent(randomText);
+        expect(screen.getByTestId('loader-wrapper')).toBeVisible();
     })
 
 })

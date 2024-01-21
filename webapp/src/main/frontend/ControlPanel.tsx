@@ -12,9 +12,9 @@ interface Props {
 
 export const ControlPanel: FC<Props> = ({retrieveThingsProvider}) => {
     const [things, setThings] = useState<Thing[] | null>(null);
+    const [changedThing, setChangedThing] = useState<Thing>();
     const [success, setSuccess] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
-    const [changedThing, setChangedThing] = useState<Thing>();
 
     useEffect(() => {
         retrieveThingsProvider()
