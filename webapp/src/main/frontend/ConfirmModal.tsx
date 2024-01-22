@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
 
 interface Props {
     onConfirm: () => void;

@@ -2,14 +2,14 @@ import {FC} from "react";
 import {ThingDetails} from "./ThingDetails";
 import {Thing} from "./Thing";
 import styled from "styled-components";
-import {List} from "@mui/material";
+import {Divider, List} from "@mui/material";
 import {Subtitle} from "./Texts";
 import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
 import {AddThingButton} from "./AddThingButton";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
-  top: 30%;
+  top: 40%;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
@@ -50,12 +50,15 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved})
                     }}
                 >
                     {things.map((thing) => {
-                        return <ThingDetails
-                            data-testid={`details-${thing.id}`}
-                            thing={thing}
-                            onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
-                            onThingRemoved={onThingRemoved}
-                        />
+                        return <>
+                            <ThingDetails
+                                data-testid={`details-${thing.id}`}
+                                thing={thing}
+                                onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
+                                onThingRemoved={onThingRemoved}
+                            />
+                            <Divider/>
+                        </>
                     })}
                 </List>
                 <AddThingButton/>
