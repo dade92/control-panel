@@ -67,7 +67,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
             <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
             <Paragraph data-testid={'status'}>{status.switch}</Paragraph>
             <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
-            <IconButton aria-label="delete" size="large" color={'error'} onClick={() => setAskConfirmation(true)}>
+            <IconButton aria-label="delete" size="large" color={'default'} onClick={() => setAskConfirmation(true)}>
                 <DeleteIcon/>
             </IconButton>
             {askConfirmation && <ConfirmModal onConfirm={onConfirm} onCancel={onClose}/>}

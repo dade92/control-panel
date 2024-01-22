@@ -5,6 +5,7 @@ import styled from "styled-components";
 import {List} from "@mui/material";
 import {Subtitle} from "./Texts";
 import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
+import {AddThingButton} from "./AddThingButton";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -21,6 +22,15 @@ const ThingsPanelWrapper = styled.div`
   row-gap: 16px;
 `
 
+const ListWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.21);
+  padding: 8px;
+`
+
 interface Props {
     things: Thing[];
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
@@ -31,21 +41,24 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved})
     (
         <ThingsPanelWrapper data-testid={'things-panel-wrapper'}>
             <Subtitle>Control Panel</Subtitle>
-            <List
-                sx={{
-                    width: '100%',
-                    overflow: 'auto',
-                    maxHeight: 250,
-                }}
-            >
-                {things.map((thing) => {
-                    return <ThingDetails
-                        data-testid={`details-${thing.id}`}
-                        thing={thing}
-                        onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
-                        onThingRemoved={onThingRemoved}
-                    />
-                })}
-            </List>
+            <ListWrapper>
+                <List
+                    sx={{
+                        width: '100%',
+                        overflow: 'auto',
+                        maxHeight: 250,
+                    }}
+                >
+                    {things.map((thing) => {
+                        return <ThingDetails
+                            data-testid={`details-${thing.id}`}
+                            thing={thing}
+                            onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
+                            onThingRemoved={onThingRemoved}
+                        />
+                    })}
+                </List>
+                <AddThingButton/>
+            </ListWrapper>
         </ThingsPanelWrapper>
     )

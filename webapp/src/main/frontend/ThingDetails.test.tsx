@@ -62,4 +62,5 @@ describe('ThingDetails', () => {
         });
     })
 
+    //TODO test the modal opening here
 });
