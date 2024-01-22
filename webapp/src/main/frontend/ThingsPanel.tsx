@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {ThingDetails} from "./ThingDetails";
 import {Thing} from "./Thing";
 import styled from "styled-components";
@@ -6,6 +6,7 @@ import {Divider, List} from "@mui/material";
 import {Subtitle} from "./Texts";
 import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
 import {AddThingButton} from "./AddThingButton";
+import {ConfirmModal} from "./ConfirmModal";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -37,8 +38,23 @@ interface Props {
     onThingRemoved: (thing: Thing) => void;
 }
 
-export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved}) =>
-    (
+export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved}) => {
+    const [removedThing, setRemovedThing] = useState<Thing | null>(null);
+
+    const onThingWaitingToBeRemoved = (thing: Thing) => {
+        setRemovedThing(thing);
+    }
+
+    const onClose = () => {
+        setRemovedThing(null);
+    }
+
+    const onConfirm = () => {
+        onThingRemoved(removedThing!);
+        setRemovedThing(null);
+    }
+
+    return (
         <ThingsPanelWrapper data-testid={'things-panel-wrapper'}>
             <Subtitle>Control Panel</Subtitle>
             <ListWrapper>
@@ -55,7 +71,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved})
                                 data-testid={`details-${thing.id}`}
                                 thing={thing}
                                 onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
-                                onThingRemoved={onThingRemoved}
+                                onThingRemoved={onThingWaitingToBeRemoved}
                             />
                             <Divider/>
                         </>
@@ -63,5 +79,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved})
                 </List>
                 <AddThingButton/>
             </ListWrapper>
+            {removedThing != null && <ConfirmModal onConfirm={onConfirm} onCancel={onClose}/>}
         </ThingsPanelWrapper>
-    )
+    );
+}

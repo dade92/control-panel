@@ -1,7 +1,7 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import {ThingDetails} from "./ThingDetails";
 import {Builder} from "builder-pattern";
-import {Management, ThingStatus, Thing, ThingType} from "./Thing";
+import {Management, Thing, ThingStatus, ThingType} from "./Thing";
 import '@testing-library/jest-dom';
 
 describe('ThingDetails', () => {
@@ -61,6 +61,4 @@ describe('ThingDetails', () => {
             expect(changeStatusCallback).toHaveBeenCalledWith(false, thing);
         });
     })
-
-    //TODO test the modal opening here
 });

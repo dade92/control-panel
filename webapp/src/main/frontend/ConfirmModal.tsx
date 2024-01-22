@@ -9,13 +9,13 @@ interface Props {
 export const ConfirmModal: FC<Props> = ({onConfirm, onCancel}) => {
 
     return (
-        <Dialog open={true}>
+        <Dialog data-testid={'confirm-modal'} open={true}>
             <DialogTitle>Are you sure?</DialogTitle>
             <DialogActions>
                 <Button autoFocus onClick={onCancel}>
                     No
                 </Button>
-                <Button onClick={onConfirm}>Yes. Remove it!</Button>
+                <Button data-testid={'confirm-button'} onClick={onConfirm}>Yes. Remove it!</Button>
             </DialogActions>
         </Dialog>
     )
