@@ -10,7 +10,7 @@ import {ConfirmModal} from "./ConfirmModal";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
-  top: 40%;
+  top: 45%;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
@@ -77,7 +77,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved})
                         </>
                     })}
                 </List>
-                <AddThingButton/>
+                <AddThingButton onAddThingClicked={() => console.log('TODO!')}/>
             </ListWrapper>
             {removedThing != null && <ConfirmModal onConfirm={onConfirm} onCancel={onClose}/>}
         </ThingsPanelWrapper>

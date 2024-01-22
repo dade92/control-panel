@@ -24,6 +24,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider}) => {
     }, []);
 
     const onThingRemoved = (thing: Thing) => {
+        //TODO make the rest call here to remove from the model the Thing
         setThings(things!.filter((t) => t.id != thing.id));
     }
 

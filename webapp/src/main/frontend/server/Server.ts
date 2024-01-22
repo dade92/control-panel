@@ -12,6 +12,24 @@ const thingsResponse = {
             }
         },
         {
+            id: '45666',
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "LAMP",
+            management: {
+                switch: "OFF"
+            }
+        },
+        {
+            id: '67777',
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "LAMP",
+            management: {
+                switch: "OFF"
+            }
+        },
+        {
             id: '456',
             device: "arduino uno",
             deviceId: "XYZ",
