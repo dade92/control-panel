@@ -1,14 +1,17 @@
 import {FC, useState} from "react";
 import {Management, Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
-import {Switch} from "@mui/material";
+import {Button, IconButton, Switch} from "@mui/material";
 import {Paragraph} from "./Texts";
 import {SwitchStatusProvider} from "./SwitchStatusProvider";
+import DeleteIcon from '@mui/icons-material/Delete';
+import {ConfirmModal} from "./ConfirmModal";
 
 interface Props {
     thing: Thing;
     switchStatusProvider: SwitchStatusProvider;
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
+    onThingRemoved: (thing: Thing) => void;
 }
 
 const Wrapper = styled.div`
@@ -19,9 +22,10 @@ const Wrapper = styled.div`
   padding: 8px;
 `
 
-export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider}) => {
+export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider, onThingRemoved}) => {
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
+    const [dialog, setDialog] = useState<boolean>(false);
 
     console.log('rendering ')
 
@@ -51,12 +55,24 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
         });
     }
 
+    const onClose = () => {
+        setDialog(false);
+    }
+
+    const onConfirm = () => {
+        setDialog(false);
+        onThingRemoved(thing);
+    }
+
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
-            <Paragraph data-testid={'thing-id'}>{thing.id}</Paragraph>
             <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
             <Paragraph data-testid={'status'}>{status.switch}</Paragraph>
             <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
+            <IconButton aria-label="delete" size="large" color={'error'} onClick={() => setDialog(true)}>
+                <DeleteIcon />
+            </IconButton>
+            {dialog && <ConfirmModal onConfirm={onConfirm} onCancel={onClose}/>}
         </Wrapper>
     </>
 }

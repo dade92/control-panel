@@ -19,6 +19,7 @@ describe('ThingDetails', () => {
                 thing={thing}
                 onChangeStatus={changeStatusCallback}
                 switchStatusProvider={switchStatusProvider}
+                onThingRemoved={jest.fn()}
             />
         )
 
@@ -46,6 +47,7 @@ describe('ThingDetails', () => {
                 thing={thing}
                 onChangeStatus={changeStatusCallback}
                 switchStatusProvider={switchStatusProvider}
+                onThingRemoved={jest.fn()}
             />
         )
 

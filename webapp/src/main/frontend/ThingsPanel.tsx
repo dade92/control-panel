@@ -8,13 +8,13 @@ import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
-  top: 50%;
+  top: 30%;
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
   width: 40%;
   @media screen and (max-width: 600px) {
-    width: 50%;
+    width: 80%;
   }
   display: flex;
   flex-direction: column;
@@ -24,9 +24,10 @@ const ThingsPanelWrapper = styled.div`
 interface Props {
     things: Thing[];
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
+    onThingRemoved: (thing: Thing) => void;
 }
 
-export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) =>
+export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved}) =>
     (
         <ThingsPanelWrapper data-testid={'things-panel-wrapper'}>
             <Subtitle>Control Panel</Subtitle>
@@ -42,6 +43,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus}) =>
                         data-testid={`details-${thing.id}`}
                         thing={thing}
                         onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
+                        onThingRemoved={onThingRemoved}
                     />
                 })}
             </List>

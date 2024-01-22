@@ -3,7 +3,7 @@ import {createServer, Server, Response} from "miragejs";
 const thingsResponse = {
     things: [
         {
-            id: '123',
+            id: '12333',
             device: "arduino uno",
             deviceId: "XYZ",
             type: "LAMP",
