@@ -10,10 +10,7 @@ export const ConfirmModal: FC<Props> = ({onConfirm, onCancel}) => {
 
     return (
         <Dialog open={true}>
-            <DialogTitle>Phone Ringtone</DialogTitle>
-            <DialogContent dividers>
-                <span>Are you sure?</span>
-            </DialogContent>
+            <DialogTitle>Are you sure?</DialogTitle>
             <DialogActions>
                 <Button autoFocus onClick={onCancel}>
                     No

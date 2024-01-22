@@ -1,7 +1,7 @@
 import {FC, useState} from "react";
 import {Management, Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
-import {Button, IconButton, Switch} from "@mui/material";
+import {IconButton, Switch} from "@mui/material";
 import {Paragraph} from "./Texts";
 import {SwitchStatusProvider} from "./SwitchStatusProvider";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -25,9 +25,7 @@ const Wrapper = styled.div`
 export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider, onThingRemoved}) => {
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
-    const [dialog, setDialog] = useState<boolean>(false);
-
-    console.log('rendering ')
+    const [askConfirmation, setAskConfirmation] = useState<boolean>(false);
 
     const changeStatus = () => {
         console.log('status changed')
@@ -56,11 +54,11 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
     }
 
     const onClose = () => {
-        setDialog(false);
+        setAskConfirmation(false);
     }
 
     const onConfirm = () => {
-        setDialog(false);
+        setAskConfirmation(false);
         onThingRemoved(thing);
     }
 
@@ -69,10 +67,10 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
             <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
             <Paragraph data-testid={'status'}>{status.switch}</Paragraph>
             <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
-            <IconButton aria-label="delete" size="large" color={'error'} onClick={() => setDialog(true)}>
-                <DeleteIcon />
+            <IconButton aria-label="delete" size="large" color={'error'} onClick={() => setAskConfirmation(true)}>
+                <DeleteIcon/>
             </IconButton>
-            {dialog && <ConfirmModal onConfirm={onConfirm} onCancel={onClose}/>}
+            {askConfirmation && <ConfirmModal onConfirm={onConfirm} onCancel={onClose}/>}
         </Wrapper>
     </>
 }
