@@ -3,10 +3,10 @@ import {ThingDetails} from "./ThingDetails";
 import {Thing} from "./Thing";
 import styled from "styled-components";
 import {Divider, List} from "@mui/material";
-import {Subtitle} from "./Texts";
 import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
 import {AddThingButton} from "./AddThingButton";
 import {ConfirmModal} from "./ConfirmModal";
+import {Subtitle} from "./Subtitle";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -58,7 +58,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved})
 
     return (
         <ThingsPanelWrapper data-testid={'things-panel-wrapper'}>
-            <Subtitle>Control Panel</Subtitle>
+            <Subtitle subtitle={'Control Panel'}/>
             <ListWrapper>
                 <List
                     sx={{

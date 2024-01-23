@@ -2,10 +2,11 @@ import {FC, useState} from "react";
 import {Management, Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
 import {Switch} from "@mui/material";
-import {Paragraph} from "./Texts";
+import {ThingDetailText} from "./Texts";
 import {SwitchStatusProvider} from "./SwitchStatusProvider";
 import DeleteIcon from '@mui/icons-material/Delete';
 import LoadingButton from '@mui/lab/LoadingButton';
+import {RemoveThingButton} from "./RemoveThingButton";
 
 interface Props {
     thing: Thing;
@@ -60,17 +61,12 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
 
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
-            <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
-            <Paragraph data-testid={'name'}>{thing.name}</Paragraph>
+            <ThingDetailText data-testid={'type'}>{thing.type}</ThingDetailText>
+            <ThingDetailText data-testid={'name'}>{thing.name}</ThingDetailText>
             <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
-            <LoadingButton
-                data-testid={`cancel-button-${thing.id}`}
-                size="large"
-                onClick={() => onRemoved(thing)}
-                loading={false}
-                color={'error'}
-                startIcon={<DeleteIcon/>}
-                disabled={false}
+            <RemoveThingButton
+                thing={thing}
+                onRemoved={() => onRemoved(thing)}
             />
         </Wrapper>
     </>
