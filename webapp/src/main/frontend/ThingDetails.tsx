@@ -1,10 +1,11 @@
-import {FC, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {Management, Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
 import {IconButton, Switch} from "@mui/material";
 import {Paragraph} from "./Texts";
 import {SwitchStatusProvider} from "./SwitchStatusProvider";
 import DeleteIcon from '@mui/icons-material/Delete';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 interface Props {
     thing: Thing;
@@ -24,6 +25,7 @@ const Wrapper = styled.div`
 export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider, onThingRemoved}) => {
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const changeStatus = () => {
         console.log('status changed')
@@ -51,15 +53,25 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
         });
     }
 
+    const onRemoved = (thing: Thing) => {
+        setLoading(true);
+        onThingRemoved(thing)
+    }
+
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
             <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
             <Paragraph data-testid={'status'}>{status.switch}</Paragraph>
             <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
-            <IconButton data-testid={`cancel-button-${thing.id}`} aria-label="delete" size="large" color={'default'}
-                        onClick={() => onThingRemoved(thing)}>
-                <DeleteIcon/>
-            </IconButton>
+            <LoadingButton
+                data-testid={`cancel-button-${thing.id}`}
+                size="large"
+                onClick={() => onRemoved(thing)}
+                loading={false}
+                color={'error'}
+                startIcon={<DeleteIcon/>}
+                disabled={false}
+            />
         </Wrapper>
     </>
 }

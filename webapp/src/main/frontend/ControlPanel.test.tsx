@@ -18,5 +18,7 @@ describe('ControlPanel', () => {
         await waitFor(() => {
             expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
         })
-    })
+    });
+
+    //TODO test the remove thing part
 });
