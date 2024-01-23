@@ -14,9 +14,10 @@ const ThingsPanelWrapper = styled.div`
   left: 50%;
   margin-right: -50%;
   transform: translate(-50%, -50%);
-  width: 40%;
+  width: 70%;
+  height: 70%;
   @media screen and (max-width: 600px) {
-    width: 80%;
+    width: 85%;
   }
   display: flex;
   flex-direction: column;
@@ -28,7 +29,7 @@ const ListWrapper = styled.div`
   flex-direction: column;
   gap: 48px;
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.21);
+  border: 1px solid rgba(0, 0, 0, 0.11);
   padding: 16px;
 `
 

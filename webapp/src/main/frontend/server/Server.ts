@@ -4,6 +4,7 @@ const thingsResponse = {
     things: [
         {
             id: '12333',
+            name: 'Luce soggiorno',
             device: "arduino uno",
             deviceId: "XYZ",
             type: "LAMP",
@@ -13,6 +14,7 @@ const thingsResponse = {
         },
         {
             id: '45666',
+            name: 'Luce cucina',
             device: "arduino uno",
             deviceId: "XYZ",
             type: "LAMP",
@@ -22,6 +24,7 @@ const thingsResponse = {
         },
         {
             id: '67777',
+            name: 'Luce camera',
             device: "arduino uno",
             deviceId: "XYZ",
             type: "LAMP",
@@ -31,6 +34,7 @@ const thingsResponse = {
         },
         {
             id: '456',
+            name: 'Allarme casa',
             device: "arduino uno",
             deviceId: "XYZ",
             type: "ALARM",
@@ -40,6 +44,7 @@ const thingsResponse = {
         },
         {
             id: '777',
+            name: 'Allarme casa',
             device: "arduino uno",
             deviceId: "XYZ",
             type: "ALARM",
@@ -49,6 +54,7 @@ const thingsResponse = {
         },
         {
             id: '888',
+            name: 'Allarme casa',
             device: "arduino uno",
             deviceId: "XYZ",
             type: "ALARM",

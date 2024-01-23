@@ -1,5 +1,6 @@
 export interface Thing {
     id: string,
+    name: string,
     deviceName: string,
     deviceId: string,
     type: ThingType,

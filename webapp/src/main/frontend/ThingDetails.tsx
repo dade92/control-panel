@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
   padding: 8px;
 `
 
@@ -61,7 +61,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
             <Paragraph data-testid={'type'}>{thing.type}</Paragraph>
-            <Paragraph data-testid={'status'}>{status.switch}</Paragraph>
+            <Paragraph data-testid={'name'}>{thing.name}</Paragraph>
             <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
             <LoadingButton
                 data-testid={`cancel-button-${thing.id}`}

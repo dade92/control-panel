@@ -9,6 +9,7 @@ interface Props {
 
 const Wrapper = styled.div`
     align-self: end;
+    margin-top: 60px;
 `
 
 export const AddThingButton: FC<Props> = ({onAddThingClicked}) => {
