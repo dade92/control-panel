@@ -1,7 +1,7 @@
-import {FC, useEffect, useState} from "react";
+import {FC, useState} from "react";
 import {Management, Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
-import {IconButton, Switch} from "@mui/material";
+import {Switch} from "@mui/material";
 import {Paragraph} from "./Texts";
 import {SwitchStatusProvider} from "./SwitchStatusProvider";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -55,7 +55,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
 
     const onRemoved = (thing: Thing) => {
         setLoading(true);
-        onThingRemoved(thing)
+        onThingRemoved(thing);
     }
 
     return <>

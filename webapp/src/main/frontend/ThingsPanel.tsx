@@ -26,10 +26,10 @@ const ThingsPanelWrapper = styled.div`
 const ListWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 48px;
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.21);
-  padding: 8px;
+  padding: 16px;
 `
 
 interface Props {
