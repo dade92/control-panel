@@ -50,6 +50,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved})
     }
 
     const onConfirm = () => {
+        //TODO change the icon to loading!
         onThingRemoved(removedThing!);
         setRemovedThing(null);
     }

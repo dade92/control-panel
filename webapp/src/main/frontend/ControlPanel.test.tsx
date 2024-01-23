@@ -11,7 +11,7 @@ describe('ControlPanel', () => {
             () => Promise.resolve({things: [thing, thing]})
         );
 
-        render(<ControlPanel retrieveThingsProvider={retrieveThingsProvider}/>);
+        render(<ControlPanel retrieveThingsProvider={retrieveThingsProvider} removeThingsProvider={jest.fn()}/>);
 
         expect(screen.getByTestId('loader-wrapper')).toBeVisible();
 

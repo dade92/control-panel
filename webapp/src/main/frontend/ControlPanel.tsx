@@ -4,16 +4,24 @@ import {Loader} from "./Loader";
 import {FeedbackMessage} from "./FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
 import {RetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
+import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
+    removeThingsProvider: RemoveThingsProvider;
 }
 
-export const ControlPanel: FC<Props> = ({retrieveThingsProvider}) => {
+interface Outcome {
+    isSuccess: boolean;
+    error: boolean;
+    message: string | null;
+    changedThing: Thing | null;
+}
+
+export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsProvider}) => {
     const [things, setThings] = useState<Thing[] | null>(null);
-    const [changedThing, setChangedThing] = useState<Thing>();
-    const [success, setSuccess] = useState<boolean>(false);
-    const [error, setError] = useState<boolean>(false);
+    const defaultOutcome = {isSuccess: false, error: false, message: null, changedThing: null};
+    const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
 
     useEffect(() => {
         retrieveThingsProvider()
@@ -24,17 +32,34 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider}) => {
     }, []);
 
     const onThingRemoved = (thing: Thing) => {
-        //TODO make the rest call here to remove from the model the Thing
-        setThings(things!.filter((t) => t.id != thing.id));
+        removeThingsProvider(thing.id)
+            .then(() => {
+                setThings(things!.filter((t) => t.id != thing.id));
+                setOutcome({
+                    isSuccess: true,
+                    error: false,
+                    message: 'correctly removed',
+                    changedThing: null
+                });
+            })
+            .catch(() => {
+                setOutcome({
+                    isSuccess: false,
+                    error: true,
+                    message: 'error while removing',
+                    changedThing: null
+                });
+            });
     }
 
     const giveFeedback = (isSuccess: boolean, thing: Thing) => {
-        setChangedThing(thing);
-        if (isSuccess) {
-            setSuccess(isSuccess);
-        } else {
-            setError(true);
-        }
+        console.log(thing);
+        setOutcome({
+            isSuccess,
+            error: !isSuccess,
+            message: isSuccess ? `${thing!.type} turned ${thing!.management.switch}` : `${thing!.type} couldn't be switched due to some problems with server`,
+            changedThing: thing
+        });
     }
 
     return things == null ? <Loader/> :
@@ -43,7 +68,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider}) => {
             onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}
             onThingRemoved={onThingRemoved}
         />
-            {success && <FeedbackMessage thing={changedThing!} onClose={() => setSuccess(false)} isSuccess={success}/>}
-            {error && <FeedbackMessage thing={changedThing!} onClose={() => setError(false)} isSuccess={success}/>}
+            {outcome?.isSuccess && <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)} isSuccess={outcome.isSuccess}/>}
+            {outcome?.error && <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)} isSuccess={outcome.isSuccess}/>}
         </>;
 }

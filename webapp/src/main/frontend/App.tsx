@@ -1,9 +1,9 @@
 import {FC} from "react";
 import {server} from "./server/Server";
 import {ControlPanel} from "./ControlPanel";
-import {Typography} from "@mui/material";
 import styled from "styled-components";
 import {RestRetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
+import {RestRemoveThingsProvider} from "./logic/RemoveThingsProvider";
 
 if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'dev') {
     console.log('Local dev mode detected, starting mirage server...');
@@ -11,14 +11,17 @@ if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'd
 }
 
 const Wrapper = styled.div`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `
 
 
 export const App: FC = () => {
 
     return <Wrapper>
-        <ControlPanel retrieveThingsProvider={RestRetrieveThingsProvider}/>
+        <ControlPanel
+            retrieveThingsProvider={RestRetrieveThingsProvider}
+            removeThingsProvider={RestRemoveThingsProvider}
+        />
     </Wrapper>
 }
