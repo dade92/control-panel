@@ -74,16 +74,24 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
     }
 
     return things == null ? <Loader/> :
-        <> <ThingsPanel
-            things={things}
-            onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}
-            onThingRemoved={onThingRemoved}
-            idWaitingToBeRemoved={idToBeRemoved}
-        />
-            {outcome?.isSuccess &&
-                <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)}
-                                 isSuccess={outcome.isSuccess}/>}
-            {outcome?.error && <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)}
-                                                isSuccess={outcome.isSuccess}/>}
-        </>;
+        <>
+            <ThingsPanel
+                things={things}
+                onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}
+                onThingRemoved={onThingRemoved}
+                idWaitingToBeRemoved={idToBeRemoved}
+            />
+            {
+                outcome?.isSuccess && <FeedbackMessage
+                    message={outcome.message!}
+                    onClose={() => setOutcome(defaultOutcome)}
+                    isSuccess={outcome.isSuccess}/>
+            }
+            {
+                outcome?.error && <FeedbackMessage
+                    message={outcome.message!}
+                    onClose={() => setOutcome(defaultOutcome)}
+                    isSuccess={outcome.isSuccess}/>
+            }
+        </>
 }
