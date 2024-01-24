@@ -72,7 +72,8 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved, 
                             <ThingDetails
                                 data-testid={`details-${thing.id}`}
                                 thing={thing}
-                                onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
+                                onChangeStatus={onChangeStatus}
+                                switchStatusProvider={RestSwitchStatusProvider}
                                 onThingRemoved={onRemove}
                                 shouldBeLoading={idWaitingToBeRemoved == thing.id}
                             />
