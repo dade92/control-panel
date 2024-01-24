@@ -47,11 +47,11 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved, 
         setRemovedThing(thing);
     }
 
-    const onClose = () => {
+    const onModalClosed = () => {
         setRemovedThing(null);
     }
 
-    const onConfirm = () => {
+    const onRemoveConfirmed = () => {
         onThingRemoved(removedThing!);
         setRemovedThing(null);
     }
@@ -82,7 +82,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved, 
                 </List>
                 <AddThingButton onAddThingClicked={() => console.log('TODO!')}/>
             </ListWrapper>
-            {removedThing != null && <ConfirmModal onConfirm={onConfirm} onCancel={onClose}/>}
+            {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
         </ThingsPanelWrapper>
     );
 }
