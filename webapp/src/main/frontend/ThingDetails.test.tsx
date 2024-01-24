@@ -20,9 +20,6 @@ describe('ThingDetails', () => {
     })
 
     it('call change status callback when switch is successful', async () => {
-        const successfulSwitchStatusProvider = jest.fn(
-            () => Promise.resolve()
-        );
         const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
         const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
         const statusON = Builder<Management>().switch(ThingStatus.ON).build();
@@ -31,7 +28,7 @@ describe('ThingDetails', () => {
             <ThingDetails
                 thing={thing}
                 onChangeStatus={changeStatusCallback}
-                switchStatusProvider={successfulSwitchStatusProvider}
+                switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
             />
         );
@@ -41,7 +38,7 @@ describe('ThingDetails', () => {
         fireEvent.click(screen.getByRole('checkbox'));
 
         await waitFor(() => {
-            expect(successfulSwitchStatusProvider).toHaveBeenCalledWith(thing, statusON)
+            expect(switchStatusProvider).toHaveBeenCalledWith(thing, statusON)
             expect(changeStatusCallback).toHaveBeenCalledTimes(1);
             expect(changeStatusCallback).toHaveBeenCalledWith(true, thing);
         });
