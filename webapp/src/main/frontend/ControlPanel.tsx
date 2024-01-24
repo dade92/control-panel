@@ -22,14 +22,21 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
     const [things, setThings] = useState<Thing[] | null>(null);
     const defaultOutcome = {isSuccess: false, error: false, message: null, changedThing: null};
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
-    const [idToBeRemoved, setIdToBeRemoved] = useState<string>('');
+    const [idToBeRemoved, setIdToBeRemoved] = useState<string | null>(null);
 
     useEffect(() => {
         retrieveThingsProvider()
             .then((response) => {
                 setThings(response.things);
             })
-            .catch(() => console.log('Error retrieving things'))
+            .catch(() => {
+                setOutcome({
+                    isSuccess: false,
+                    error: true,
+                    message: 'There was an error retrieving Things',
+                    changedThing: null
+                })
+            })
     }, []);
 
     const onThingRemoved = (thing: Thing) => {
@@ -40,7 +47,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
                 setOutcome({
                     isSuccess: true,
                     error: false,
-                    message: 'correctly removed',
+                    message: `Thing ${thing.name} removed successfully`,
                     changedThing: null
                 });
             })
@@ -48,11 +55,11 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
                 setOutcome({
                     isSuccess: false,
                     error: true,
-                    message: 'error while removing',
+                    message: `error while removing thing ${thing.name}`,
                     changedThing: null
                 });
             }).finally(() => {
-            setIdToBeRemoved('');
+            setIdToBeRemoved(null);
         });
     }
 
@@ -71,9 +78,12 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
             things={things}
             onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}
             onThingRemoved={onThingRemoved}
-            idToBeRemoved={idToBeRemoved}
+            idWaitingToBeRemoved={idToBeRemoved}
         />
-            {outcome?.isSuccess && <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)} isSuccess={outcome.isSuccess}/>}
-            {outcome?.error && <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)} isSuccess={outcome.isSuccess}/>}
+            {outcome?.isSuccess &&
+                <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)}
+                                 isSuccess={outcome.isSuccess}/>}
+            {outcome?.error && <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)}
+                                                isSuccess={outcome.isSuccess}/>}
         </>;
 }

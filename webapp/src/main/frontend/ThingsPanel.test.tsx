@@ -29,7 +29,7 @@ describe('ThingsPanel', () => {
                 ]}
                 onChangeStatus={onChangeStatus}
                 onThingRemoved={onThingRemoved}
-                idToBeRemoved={''}
+                idWaitingToBeRemoved={''}
             />
         );
 
@@ -51,7 +51,7 @@ describe('ThingsPanel', () => {
                 ]}
                 onChangeStatus={onChangeStatus}
                 onThingRemoved={onThingRemoved}
-                idToBeRemoved={''}
+                idWaitingToBeRemoved={''}
             />
         );
 

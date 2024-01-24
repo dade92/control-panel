@@ -37,13 +37,13 @@ interface Props {
     things: Thing[];
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
     onThingRemoved: (thing: Thing) => void;
-    idToBeRemoved: string;
+    idWaitingToBeRemoved: string | null;
 }
 
-export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved, idToBeRemoved}) => {
+export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved, idWaitingToBeRemoved}) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
 
-    const onThingWaitingToBeRemoved = (thing: Thing) => {
+    const onRemove = (thing: Thing) => {
         setRemovedThing(thing);
     }
 
@@ -73,8 +73,8 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved, 
                                 data-testid={`details-${thing.id}`}
                                 thing={thing}
                                 onChangeStatus={onChangeStatus} switchStatusProvider={RestSwitchStatusProvider}
-                                onThingRemoved={onThingWaitingToBeRemoved}
-                                shouldBeLoading={idToBeRemoved == thing.id}
+                                onThingRemoved={onRemove}
+                                shouldBeLoading={idWaitingToBeRemoved == thing.id}
                             />
                             <Divider/>
                         </>
