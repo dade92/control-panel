@@ -1,6 +1,5 @@
 package webapp.ports
 
-import domain.actions.DefaultSwitchAction
 import domain.actions.SwitchAction
 import domain.thing.Status
 import domain.thing.Thing
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
-import java.util.*
+import java.util.UUID
 
 @RestController
 class ThingsController(
@@ -46,6 +45,14 @@ class ThingsController(
         @RequestBody request: SwitchRequest
     ): ResponseEntity<Unit> {
         switchAction.switch(request.switch)
+        return ResponseEntity.noContent().build()
+    }
+
+    @PostMapping("/v1/things/remove/{thingId}")
+    fun removeThing(
+        @PathVariable thingId: String,
+    ): ResponseEntity<Unit> {
+        Thread.sleep(1000)
         return ResponseEntity.noContent().build()
     }
 }

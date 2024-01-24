@@ -17,4 +17,5 @@ export const RemoveThingButton: FC<Props> = ({thing, onRemoved, loading}) =>
         loading={loading}
         color={'error'}
         startIcon={<DeleteIcon/>}
+        sx={{minWidth:'0px', padding:'0px'}}
     />
