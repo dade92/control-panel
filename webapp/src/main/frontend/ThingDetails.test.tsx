@@ -30,6 +30,7 @@ describe('ThingDetails', () => {
                 onChangeStatus={changeStatusCallback}
                 switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
+                shouldBeLoading={false}
             />
         );
 
@@ -57,6 +58,7 @@ describe('ThingDetails', () => {
                 onChangeStatus={changeStatusCallback}
                 switchStatusProvider={failSwitchStatusProvider}
                 onThingRemoved={onThingRemoved}
+                shouldBeLoading={false}
             />
         )
 
@@ -81,6 +83,7 @@ describe('ThingDetails', () => {
                 onChangeStatus={changeStatusCallback}
                 switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
+                shouldBeLoading={false}
             />
         )
 

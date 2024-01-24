@@ -6,14 +6,15 @@ import {Thing} from "./Thing";
 interface Props {
     thing: Thing
     onRemoved: (thing: Thing) => void;
+    loading: boolean
 }
 
-export const RemoveThingButton: FC<Props> = ({thing, onRemoved}) =>
+export const RemoveThingButton: FC<Props> = ({thing, onRemoved, loading}) =>
     <LoadingButton
         data-testid={`cancel-button-${thing.id}`}
         size="large"
         onClick={() => onRemoved(thing)}
-        loading={false}
+        loading={loading}
         color={'error'}
         startIcon={<DeleteIcon/>}
     />

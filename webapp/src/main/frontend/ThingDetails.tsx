@@ -13,6 +13,7 @@ interface Props {
     switchStatusProvider: SwitchStatusProvider;
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
     onThingRemoved: (thing: Thing) => void;
+    shouldBeLoading: boolean
 }
 
 const Wrapper = styled.div`
@@ -23,10 +24,9 @@ const Wrapper = styled.div`
   padding: 8px;
 `
 
-export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider, onThingRemoved}) => {
+export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider, onThingRemoved, shouldBeLoading}) => {
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
-    const [loading, setLoading] = useState<boolean>(false);
 
     const changeStatus = () => {
         let newStatus = ThingStatus.OFF;
@@ -54,7 +54,6 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
     }
 
     const onRemoved = (thing: Thing) => {
-        setLoading(true);
         onThingRemoved(thing);
     }
 
@@ -64,6 +63,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
             <ThingDetailText data-testid={'name'}>{thing.name}</ThingDetailText>
             <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
             <RemoveThingButton
+                loading={shouldBeLoading}
                 thing={thing}
                 onRemoved={() => onRemoved(thing)}
             />

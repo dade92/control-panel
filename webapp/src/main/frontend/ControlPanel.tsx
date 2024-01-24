@@ -22,6 +22,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
     const [things, setThings] = useState<Thing[] | null>(null);
     const defaultOutcome = {isSuccess: false, error: false, message: null, changedThing: null};
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
+    const [idToBeRemoved, setIdToBeRemoved] = useState<string>('');
 
     useEffect(() => {
         retrieveThingsProvider()
@@ -32,6 +33,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
     }, []);
 
     const onThingRemoved = (thing: Thing) => {
+        setIdToBeRemoved(thing.id);
         removeThingsProvider(thing.id)
             .then(() => {
                 setThings(things!.filter((t) => t.id != thing.id));
@@ -49,7 +51,9 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
                     message: 'error while removing',
                     changedThing: null
                 });
-            });
+            }).finally(() => {
+            setIdToBeRemoved('');
+        });
     }
 
     const giveFeedback = (isSuccess: boolean, thing: Thing) => {
@@ -67,6 +71,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
             things={things}
             onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}
             onThingRemoved={onThingRemoved}
+            idToBeRemoved={idToBeRemoved}
         />
             {outcome?.isSuccess && <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)} isSuccess={outcome.isSuccess}/>}
             {outcome?.error && <FeedbackMessage message={outcome.message!} onClose={() => setOutcome(defaultOutcome)} isSuccess={outcome.isSuccess}/>}

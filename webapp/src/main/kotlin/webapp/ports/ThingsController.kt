@@ -1,6 +1,7 @@
 package webapp.ports
 
 import domain.actions.DefaultSwitchAction
+import domain.actions.SwitchAction
 import domain.thing.Status
 import domain.thing.Thing
 import domain.thing.ThingManagement
@@ -16,7 +17,7 @@ import java.util.*
 
 @RestController
 class ThingsController(
-    private val switchAction: DefaultSwitchAction
+    private val switchAction: SwitchAction
 ) : BaseApiController() {
 
     @GetMapping("/v1/things")
