@@ -5,11 +5,19 @@ import {Management, Thing, ThingStatus, ThingType} from "./Thing";
 import '@testing-library/jest-dom';
 
 describe('ThingDetails', () => {
-    const changeStatusCallback = jest.fn()
-    const switchStatusProvider = jest.fn(
+    let changeStatusCallback: jest.Mock;
+    let switchStatusProvider: jest.Mock = jest.fn(
         () => Promise.resolve()
     );
-    const onThingRemoved = jest.fn();
+    let onThingRemoved: jest.Mock = jest.fn();
+
+    beforeEach(() => {
+        changeStatusCallback = jest.fn();
+        switchStatusProvider = jest.fn(
+            () => Promise.resolve()
+        );
+        onThingRemoved = jest.fn();
+    })
 
     it('call change status callback when switch is successful', async () => {
         const successfulSwitchStatusProvider = jest.fn(
