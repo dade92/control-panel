@@ -12,10 +12,10 @@ export const ConfirmModal: FC<Props> = ({onConfirm, onCancel}) => {
         <Dialog data-testid={'confirm-modal'} open={true}>
             <DialogTitle>Are you sure?</DialogTitle>
             <DialogActions>
-                <Button autoFocus onClick={onCancel}>
+                <Button data-testid={'no-button'} onClick={onCancel}>
                     No
                 </Button>
-                <Button data-testid={'confirm-button'} onClick={onConfirm}>Yes. Remove it!</Button>
+                <Button data-testid={'confirm-button'} onClick={onConfirm}>Yes</Button>
             </DialogActions>
         </Dialog>
     )

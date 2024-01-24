@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 `
 
 export const AddThingButton: FC<Props> = ({onAddThingClicked}) => {
-    return <Wrapper>
+    return <Wrapper data-testid={'add-thing-button'}>
         <Fab onClick={onAddThingClicked} color="success" aria-label="add">
             <AddIcon />
         </Fab>

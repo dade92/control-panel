@@ -5,38 +5,42 @@ import {Management, Thing, ThingStatus, ThingType} from "./Thing";
 import '@testing-library/jest-dom';
 
 describe('ThingDetails', () => {
+    const changeStatusCallback = jest.fn()
+    const switchStatusProvider = jest.fn(
+        () => Promise.resolve()
+    );
+    const onThingRemoved = jest.fn();
 
     it('call change status callback when switch is successful', async () => {
-        const changeStatusCallback = jest.fn()
-        const switchStatusProvider = jest.fn(
+        const successfulSwitchStatusProvider = jest.fn(
             () => Promise.resolve()
         );
         const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
         const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
         const statusON = Builder<Management>().switch(ThingStatus.ON).build();
 
-        render(<ThingDetails
+        render(
+            <ThingDetails
                 thing={thing}
                 onChangeStatus={changeStatusCallback}
-                switchStatusProvider={switchStatusProvider}
-                onThingRemoved={jest.fn()}
+                switchStatusProvider={successfulSwitchStatusProvider}
+                onThingRemoved={onThingRemoved}
             />
-        )
+        );
 
         expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
 
         fireEvent.click(screen.getByRole('checkbox'));
 
         await waitFor(() => {
-            expect(switchStatusProvider).toHaveBeenCalledWith(thing, statusON)
+            expect(successfulSwitchStatusProvider).toHaveBeenCalledWith(thing, statusON)
             expect(changeStatusCallback).toHaveBeenCalledTimes(1);
             expect(changeStatusCallback).toHaveBeenCalledWith(true, thing);
         });
     })
 
     it('call change status callback when switch gives an error', async () => {
-        const changeStatusCallback = jest.fn()
-        const switchStatusProvider = jest.fn(
+        const failSwitchStatusProvider = jest.fn(
             () => Promise.reject()
         );
         const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
@@ -46,8 +50,8 @@ describe('ThingDetails', () => {
         render(<ThingDetails
                 thing={thing}
                 onChangeStatus={changeStatusCallback}
-                switchStatusProvider={switchStatusProvider}
-                onThingRemoved={jest.fn()}
+                switchStatusProvider={failSwitchStatusProvider}
+                onThingRemoved={onThingRemoved}
             />
         )
 
@@ -56,9 +60,33 @@ describe('ThingDetails', () => {
         fireEvent.click(screen.getByRole('checkbox'));
 
         await waitFor(() => {
-            expect(switchStatusProvider).toHaveBeenCalledWith(thing, statusOFF);
+            expect(failSwitchStatusProvider).toHaveBeenCalledWith(thing, statusOFF);
             expect(changeStatusCallback).toHaveBeenCalledTimes(1);
             expect(changeStatusCallback).toHaveBeenCalledWith(false, thing);
         });
+    })
+
+    it('call remove callback when clicking on the remove button', async () => {
+        const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
+        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
+
+        render(<ThingDetails
+                thing={thing}
+                onChangeStatus={changeStatusCallback}
+                switchStatusProvider={switchStatusProvider}
+                onThingRemoved={onThingRemoved}
+            />
+        )
+
+        expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
+
+        fireEvent.click(screen.getByTestId('cancel-button-123'));
+
+        await waitFor(() => {
+            expect(switchStatusProvider).not.toHaveBeenCalled();
+            expect(changeStatusCallback).not.toHaveBeenCalled();
+            expect(onThingRemoved).toHaveBeenCalledWith(thing);
+        });
+
     })
 });

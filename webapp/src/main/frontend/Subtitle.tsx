@@ -6,7 +6,7 @@ interface Props {
 }
 
 export const Subtitle: FC<Props> = ({subtitle}) => {
-    return <Typography variant="h2" gutterBottom>
+    return <Typography data-testid={'panel-subtitle'} variant="h2" gutterBottom>
         {subtitle}
     </Typography>
 }

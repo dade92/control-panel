@@ -13,7 +13,7 @@ const LoaderWrapper = styled.div`
 export const Loader: FC = () =>
     <LoaderWrapper data-testid={'loader-wrapper'}>
         <CircularProgress
-            data-testid={'loader'}
+            data-testid='loader'
             variant="indeterminate"
             disableShrink
             sx={{

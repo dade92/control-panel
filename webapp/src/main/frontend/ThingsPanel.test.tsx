@@ -5,35 +5,24 @@ import {Builder} from "builder-pattern";
 import {Thing, ThingStatus, ThingType} from "./Thing";
 
 describe('ThingsPanel', () => {
-    it('Shows the list of things correctly', async () => {
-        const onChangeStatus = jest.fn();
+    const onThingRemoved = jest.fn();
+    const onChangeStatus = jest.fn();
+    const thing = Builder<Thing>()
+        .id('123')
+        .name('lamp 1')
+        .type(ThingType.LAMP)
+        .management({switch: ThingStatus.ON})
+        .build();
+    const anotherThing = Builder<Thing>()
+        .id('456')
+        .name('lamp 2')
+        .type(ThingType.LAMP)
+        .management({switch: ThingStatus.OFF})
+        .build();
 
-        render(<ThingsPanel
-                things={[
-                    Builder<Thing>().id('123').type(ThingType.LAMP).management({switch: ThingStatus.ON}).build(),
-                    Builder<Thing>().id('456').type(ThingType.LAMP).management({switch: ThingStatus.OFF}).build()
-                ]}
-                onChangeStatus={onChangeStatus}
-                onThingRemoved={jest.fn()}
-            />
-        )
-
-        await waitFor(() => {
-            expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
-            expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
-            expect(screen.getByTestId('thing-wrapper-456')).toBeVisible();
-        })
-    })
-
-    it('clicking on cancel button opens the modal', async () => {
-        const onThingRemoved = jest.fn();
-        const onChangeStatus = jest.fn();
-
-        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management({switch: ThingStatus.ON}).build();
-
-        const anotherThing = Builder<Thing>().id('456').type(ThingType.LAMP).management({switch: ThingStatus.OFF}).build();
-
-        render(<ThingsPanel
+    it('Shows subtitle, add thing button and list of things correctly', async () => {
+        render(
+            <ThingsPanel
                 things={[
                     thing,
                     anotherThing
@@ -41,7 +30,28 @@ describe('ThingsPanel', () => {
                 onChangeStatus={onChangeStatus}
                 onThingRemoved={onThingRemoved}
             />
-        )
+        );
+
+        await waitFor(() => {
+            expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
+            expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
+            expect(screen.getByTestId('thing-wrapper-456')).toBeVisible();
+            expect(screen.getByTestId('add-thing-button')).toBeVisible();
+            expect(screen.getByTestId('panel-subtitle')).toBeVisible();
+        })
+    })
+
+    it('clicking on cancel button opens the modal', async () => {
+        render(
+            <ThingsPanel
+                things={[
+                    thing,
+                    anotherThing
+                ]}
+                onChangeStatus={onChangeStatus}
+                onThingRemoved={onThingRemoved}
+            />
+        );
 
         fireEvent.click(screen.getByTestId('cancel-button-123'));
 
