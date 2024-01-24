@@ -75,7 +75,8 @@ describe('ThingDetails', () => {
         const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
         const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
 
-        render(<ThingDetails
+        render(
+            <ThingDetails
                 thing={thing}
                 onChangeStatus={changeStatusCallback}
                 switchStatusProvider={switchStatusProvider}

@@ -1,7 +1,7 @@
 package webapp
 
 import com.springexample.utils.Fixtures
-import domain.actions.SwitchAction
+import domain.actions.DefaultSwitchAction
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -20,7 +20,7 @@ class ThingsControllerTest {
     private lateinit var mvc: MockMvc
 
     @MockBean
-    private lateinit var switchAction: SwitchAction
+    private lateinit var switchAction: DefaultSwitchAction
 
     @Test
     fun `retrieve things`() {

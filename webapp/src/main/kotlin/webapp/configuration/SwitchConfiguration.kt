@@ -1,6 +1,8 @@
 package webapp.configuration
 
 import adapters.RestSwitchClient
+import domain.actions.DefaultSwitchAction
+import domain.actions.FakeSwitchAction
 import domain.actions.SwitchAction
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -11,10 +13,10 @@ class SwitchConfiguration {
 
     @Bean
     fun switchAction(): SwitchAction {
-        return SwitchAction(
-            RestSwitchClient(
-                RestTemplate()
-            )
+        return FakeSwitchAction(
+//            RestSwitchClient(
+//                RestTemplate()
+//            )
         )
     }
 

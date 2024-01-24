@@ -29,7 +29,6 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
     const [loading, setLoading] = useState<boolean>(false);
 
     const changeStatus = () => {
-        console.log('status changed')
         let newStatus = ThingStatus.OFF;
         let oldStatus = status.switch;
 
