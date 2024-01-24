@@ -3,7 +3,7 @@ import {ThingDetails} from "./ThingDetails";
 import {Thing} from "./Thing";
 import styled from "styled-components";
 import {Divider, List} from "@mui/material";
-import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
+import {RestSwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingButton} from "./AddThingButton";
 import {ConfirmModal} from "./ConfirmModal";
 import {Subtitle} from "./Subtitle";

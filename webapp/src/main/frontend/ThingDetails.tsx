@@ -3,7 +3,7 @@ import {Management, Thing, ThingStatus} from "./Thing";
 import styled from "styled-components";
 import {Switch} from "@mui/material";
 import {ThingDetailText} from "./Texts";
-import {SwitchStatusProvider} from "./SwitchStatusProvider";
+import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import DeleteIcon from '@mui/icons-material/Delete';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {RemoveThingButton} from "./RemoveThingButton";
