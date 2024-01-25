@@ -1,18 +1,10 @@
 package webapp.ports
 
 import domain.actions.SwitchAction
-import domain.thing.Status
-import domain.thing.Thing
-import domain.thing.ThingManagement
-import domain.thing.ThingType
-import domain.thing.asThingName
+import domain.thing.*
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
-import java.util.UUID
+import org.springframework.web.bind.annotation.*
+import java.util.*
 
 @RestController
 class ThingsController(
@@ -24,7 +16,7 @@ class ThingsController(
         ResponseEntity.ok(
             ThingsResponse(
                 listOf(
-                    Thing(
+                    ThingResponse(
                         id = UUID.fromString("cf318036-99ec-4875-9f5d-212d27ffb315"),
                         name = "Luce soggiorno".asThingName(),
                         device = "arduino uno",
@@ -38,10 +30,10 @@ class ThingsController(
             )
         )
 
-    @PostMapping("/v1/switch/{deviceId}/{switchId}")
+    @PostMapping("/v1/switch/{deviceId}/{thingId}")
     fun switch(
         @PathVariable deviceId: String,
-        @PathVariable switchId: String,
+        @PathVariable thingId: String,
         @RequestBody request: SwitchRequest
     ): ResponseEntity<Unit> {
         switchAction.switch(request.switch)
@@ -62,6 +54,15 @@ data class SwitchRequest(
 )
 
 data class ThingsResponse(
-    val things: List<Thing>
+    val thingResponses: List<ThingResponse>
+)
+
+data class ThingResponse(
+    val id: UUID,
+    val name: ThingName,
+    val device: String,
+    val deviceId: String,
+    val type: ThingType,
+    val management: ThingManagement
 )
 
