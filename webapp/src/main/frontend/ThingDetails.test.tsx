@@ -10,6 +10,9 @@ describe('ThingDetails', () => {
         () => Promise.resolve()
     );
     let onThingRemoved: jest.Mock = jest.fn();
+    let statusOFF: Management;
+    let thing: Thing;
+    let statusON: Management;
 
     beforeEach(() => {
         changeStatusCallback = jest.fn();
@@ -17,13 +20,13 @@ describe('ThingDetails', () => {
             () => Promise.resolve()
         );
         onThingRemoved = jest.fn();
-    })
 
-    it('call change status callback when switch is successful', async () => {
-        const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
-        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
-        const statusON = Builder<Management>().switch(ThingStatus.ON).build();
+        statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
+        thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
+        statusON = Builder<Management>().switch(ThingStatus.ON).build();
+    });
 
+    it('switch thing on successful, calls a callback afterwards', async () => {
         render(
             <ThingDetails
                 thing={thing}
@@ -45,12 +48,10 @@ describe('ThingDetails', () => {
         });
     })
 
-    it('call change status callback when switch gives an error', async () => {
+    it('switch thing on NOT successful, calls a callback afterwards', async () => {
         const failSwitchStatusProvider = jest.fn(
             () => Promise.reject()
         );
-        const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
-        const statusON = Builder<Management>().switch(ThingStatus.ON).build();
         const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusON).build();
 
         render(<ThingDetails
@@ -74,9 +75,6 @@ describe('ThingDetails', () => {
     })
 
     it('call remove callback when clicking on the remove button', async () => {
-        const statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
-        const thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
-
         render(
             <ThingDetails
                 thing={thing}

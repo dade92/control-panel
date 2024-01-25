@@ -43,7 +43,7 @@ export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProv
         switchStatusProvider(thing, {switch: newStatus})
             .then(() => {
                 thing.management.switch = newStatus;
-                onChangeStatus(true, thing)
+                onChangeStatus(true, thing);
             })
             .catch(() => {
                 onChangeStatus(false, thing);

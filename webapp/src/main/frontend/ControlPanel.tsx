@@ -5,7 +5,7 @@ import {FeedbackMessage} from "./FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
 import {RetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
 import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
-import {RestSwitchStatusProvider, SwitchStatusProvider} from "./logic/SwitchStatusProvider";
+import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
@@ -66,7 +66,6 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
     }
 
     const giveFeedback = (isSuccess: boolean, thing: Thing) => {
-        console.log(thing);
         setOutcome({
             isSuccess,
             error: !isSuccess,
@@ -81,7 +80,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
         <>
             <ThingsPanel
                 things={things}
-                onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}
+                onChangeStatus={giveFeedback}
                 switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={idToBeRemoved}
