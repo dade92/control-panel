@@ -1,4 +1,4 @@
-package adapters
+package adapters.client
 
 import domain.repository.SwitchClient
 import domain.Status

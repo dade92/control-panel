@@ -2,13 +2,15 @@ package webapp.ports
 
 import domain.*
 import domain.actions.SwitchAction
+import domain.repository.DeviceRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*
 
 @RestController
 class ThingsController(
-    private val switchAction: SwitchAction
+    private val switchAction: SwitchAction,
+    private val deviceRepository: DeviceRepository
 ) : BaseApiController() {
 
     @GetMapping("/v1/things")
