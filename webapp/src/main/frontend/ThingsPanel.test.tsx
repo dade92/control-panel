@@ -43,7 +43,7 @@ describe('ThingsPanel', () => {
         })
     })
 
-    it('clicking on cancel button opens the modal', async () => {
+    it('clicking on cancel button opens the modal, when choice is confirmed, callback is called', async () => {
         render(
             <ThingsPanel
                 things={[
@@ -67,5 +67,30 @@ describe('ThingsPanel', () => {
 
         expect(onThingRemoved).toHaveBeenCalledTimes(1);
         expect(onThingRemoved).toHaveBeenCalledWith(thing);
+    })
+
+    it('refusing the modal, do not call the callback', async () => {
+        render(
+            <ThingsPanel
+                things={[
+                    thing,
+                    anotherThing
+                ]}
+                onChangeStatus={onChangeStatus}
+                onThingRemoved={onThingRemoved}
+                idWaitingToBeRemoved={''}
+                switchStatusProvider={jest.fn()}
+            />
+        );
+
+        fireEvent.click(screen.getByTestId('cancel-button-123'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('confirm-modal')).toBeVisible();
+        });
+
+        fireEvent.click(screen.getByTestId('no-button'));
+
+        expect(onThingRemoved).not.toHaveBeenCalled();
     })
 });
