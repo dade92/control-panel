@@ -1,4 +1,4 @@
-### retrieve translations
+### retrieve things
 
 GET {{host}}/api/v1/things
 Content-Type: application/json

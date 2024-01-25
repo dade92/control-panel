@@ -1,5 +1,6 @@
 package webapp.ports
 
+import arrow.core.right
 import domain.*
 import domain.actions.SwitchAction
 import domain.repository.DeviceRepository
@@ -10,26 +11,23 @@ import java.util.*
 @RestController
 class ThingsController(
     private val switchAction: SwitchAction,
-    private val deviceRepository: DeviceRepository
+    private val deviceRepository: DeviceRepository,
+    private val deviceToThingResponseAdapter: DeviceToThingResponseAdapter
 ) : BaseApiController() {
 
     @GetMapping("/v1/things")
     fun retrieveThings(): ResponseEntity<*> =
-        ResponseEntity.ok(
-            ThingsResponse(
-                listOf(
-                    ThingResponse(
-                        id = UUID.fromString("cf318036-99ec-4875-9f5d-212d27ffb315"),
-                        name = "Luce soggiorno".asThingName(),
-                        device = "arduino uno",
-                        deviceId = "XYZ",
-                        type = ThingType.LAMP,
-                        management = ThingManagement(
-                            switch = Status.OFF
-                        )
+        deviceRepository.retrieveAll().fold(
+            {
+                ResponseEntity.internalServerError().build()
+            },
+            {
+                ResponseEntity.ok(
+                    ThingsResponse(
+                        thingResponses = deviceToThingResponseAdapter.adapt(it)
                     )
                 )
-            )
+            }
         )
 
     @PostMapping("/v1/switch/{deviceId}/{thingId}")
@@ -60,10 +58,10 @@ data class ThingsResponse(
 )
 
 data class ThingResponse(
-    val id: UUID,
+    val id: ThingId,
     val name: ThingName,
-    val device: String,
-    val deviceId: String,
+    val device: DeviceName,
+    val deviceId: DeviceId,
     val type: ThingType,
     val management: ThingManagement
 )

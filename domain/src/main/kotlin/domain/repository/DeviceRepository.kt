@@ -6,6 +6,7 @@ import domain.DeviceId
 
 interface DeviceRepository {
     fun retrieve(deviceId: DeviceId): Either<RetrieveError, Device>
+    fun retrieveAll(): Either<RetrieveError, List<Device>>
 
 }
 
