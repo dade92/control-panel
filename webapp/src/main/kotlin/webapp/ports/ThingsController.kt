@@ -1,7 +1,7 @@
 package webapp.ports
 
+import domain.*
 import domain.actions.SwitchAction
-import domain.thing.*
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import java.util.*

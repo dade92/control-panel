@@ -1,7 +1,7 @@
 package adapters
 
-import domain.SwitchClient
-import domain.thing.Status
+import domain.repository.SwitchClient
+import domain.Status
 import org.springframework.web.client.RestOperations
 
 class RestSwitchClient(

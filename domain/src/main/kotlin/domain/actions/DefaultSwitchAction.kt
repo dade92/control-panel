@@ -1,7 +1,7 @@
 package domain.actions
 
-import domain.SwitchClient
-import domain.thing.Status
+import domain.repository.SwitchClient
+import domain.Status
 
 interface SwitchAction {
     fun switch(status: Status)

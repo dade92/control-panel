@@ -1,6 +1,6 @@
-package domain
+package domain.repository
 
-import domain.thing.Status
+import domain.Status
 
 interface SwitchClient {
     fun switch(status: Status)
