@@ -35,6 +35,7 @@ value class DeviceId(val value: UUID)
 
 fun String.asThingName() = ThingName(this)
 fun String.asDeviceName() = DeviceName(this)
+fun String.asDeviceHost() = DeviceHost(this)
 
 fun UUID.asThingId() = ThingId(this)
 fun UUID.asDeviceId() = DeviceId(this)
