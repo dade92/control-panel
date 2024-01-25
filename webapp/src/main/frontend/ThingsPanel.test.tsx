@@ -30,6 +30,7 @@ describe('ThingsPanel', () => {
                 onChangeStatus={onChangeStatus}
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={''}
+                switchStatusProvider={jest.fn()}
             />
         );
 
@@ -52,6 +53,7 @@ describe('ThingsPanel', () => {
                 onChangeStatus={onChangeStatus}
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={''}
+                switchStatusProvider={jest.fn()}
             />
         );
 

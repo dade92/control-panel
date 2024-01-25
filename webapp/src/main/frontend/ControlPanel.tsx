@@ -5,10 +5,12 @@ import {FeedbackMessage} from "./FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
 import {RetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
 import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
+import {RestSwitchStatusProvider, SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
     removeThingsProvider: RemoveThingsProvider;
+    switchStatusProvider: SwitchStatusProvider;
 }
 
 interface Outcome {
@@ -18,7 +20,7 @@ interface Outcome {
     changedThing: Thing | null;
 }
 
-export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsProvider}) => {
+export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsProvider, switchStatusProvider}) => {
     const [things, setThings] = useState<Thing[] | null>(null);
     const defaultOutcome = {isSuccess: false, error: false, message: null, changedThing: null};
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
@@ -68,7 +70,9 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
         setOutcome({
             isSuccess,
             error: !isSuccess,
-            message: isSuccess ? `${thing!.type} turned ${thing!.management.switch}` : `${thing!.type} couldn't be switched due to some problems with server`,
+            message: isSuccess ?
+                `${thing!.name} turned ${thing!.management.switch}` :
+                `${thing!.name} couldn't be switched due to some problems with server`,
             changedThing: thing
         });
     }
@@ -78,6 +82,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
             <ThingsPanel
                 things={things}
                 onChangeStatus={(isSuccess: boolean, thing: Thing) => giveFeedback(isSuccess, thing)}
+                switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={idToBeRemoved}
             />

@@ -18,7 +18,7 @@ const Wrapper = styled.div`
 export const FeedbackMessage: FC<Props> = ({onClose, isSuccess, message}) => {
     const severity = isSuccess ? "success" : "error";
 
-    return <Wrapper>
+    return <Wrapper data-testid={`feedback-wrapper-${severity}`}>
         <Snackbar open={true} autoHideDuration={3000} onClose={onClose}>
             <Alert severity={severity} sx={{width: '100%'}}>
                 {message}

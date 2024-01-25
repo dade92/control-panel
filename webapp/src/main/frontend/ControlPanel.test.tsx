@@ -5,25 +5,36 @@ import {Thing, ThingStatus, ThingType} from "./Thing";
 import '@testing-library/jest-dom';
 
 describe('ControlPanel', () => {
-    const thing = Builder<Thing>()
-        .id('123')
-        .name('a thing')
-        .type(ThingType.LAMP)
-        .management({switch: ThingStatus.OFF})
-        .build();
-    const anotherThing = Builder<Thing>()
-        .id('456')
-        .name('another thing')
-        .type(ThingType.LAMP)
-        .management({switch: ThingStatus.OFF})
-        .build();
+
+    let thing: Thing;
+    let anotherThing: Thing
+
+    beforeEach(() => {
+        thing = Builder<Thing>()
+            .id('123')
+            .name('a thing')
+            .type(ThingType.LAMP)
+            .management({switch: ThingStatus.OFF})
+            .build();
+        anotherThing = Builder<Thing>()
+            .id('456')
+            .name('another thing')
+            .type(ThingType.LAMP)
+            .management({switch: ThingStatus.OFF})
+            .build();
+    })
 
     it('Renders the loader while loading, then the things panel', async () => {
         const retrieveThingsProvider = jest.fn(
-            () => Promise.resolve({things: [thing, thing]})
+            () => Promise.resolve({things: [thing, anotherThing]})
         );
 
-        render(<ControlPanel retrieveThingsProvider={retrieveThingsProvider} removeThingsProvider={jest.fn()}/>);
+        render(
+            <ControlPanel
+                retrieveThingsProvider={retrieveThingsProvider}
+                removeThingsProvider={jest.fn()}
+                switchStatusProvider={jest.fn()}
+            />);
 
         expect(screen.getByTestId('loader-wrapper')).toBeVisible();
 
@@ -32,23 +43,64 @@ describe('ControlPanel', () => {
         })
     });
 
-    it('should switch a lamp on', async () => {
-        const retrieveThingsProvider = jest.fn(
-            () => Promise.resolve({things: [thing, anotherThing]})
-        );
-        const removeThingsProvider = jest.fn();
+    describe('switch thing', () => {
+        it('should switch a thing ON when switch provider is successfull', async () => {
+            const retrieveThingsProvider = jest.fn(
+                () => Promise.resolve({things: [thing]})
+            );
+            const removeThingsProvider = jest.fn();
+            const switchStatusProvider = jest.fn(
+                () => Promise.resolve()
+            );
 
-        render(
-            <ControlPanel
-                retrieveThingsProvider={retrieveThingsProvider}
-                removeThingsProvider={removeThingsProvider}
-            />
-        );
+            render(
+                <ControlPanel
+                    retrieveThingsProvider={retrieveThingsProvider}
+                    removeThingsProvider={removeThingsProvider}
+                    switchStatusProvider={switchStatusProvider}
+                />
+            );
 
-        await waitFor(() => {
-            expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
-        });
+            await waitFor(() => {
+                expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
+            });
 
+            fireEvent.click(screen.getByRole('checkbox'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('feedback-wrapper-success')).toBeVisible();
+            })
+
+        })
+
+        it('should display an error message if switch provider is NOT successfull', async () => {
+            const retrieveThingsProvider = jest.fn(
+                () => Promise.resolve({things: [thing]})
+            );
+            const removeThingsProvider = jest.fn();
+            const switchStatusProvider = jest.fn(
+                () => Promise.reject()
+            );
+
+            render(
+                <ControlPanel
+                    retrieveThingsProvider={retrieveThingsProvider}
+                    removeThingsProvider={removeThingsProvider}
+                    switchStatusProvider={switchStatusProvider}
+                />
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
+            });
+
+            fireEvent.click(screen.getByRole('checkbox'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('feedback-wrapper-error')).toBeVisible();
+            })
+
+        })
     })
 
     describe('Remove thing', () => {
@@ -57,24 +109,13 @@ describe('ControlPanel', () => {
                 () => Promise.resolve({things: [thing, anotherThing]})
             );
             const removeThingsProvider = jest.fn(() => Promise.resolve());
-            const thing = Builder<Thing>()
-                .id('123')
-                .name('a thing')
-                .type(ThingType.LAMP)
-                .management({switch: ThingStatus.OFF})
-                .build();
-
-            const anotherThing = Builder<Thing>()
-                .id('456')
-                .name('another thing')
-                .type(ThingType.LAMP)
-                .management({switch: ThingStatus.OFF})
-                .build();
+            const switchStatusProvider = jest.fn();
 
             render(
                 <ControlPanel
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={removeThingsProvider}
+                    switchStatusProvider={switchStatusProvider}
                 />
             );
 
@@ -101,24 +142,13 @@ describe('ControlPanel', () => {
                 () => Promise.resolve({things: [thing, anotherThing]})
             );
             const removeThingsProvider = jest.fn(() => Promise.resolve());
-            const thing = Builder<Thing>()
-                .id('123')
-                .name('a thing')
-                .type(ThingType.LAMP)
-                .management({switch: ThingStatus.OFF})
-                .build();
-
-            const anotherThing = Builder<Thing>()
-                .id('456')
-                .name('another thing')
-                .type(ThingType.LAMP)
-                .management({switch: ThingStatus.OFF})
-                .build();
+            const switchStatusProvider = jest.fn();
 
             render(
                 <ControlPanel
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={removeThingsProvider}
+                    switchStatusProvider={switchStatusProvider}
                 />
             );
 

@@ -3,7 +3,7 @@ import {ThingDetails} from "./ThingDetails";
 import {Thing} from "./Thing";
 import styled from "styled-components";
 import {Divider, List} from "@mui/material";
-import {RestSwitchStatusProvider} from "./logic/SwitchStatusProvider";
+import {RestSwitchStatusProvider, SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingButton} from "./AddThingButton";
 import {ConfirmModal} from "./ConfirmModal";
 import {Subtitle} from "./Subtitle";
@@ -36,11 +36,12 @@ const ListWrapper = styled.div`
 interface Props {
     things: Thing[];
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
+    switchStatusProvider: SwitchStatusProvider;
     onThingRemoved: (thing: Thing) => void;
     idWaitingToBeRemoved: string | null;
 }
 
-export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved, idWaitingToBeRemoved}) => {
+export const ThingsPanel: FC<Props> = ({things, onChangeStatus, switchStatusProvider, onThingRemoved, idWaitingToBeRemoved}) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
 
     const onRemove = (thing: Thing) => {
@@ -73,7 +74,7 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, onThingRemoved, 
                                 data-testid={`details-${thing.id}`}
                                 thing={thing}
                                 onChangeStatus={onChangeStatus}
-                                switchStatusProvider={RestSwitchStatusProvider}
+                                switchStatusProvider={switchStatusProvider}
                                 onThingRemoved={onRemove}
                                 shouldBeLoading={idWaitingToBeRemoved == thing.id}
                             />
