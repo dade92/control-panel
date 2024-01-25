@@ -5,20 +5,29 @@ import {Builder} from "builder-pattern";
 import {Thing, ThingStatus, ThingType} from "./Thing";
 
 describe('ThingsPanel', () => {
-    const onThingRemoved = jest.fn();
-    const onChangeStatus = jest.fn();
-    const thing = Builder<Thing>()
-        .id('123')
-        .name('lamp 1')
-        .type(ThingType.LAMP)
-        .management({switch: ThingStatus.ON})
-        .build();
-    const anotherThing = Builder<Thing>()
-        .id('456')
-        .name('lamp 2')
-        .type(ThingType.LAMP)
-        .management({switch: ThingStatus.OFF})
-        .build();
+    let onThingRemoved: jest.Mock;
+    let onChangeStatus: jest.Mock;
+
+    let thing: Thing;
+    let anotherThing: Thing;
+
+    beforeEach(() => {
+        onThingRemoved = jest.fn();
+        onChangeStatus = jest.fn();
+
+        thing = Builder<Thing>()
+            .id('123')
+            .name('lamp 1')
+            .type(ThingType.LAMP)
+            .management({switch: ThingStatus.ON})
+            .build();
+        anotherThing = Builder<Thing>()
+            .id('456')
+            .name('lamp 2')
+            .type(ThingType.LAMP)
+            .management({switch: ThingStatus.OFF})
+            .build();
+    });
 
     it('Shows subtitle, add thing button and list of things correctly', async () => {
         render(
