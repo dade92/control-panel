@@ -1,31 +1,82 @@
 import {createServer, Server, Response} from "miragejs";
 
-const aliveResponse = {
-    alive: true,
-    message: "Hey!"
-};
-
-const eventsResponse = {
-    events: [
+const thingsResponse = {
+    things: [
         {
-            message: 'first event'
+            id: '12333',
+            name: 'Luce soggiorno',
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "LAMP",
+            management: {
+                switch: "OFF"
+            }
         },
         {
-            message: 'second event'
+            id: '45666',
+            name: 'Luce cucina',
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "LAMP",
+            management: {
+                switch: "OFF"
+            }
+        },
+        {
+            id: '67777',
+            name: 'Luce camera',
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "LAMP",
+            management: {
+                switch: "OFF"
+            }
+        },
+        {
+            id: '456',
+            name: 'Allarme casa',
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "ALARM",
+            management: {
+                switch: "OFF"
+            }
+        },
+        {
+            id: '777',
+            name: 'Allarme casa',
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "ALARM",
+            management: {
+                switch: "OFF"
+            }
+        },
+        {
+            id: '888',
+            name: 'Allarme casa',
+            device: "arduino uno",
+            deviceId: "XYZ",
+            type: "ALARM",
+            management: {
+                switch: "OFF"
+            }
         }
     ]
 };
 
-
-const alive200 = (): Response => new Response(200, {}, aliveResponse);
-const events200 = (): Response => new Response(200, {}, eventsResponse);
-const events500 = (): Response => new Response(500, {});
+const things200 = (): Response => new Response(200, {}, thingsResponse);
+const things500 = (): Response => new Response(500);
+const switchStatus200 = (): Response => new Response(204);
+const removeThing200 = (): Response => new Response(204);
+const switchStatus500 = (): Response => new Response(500);
 
 export const server: () => Server = () =>
     createServer({
         logging: true,
         routes() {
-            this.get('/api/alive', alive200, {timing: 1000});
-            this.get('/api/events', events200, {timing: 1000});
+            this.get('/api/v1/things', things200, {timing: 1000});
+            this.post('/api/v1/switch/:deviceId/:thingId', switchStatus200, {timing: 1000});
+            this.post('/api/v1/things/remove/:thingId', removeThing200, {timing: 1000});
         },
     });

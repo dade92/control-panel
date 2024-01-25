@@ -1,0 +1,14 @@
+{
+  "things": [
+    {
+      "id": "cf318036-99ec-4875-9f5d-212d27ffb315",
+      "name": "Luce soggiorno",
+      "device": "arduino uno",
+      "deviceId": "XYZ",
+      "type": "LAMP",
+      "management": {
+        "switch": "OFF"
+      }
+    }
+  ]
+}

@@ -32,7 +32,7 @@ jobs:
 
     -
       name: Test backend
-      run: mvn verify
+      run: mvn verify -Dskip.webpack -Dskip.npm
 
     -
       name: Test frontend
