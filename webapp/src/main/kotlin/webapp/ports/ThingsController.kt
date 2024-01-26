@@ -1,20 +1,11 @@
 package webapp.ports
 
-import domain.DeviceId
-import domain.DeviceName
-import domain.Status
-import domain.ThingId
-import domain.ThingManagement
-import domain.ThingName
-import domain.ThingType
+import domain.*
 import domain.actions.RetrieveDeviceAction
 import domain.actions.SwitchAction
+import domain.actions.SwitchError
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ThingsController(
@@ -41,13 +32,18 @@ class ThingsController(
 
     @PostMapping("/v1/switch/{deviceId}/{thingId}")
     fun switch(
-        @PathVariable deviceId: String,
-        @PathVariable thingId: String,
+        @PathVariable deviceId: DeviceId,
+        @PathVariable thingId: ThingId,
         @RequestBody request: SwitchRequest
-    ): ResponseEntity<Unit> {
-        switchAction.switch(request.switch)
-        return ResponseEntity.noContent().build()
-    }
+    ): ResponseEntity<*> =
+        switchAction.switch(deviceId, thingId, request.switch).fold(
+            {
+                ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
+            },
+            {
+                ResponseEntity.noContent().build()
+            }
+        )
 
     @PostMapping("/v1/things/remove/{thingId}")
     fun removeThing(
@@ -57,6 +53,8 @@ class ThingsController(
         return ResponseEntity.noContent().build()
     }
 }
+
+data class ErrorResponse(val error: String)
 
 data class SwitchRequest(
     val switch: Status

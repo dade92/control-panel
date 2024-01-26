@@ -18,19 +18,29 @@ data class Device(
 )
 
 @JvmInline
-value class DeviceName(val value: String)
+value class DeviceName(val value: String) {
+    override fun toString(): String = value
+}
 
 @JvmInline
-value class DeviceHost(val value: String)
+value class DeviceHost(val value: String) {
+    override fun toString(): String = value
+}
 
 @JvmInline
-value class ThingName(val value: String)
+value class ThingName(val value: String) {
+    override fun toString(): String = value
+}
 
 @JvmInline
-value class ThingId(val value: UUID)
+value class ThingId(val value: UUID) {
+    override fun toString(): String = value.toString()
+}
 
 @JvmInline
-value class DeviceId(val value: UUID)
+value class DeviceId(val value: UUID) {
+    override fun toString(): String = value.toString()
+}
 
 
 fun String.asThingName() = ThingName(this)
