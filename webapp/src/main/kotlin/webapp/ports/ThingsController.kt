@@ -1,23 +1,33 @@
 package webapp.ports
 
-import arrow.core.right
-import domain.*
+import domain.DeviceId
+import domain.DeviceName
+import domain.Status
+import domain.ThingId
+import domain.ThingManagement
+import domain.ThingName
+import domain.ThingType
+import domain.actions.RetrieveThingsAction
 import domain.actions.SwitchAction
 import domain.repository.DeviceRepository
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.*
-import java.util.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class ThingsController(
     private val switchAction: SwitchAction,
-    private val deviceRepository: DeviceRepository,
-    private val deviceToThingResponseAdapter: DeviceToThingResponseAdapter
+    private val retrieveThingsAction: RetrieveThingsAction,
 ) : BaseApiController() {
+
+    private val deviceToThingResponseAdapter = DeviceToThingResponseAdapter()
 
     @GetMapping("/v1/things")
     fun retrieveThings(): ResponseEntity<*> =
-        deviceRepository.retrieveAll().fold(
+        retrieveThingsAction.retrieveAll().fold(
             {
                 ResponseEntity.internalServerError().build()
             },

@@ -2,7 +2,9 @@ package webapp
 
 import com.springexample.utils.Fixtures
 import domain.actions.DefaultSwitchAction
+import domain.actions.RetrieveThingsAction
 import org.junit.jupiter.api.Test
+import org.mockito.Mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -22,8 +24,13 @@ class ThingsControllerTest {
     @MockBean
     private lateinit var switchAction: DefaultSwitchAction
 
+    @MockBean
+    private lateinit var retrieveThingsAction: RetrieveThingsAction
+
     @Test
     fun `retrieve things`() {
+
+
         mvc.perform(
             get("/api/v1/things").contentType(MediaType.APPLICATION_JSON)
         )
