@@ -3,3 +3,15 @@
 GET {{host}}/api/v1/things
 Content-Type: application/json
 Accept: application/json
+
+
+### switch ON
+
+POST {{host}}/api/v1/switch/c9e4c231-dbca-428f-9442-b01440f91330/8a1ea8db-fffa-4c6f-935e-39a34eba871c
+Content-Type: application/json
+Accept: application/json
+
+{
+  "switch": "ON"
+}
+
