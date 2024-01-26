@@ -1,6 +1,7 @@
 package adapters.client
 
 import arrow.core.Either
+import arrow.core.left
 import domain.DeviceHost
 import domain.IdOnDevice
 import domain.repository.SwitchClient
@@ -16,8 +17,7 @@ class RestSwitchClient(
         restClient.getForEntity("http://esp32s3-654e44:8080/switch/${status.name}", Unit::class.java)
     }
 
-    override fun switch(deviceHost: DeviceHost, idOnDevice: IdOnDevice, newStatus: Status): Either<SwitchError, Unit> {
-        TODO("Not yet implemented")
-    }
+    override fun switch(deviceHost: DeviceHost, idOnDevice: IdOnDevice, newStatus: Status): Either<SwitchError, Unit> =
+        SwitchError.MismatchStatusError.left()
 
 }

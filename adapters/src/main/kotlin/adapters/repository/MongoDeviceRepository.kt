@@ -22,9 +22,11 @@ class MongoDeviceRepository(
 
     override fun retrieve(deviceId: DeviceId): Either<RetrieveError, Device> =
         try {
-            val query = Query.query(Criteria.where("deviceId").`is`(deviceId.value))
-
-            mongoTemplate.find(query, MongoDevice::class.java, COLLECTION_NAME)[0].toDomain().right()
+            mongoTemplate.findById(
+                deviceId.value.toString(),
+                MongoDevice::class.java,
+                COLLECTION_NAME
+            )!!.toDomain().right()
         } catch (e: Exception) {
             logger.error("Error retrieving device $deviceId due to ", e)
             RetrieveError.DeviceRetrieveError.left()
