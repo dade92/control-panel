@@ -8,6 +8,7 @@ import domain.actions.DefaultSwitchAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
 import domain.actions.SwitchError.DeviceNotAvailable
+import domain.repository.RetrieveError
 import domain.utils.aDevice
 import domain.utils.aDeviceId
 import domain.utils.aThingId
@@ -94,5 +95,18 @@ class ThingsControllerTest {
             post("/api/v1/things/remove/${aDeviceId}/${aThingId}")
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().isNoContent())
+    }
+
+    @Test
+    fun `remove thing failure`() {
+        `when`(removeThingsAction.remove(aDeviceId, aThingId)).thenReturn(
+            RetrieveError.DeviceRetrieveError.left()
+        )
+
+        mvc.perform(
+            post("/api/v1/things/remove/${aDeviceId}/${aThingId}")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().is5xxServerError)
+            .andExpect(content().json("""{"error": "DeviceRetrieveError"}"""))
     }
 }
