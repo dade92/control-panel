@@ -20,11 +20,15 @@ class MongoDeviceRepository(
 
     private val logger = LoggerFactory.getLogger(MongoDeviceRepository::class.java)
 
-    override fun retrieve(deviceId: DeviceId): Either<RetrieveError, Device> {
-        val query = Query.query(Criteria.where("deviceId").`is`(deviceId.value))
+    override fun retrieve(deviceId: DeviceId): Either<RetrieveError, Device> =
+        try {
+            val query = Query.query(Criteria.where("deviceId").`is`(deviceId.value))
 
-        return mongoTemplate.find(query, Device::class.java, COLLECTION_NAME)[0].right()
-    }
+            mongoTemplate.find(query, MongoDevice::class.java, COLLECTION_NAME)[0].toDomain().right()
+        } catch (e: Exception) {
+            logger.error("Error retrieving device $deviceId due to ", e)
+            RetrieveError.DeviceRetrieveError.left()
+        }
 
     override fun retrieveAll(): Either<RetrieveError, List<Device>> =
         try {

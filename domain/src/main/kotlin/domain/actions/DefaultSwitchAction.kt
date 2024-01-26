@@ -47,7 +47,8 @@ class DefaultSwitchAction(
             { device ->
                 val thing = device.things.first { it.id == thingId }
                 switchClient.switch(device.host, thing.idOnDevice, newStatus)
-            })
+            }
+        )
 
 }
 
