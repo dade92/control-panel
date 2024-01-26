@@ -47,6 +47,10 @@ class MongoDeviceRepository(
     override fun updateStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit> {
         TODO("Not yet implemented")
     }
+
+    override fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<RetrieveError, Unit> {
+        TODO("Not yet implemented")
+    }
 }
 
 data class MongoDevice(

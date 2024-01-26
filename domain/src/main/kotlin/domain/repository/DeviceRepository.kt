@@ -13,6 +13,8 @@ interface DeviceRepository {
 
     fun updateStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit>
 
+    fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<RetrieveError, Unit>
+
 }
 
 sealed class RetrieveError {
