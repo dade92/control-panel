@@ -13,6 +13,7 @@ interface SwitchAction {
 }
 
 class FakeSwitchAction : SwitchAction {
+    //TODO remove this method
     override fun switch(status: Status) {
         Thread.sleep(1000)
     }

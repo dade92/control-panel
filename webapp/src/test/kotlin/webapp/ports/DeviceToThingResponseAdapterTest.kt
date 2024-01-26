@@ -1,13 +1,6 @@
 package webapp.ports
 
-import domain.Status
-import domain.ThingManagement
-import domain.ThingType
-import domain.asDeviceHost
-import domain.asDeviceId
-import domain.asDeviceName
-import domain.asThingId
-import domain.asThingName
+import domain.*
 import domain.utils.aDevice
 import domain.utils.aThing
 import io.kotest.matchers.shouldBe
@@ -42,7 +35,7 @@ class DeviceToThingResponseAdapterTest {
                         thingName = thingName1,
                         thingType = ThingType.LAMP,
                         thingManagement = ThingManagement(Status.ON),
-                        idOnDevice = 1
+                        idOnDevice = IdOnDevice(1)
                     )
                 )
             ),
@@ -56,7 +49,7 @@ class DeviceToThingResponseAdapterTest {
                         thingName = thingName2,
                         thingType = ThingType.ALARM,
                         thingManagement = ThingManagement(Status.OFF),
-                        idOnDevice = 1
+                        idOnDevice = IdOnDevice(1)
                     )
                 )
             )

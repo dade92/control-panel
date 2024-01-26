@@ -7,7 +7,7 @@ data class Thing(
     val name: ThingName,
     val type: ThingType,
     val management: ThingManagement,
-    val idOnDevice: Int
+    val idOnDevice: IdOnDevice
 )
 
 data class Device(
@@ -25,6 +25,11 @@ value class DeviceName(val value: String) {
 @JvmInline
 value class DeviceHost(val value: String) {
     override fun toString(): String = value
+}
+
+@JvmInline
+value class IdOnDevice(val value: Int) {
+    override fun toString(): String = value.toString()
 }
 
 @JvmInline
@@ -49,6 +54,7 @@ fun String.asDeviceHost() = DeviceHost(this)
 
 fun UUID.asThingId() = ThingId(this)
 fun UUID.asDeviceId() = DeviceId(this)
+fun Int.asIdOnDevice() = IdOnDevice(this)
 
 data class ThingManagement(
     val switch: Status

@@ -9,8 +9,8 @@ class DeviceToThingResponseAdapter {
             adaptDevice(it)
         }
 
-    private fun adaptDevice(device: Device): List<ThingResponse> {
-        return device.things.map {
+    private fun adaptDevice(device: Device): List<ThingResponse> =
+        device.things.map {
             ThingResponse(
                 it.id,
                 it.name,
@@ -20,6 +20,5 @@ class DeviceToThingResponseAdapter {
                 it.management
             )
         }
-    }
 
 }

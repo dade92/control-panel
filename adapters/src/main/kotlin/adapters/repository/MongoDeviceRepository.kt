@@ -69,7 +69,7 @@ data class MongoThing(
             name = name.asThingName(),
             type = ThingType.valueOf(type),
             management = ThingManagement(management.switch),
-            idOnDevice = idOnDevice
+            idOnDevice = idOnDevice.asIdOnDevice()
         )
     }
 
