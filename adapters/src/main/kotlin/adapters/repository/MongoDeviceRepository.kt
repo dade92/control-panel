@@ -4,6 +4,7 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import domain.*
+import domain.actions.SwitchError
 import domain.repository.DeviceRepository
 import domain.repository.RetrieveError
 import org.slf4j.LoggerFactory
@@ -42,6 +43,10 @@ class MongoDeviceRepository(
             logger.error("Error retrieving thing list due to ", e)
             RetrieveError.DeviceRetrieveError.left()
         }
+
+    override fun updateStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit> {
+        TODO("Not yet implemented")
+    }
 }
 
 data class MongoDevice(

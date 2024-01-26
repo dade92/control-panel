@@ -3,6 +3,7 @@ package domain.actions
 import arrow.core.left
 import arrow.core.right
 import domain.Status
+import domain.actions.SwitchError.StatusNotUpdatedError
 import domain.asDeviceHost
 import domain.asIdOnDevice
 import domain.asThingId
@@ -49,10 +50,12 @@ class DefaultSwitchActionTest {
             )
         ).right()
         every { switchClient.switch(deviceHost, idOnDevice, newStatus) } returns Unit.right()
+        every { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) } returns Unit.right()
 
         defaultSwitchAction.switch(aDeviceId, aThingId, newStatus) shouldBe Unit.right()
 
         verify { switchClient.switch(deviceHost, idOnDevice, newStatus) }
+        verify { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) }
     }
 
     @Test
@@ -91,5 +94,35 @@ class DefaultSwitchActionTest {
         defaultSwitchAction.switch(aDeviceId, aThingId, newStatus) shouldBe expectedError
 
         verify { switchClient.switch(deviceHost, idOnDevice, newStatus) }
+        verify { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) wasNot Called }
+    }
+
+    @Test
+    fun `update status on DB fails`() {
+        val deviceHost = "XXX".asDeviceHost()
+        val newStatus = Status.ON
+        val idOnDevice = 1.asIdOnDevice()
+        val expectedError = StatusNotUpdatedError.left()
+
+        every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
+            deviceHost = deviceHost,
+            things = listOf(
+                aThing(
+                    thingId = aThingId,
+                    idOnDevice = idOnDevice
+                ),
+                aThing(
+                    thingId = UUID.randomUUID().asThingId(),
+                    idOnDevice = 2.asIdOnDevice()
+                ),
+            )
+        ).right()
+        every { switchClient.switch(deviceHost, idOnDevice, newStatus) } returns Unit.right()
+        every { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) } returns expectedError
+
+        defaultSwitchAction.switch(aDeviceId, aThingId, newStatus) shouldBe expectedError
+
+        verify { switchClient.switch(deviceHost, idOnDevice, newStatus) }
+        verify { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) }
     }
 }
