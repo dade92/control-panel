@@ -3,7 +3,6 @@ package webapp.ports
 import domain.*
 import domain.actions.RetrieveDeviceAction
 import domain.actions.SwitchAction
-import domain.actions.SwitchError
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
