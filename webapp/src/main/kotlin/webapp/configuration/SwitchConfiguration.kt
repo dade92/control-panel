@@ -1,7 +1,6 @@
 package webapp.configuration
 
 import domain.actions.DefaultSwitchAction
-import domain.actions.FakeSwitchAction
 import domain.actions.SwitchAction
 import domain.repository.DeviceRepository
 import domain.repository.SwitchClient
@@ -19,14 +18,5 @@ class SwitchConfiguration {
         switchClient,
         deviceRepository
     )
-
-    @Bean
-    fun fakeSwitchAction(): SwitchAction {
-        return FakeSwitchAction(
-//            RestSwitchClient(
-//                RestTemplate()
-//            )
-        )
-    }
 
 }

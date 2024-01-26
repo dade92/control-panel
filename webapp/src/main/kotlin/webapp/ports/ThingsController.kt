@@ -1,6 +1,7 @@
 package webapp.ports
 
 import domain.*
+import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
 import domain.actions.SwitchAction
 import org.springframework.http.ResponseEntity
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*
 class ThingsController(
     private val switchAction: SwitchAction,
     private val retrieveDeviceAction: RetrieveDeviceAction,
+    private val removeThingsAction: RemoveThingsAction
 ) : BaseApiController() {
 
     private val deviceToThingResponseAdapter = DeviceToThingResponseAdapter()
@@ -18,7 +20,7 @@ class ThingsController(
     fun retrieveThings(): ResponseEntity<*> =
         retrieveDeviceAction.retrieveAll().fold(
             {
-                ResponseEntity.internalServerError().build()
+                ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
             },
             {
                 ResponseEntity.ok(
@@ -44,13 +46,19 @@ class ThingsController(
             }
         )
 
-    @PostMapping("/v1/things/remove/{thingId}")
+    @PostMapping("/v1/things/remove/{deviceId}/{thingId}")
     fun removeThing(
-        @PathVariable thingId: String,
-    ): ResponseEntity<Unit> {
-        Thread.sleep(1000)
-        return ResponseEntity.noContent().build()
-    }
+        @PathVariable thingId: ThingId,
+        @PathVariable deviceId: DeviceId
+    ): ResponseEntity<*> =
+        removeThingsAction.remove(deviceId, thingId).fold(
+            {
+                ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
+            },
+            {
+                ResponseEntity.noContent().build()
+            }
+        )
 }
 
 data class ErrorResponse(val error: String)

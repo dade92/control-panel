@@ -5,9 +5,9 @@ import arrow.core.right
 import com.springexample.utils.Fixtures
 import domain.Status
 import domain.actions.DefaultSwitchAction
+import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
-import domain.actions.SwitchError
-import domain.actions.SwitchError.*
+import domain.actions.SwitchError.DeviceNotAvailable
 import domain.utils.aDevice
 import domain.utils.aDeviceId
 import domain.utils.aThingId
@@ -36,6 +36,9 @@ class ThingsControllerTest {
 
     @MockBean
     private lateinit var retrieveDeviceAction: RetrieveDeviceAction
+
+    @MockBean
+    private lateinit var removeThingsAction: RemoveThingsAction
 
     @Test
     fun `retrieve things`() {
@@ -79,5 +82,17 @@ class ThingsControllerTest {
         ).andExpect(status().is5xxServerError).andExpect(content().json("""{"error": "DeviceNotAvailable"}"""))
 
         verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
+    }
+
+    @Test
+    fun `remove thing happy path`() {
+        `when`(removeThingsAction.remove(aDeviceId, aThingId)).thenReturn(
+            Unit.right()
+        )
+
+        mvc.perform(
+            post("/api/v1/things/remove/${aDeviceId}/${aThingId}")
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(status().isNoContent())
     }
 }
