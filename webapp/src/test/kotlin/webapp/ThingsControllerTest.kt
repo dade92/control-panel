@@ -3,7 +3,7 @@ package webapp
 import arrow.core.right
 import com.springexample.utils.Fixtures
 import domain.actions.DefaultSwitchAction
-import domain.actions.RetrieveThingsAction
+import domain.actions.RetrieveDeviceAction
 import domain.utils.aDevice
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
@@ -27,12 +27,12 @@ class ThingsControllerTest {
     private lateinit var switchAction: DefaultSwitchAction
 
     @MockBean
-    private lateinit var retrieveThingsAction: RetrieveThingsAction
+    private lateinit var retrieveDeviceAction: RetrieveDeviceAction
 
     @Test
     fun `retrieve things`() {
         //TODO customize the response of the action
-        `when`(retrieveThingsAction.retrieveAll()).thenReturn(
+        `when`(retrieveDeviceAction.retrieveAll()).thenReturn(
             listOf(aDevice(), aDevice()).right()
         )
 

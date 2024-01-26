@@ -7,7 +7,7 @@ import domain.ThingId
 import domain.ThingManagement
 import domain.ThingName
 import domain.ThingType
-import domain.actions.RetrieveThingsAction
+import domain.actions.RetrieveDeviceAction
 import domain.actions.SwitchAction
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
@@ -19,14 +19,14 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class ThingsController(
     private val switchAction: SwitchAction,
-    private val retrieveThingsAction: RetrieveThingsAction,
+    private val retrieveDeviceAction: RetrieveDeviceAction,
 ) : BaseApiController() {
 
     private val deviceToThingResponseAdapter = DeviceToThingResponseAdapter()
 
     @GetMapping("/v1/things")
     fun retrieveThings(): ResponseEntity<*> =
-        retrieveThingsAction.retrieveAll().fold(
+        retrieveDeviceAction.retrieveAll().fold(
             {
                 ResponseEntity.internalServerError().build()
             },
