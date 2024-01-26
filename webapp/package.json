@@ -30,7 +30,7 @@
   },
   "scripts": {
     "start": "REACT_APP_STAGE=dev webpack serve --config webpack.config-dev.js",
-    "start:local": "rm -rf ./target && REACT_APP_STAGE=local webpack --watch --config webpack.config.js",
+    "start:local": "REACT_APP_STAGE=local webpack --watch --config webpack.config.js",
     "build:local": "REACT_APP_STAGE=local webpack build --config webpack.config.js",
     "test": "jest --passWithNoTests --silent --coverage",
     "build": "webpack build --config webpack.prod.js"

@@ -9,7 +9,6 @@ import domain.ThingName
 import domain.ThingType
 import domain.actions.RetrieveThingsAction
 import domain.actions.SwitchAction
-import domain.repository.DeviceRepository
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -34,7 +33,7 @@ class ThingsController(
             {
                 ResponseEntity.ok(
                     ThingsResponse(
-                        thingResponses = deviceToThingResponseAdapter.adapt(it)
+                        things = deviceToThingResponseAdapter.adapt(it)
                     )
                 )
             }
@@ -64,7 +63,7 @@ data class SwitchRequest(
 )
 
 data class ThingsResponse(
-    val thingResponses: List<ThingResponse>
+    val things: List<ThingResponse>
 )
 
 data class ThingResponse(
