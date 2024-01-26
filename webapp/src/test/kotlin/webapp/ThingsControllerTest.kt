@@ -1,10 +1,12 @@
 package webapp
 
+import arrow.core.right
 import com.springexample.utils.Fixtures
 import domain.actions.DefaultSwitchAction
 import domain.actions.RetrieveThingsAction
+import domain.utils.aDevice
 import org.junit.jupiter.api.Test
-import org.mockito.Mock
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -29,7 +31,10 @@ class ThingsControllerTest {
 
     @Test
     fun `retrieve things`() {
-
+        //TODO customize the response of the action
+        `when`(retrieveThingsAction.retrieveAll()).thenReturn(
+            listOf(aDevice(), aDevice()).right()
+        )
 
         mvc.perform(
             get("/api/v1/things").contentType(MediaType.APPLICATION_JSON)

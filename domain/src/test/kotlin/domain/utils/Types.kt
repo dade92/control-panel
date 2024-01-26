@@ -21,7 +21,7 @@ fun aDevice(
     deviceId: DeviceId = UUID.fromString("0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb").asDeviceId(),
     deviceName: DeviceName = "name".asDeviceName(),
     deviceHost: DeviceHost = "host".asDeviceHost(),
-    things: List<Thing> = emptyList()
+    things: List<Thing> = listOf(aThing(), aThing())
 ): Device = Device(
     deviceId,
     deviceName,

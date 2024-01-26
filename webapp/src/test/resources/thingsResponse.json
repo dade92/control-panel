@@ -1,10 +1,40 @@
 {
   "thingResponses": [
     {
-      "id": "cf318036-99ec-4875-9f5d-212d27ffb315",
-      "name": "Luce soggiorno",
-      "device": "arduino uno",
-      "deviceId": "XYZ",
+      "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
+      "name": "name",
+      "device": "name",
+      "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
+      "type": "LAMP",
+      "management": {
+        "switch": "OFF"
+      }
+    },
+    {
+      "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
+      "name": "name",
+      "device": "name",
+      "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
+      "type": "LAMP",
+      "management": {
+        "switch": "OFF"
+      }
+    },
+    {
+      "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
+      "name": "name",
+      "device": "name",
+      "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
+      "type": "LAMP",
+      "management": {
+        "switch": "OFF"
+      }
+    },
+    {
+      "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
+      "name": "name",
+      "device": "name",
+      "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
       "type": "LAMP",
       "management": {
         "switch": "OFF"
