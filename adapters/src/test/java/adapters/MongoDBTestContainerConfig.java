@@ -11,7 +11,7 @@ import static org.testcontainers.utility.MountableFile.forClasspathResource;
 public class MongoDBTestContainerConfig {
     @Container
     public static final GenericContainer<?> mongoDBContainer = new GenericContainer<>(
-        DockerImageName.parse("mongo:latest"))
+        DockerImageName.parse("mongo:4.4.18"))
         .withEnv("MONGO_INITDB_ROOT_USERNAME", "root")
         .withEnv("MONGO_INITDB_ROOT_PASSWORD", "password")
         .withExposedPorts(27017)
