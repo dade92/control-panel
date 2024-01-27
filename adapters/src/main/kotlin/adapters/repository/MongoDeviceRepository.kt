@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
+import org.springframework.data.mongodb.core.query.Update
 import java.util.*
 
 private val COLLECTION_NAME = "device"
@@ -45,9 +46,23 @@ class MongoDeviceRepository(
         }
 
     override fun updateStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit> {
-        TODO("Not yet implemented")
-    }
+        try {
+            val query = Query(
+                Criteria.where("_id").`is`(deviceId.value.toString())
+                    .and("things._id").`is`(thingId.value.toString())
+            )
 
+            val update = Update().set("management.$.switch", newStatus.name)
+
+            mongoTemplate.updateFirst(query, update, COLLECTION_NAME)
+
+            return Unit.right()
+        } catch (e: Exception) {
+            logger.error("Error updating thing status due to ", e)
+            //TODO fix the error
+            return SwitchError.DeviceNotAvailable.left()
+        }
+    }
     override fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<RetrieveError, Unit> {
         TODO("Not yet implemented")
     }

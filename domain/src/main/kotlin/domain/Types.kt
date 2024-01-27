@@ -42,6 +42,7 @@ value class ThingId(val value: UUID) {
     override fun toString(): String = value.toString()
 }
 
+//TODO override the value to have a string when reading it?
 @JvmInline
 value class DeviceId(val value: UUID) {
     override fun toString(): String = value.toString()
