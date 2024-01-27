@@ -52,8 +52,8 @@ fun String.asThingName() = ThingName(this)
 fun String.asDeviceName() = DeviceName(this)
 fun String.asDeviceHost() = DeviceHost(this)
 
-fun UUID.asThingId() = ThingId(this)
-fun UUID.asDeviceId() = DeviceId(this)
+fun String.asThingId() = ThingId(UUID.fromString(this))
+fun String.asDeviceId() = DeviceId(UUID.fromString(this))
 fun Int.asIdOnDevice() = IdOnDevice(this)
 
 data class ThingManagement(

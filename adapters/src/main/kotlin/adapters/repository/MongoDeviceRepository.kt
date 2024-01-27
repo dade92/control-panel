@@ -60,7 +60,7 @@ data class MongoDevice(
     val things: List<MongoThing>
 ) {
     fun toDomain(): Device = Device(
-        deviceId = UUID.fromString(id).asDeviceId(),
+        deviceId = id.asDeviceId(),
         deviceName = deviceName.asDeviceName(),
         host = host.asDeviceHost(),
         things = things.map { it.toDomain() }
@@ -80,7 +80,7 @@ data class MongoThing(
 
     fun toDomain(): Thing {
         return Thing(
-            id = UUID.fromString(id).asThingId(),
+            id = id.asThingId(),
             name = name.asThingName(),
             type = ThingType.valueOf(type),
             management = ThingManagement(management.switch),

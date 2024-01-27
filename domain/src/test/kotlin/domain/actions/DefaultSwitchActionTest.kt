@@ -6,21 +6,16 @@ import domain.Status
 import domain.actions.SwitchError.StatusNotUpdatedError
 import domain.asDeviceHost
 import domain.asIdOnDevice
-import domain.asThingId
 import domain.repository.DeviceRepository
 import domain.repository.RetrieveError
 import domain.repository.SwitchClient
-import domain.utils.aDevice
-import domain.utils.aDeviceId
-import domain.utils.aThing
-import domain.utils.aThingId
+import domain.utils.*
 import io.kotest.matchers.shouldBe
 import io.mockk.Called
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import org.junit.jupiter.api.Test
-import java.util.UUID
 
 class DefaultSwitchActionTest {
 
@@ -44,7 +39,7 @@ class DefaultSwitchActionTest {
                     idOnDevice = idOnDevice
                 ),
                 aThing(
-                    thingId = UUID.randomUUID().asThingId(),
+                    thingId = anotherThingId,
                     idOnDevice = 2.asIdOnDevice()
                 ),
             )
@@ -84,7 +79,7 @@ class DefaultSwitchActionTest {
                     idOnDevice = idOnDevice
                 ),
                 aThing(
-                    thingId = UUID.randomUUID().asThingId(),
+                    thingId = aThingId,
                     idOnDevice = 2.asIdOnDevice()
                 ),
             )
@@ -112,7 +107,7 @@ class DefaultSwitchActionTest {
                     idOnDevice = idOnDevice
                 ),
                 aThing(
-                    thingId = UUID.randomUUID().asThingId(),
+                    thingId = anotherThingId,
                     idOnDevice = 2.asIdOnDevice()
                 ),
             )

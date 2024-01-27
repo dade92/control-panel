@@ -24,19 +24,19 @@ class MongoDeviceRepositoryIT {
     fun `retrieve all devices`() {
         mongoDeviceRepository.retrieveAll() shouldBe listOf(
             Device(
-                UUID.fromString("c9e4c231-dbca-428f-9442-b01440f91330").asDeviceId(),
+                "c9e4c231-dbca-428f-9442-b01440f91330".asDeviceId(),
                 "arduino-uno".asDeviceName(),
                 "http://esp32s3-654e44:8080".asDeviceHost(),
                 listOf(
                     Thing(
-                        UUID.fromString("8a1ea8db-fffa-4c6f-935e-39a34eba871c").asThingId(),
+                        "8a1ea8db-fffa-4c6f-935e-39a34eba871c".asThingId(),
                         "kitchen lamp".asThingName(),
                         ThingType.LAMP,
                         ThingManagement(Status.OFF),
                         1.asIdOnDevice()
                     ),
                     Thing(
-                        UUID.fromString("19851c6d-89ad-48c9-9b0c-9abb9eb92eea").asThingId(),
+                        "19851c6d-89ad-48c9-9b0c-9abb9eb92eea".asThingId(),
                         "dining room lamp".asThingName(),
                         ThingType.LAMP,
                         ThingManagement(Status.ON),
@@ -45,12 +45,12 @@ class MongoDeviceRepositoryIT {
                 )
             ),
             Device(
-                UUID.fromString("a9cc44cf-4fa0-4804-ba0c-f25ec6a63c12").asDeviceId(),
+                "a9cc44cf-4fa0-4804-ba0c-f25ec6a63c12".asDeviceId(),
                 "arduino-uno-mega".asDeviceName(),
                 "http://esp32s3-654e44:8080".asDeviceHost(),
                 listOf(
                     Thing(
-                        UUID.fromString("392325c0-f023-4a87-95d2-2ca041bb5627").asThingId(),
+                        "392325c0-f023-4a87-95d2-2ca041bb5627".asThingId(),
                         "kitchen lamp".asThingName(),
                         ThingType.ALARM,
                         ThingManagement(Status.OFF),
@@ -60,4 +60,5 @@ class MongoDeviceRepositoryIT {
             )
         ).right()
     }
+
 }
