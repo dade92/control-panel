@@ -10,6 +10,7 @@ import domain.actions.SwitchError
 import domain.asDeviceHost
 import domain.asIdOnDevice
 import io.kotest.matchers.shouldBe
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.RegisterExtension
 import org.springframework.web.client.RestTemplate
@@ -25,6 +26,13 @@ class RestSwitchClientTest {
 
     private val restSwitchClient = RestSwitchClient(RestTemplate())
 
+    private var host = ""
+
+    @BeforeEach
+    fun setUp() {
+        host = "http://localhost:" + wiremock.runtimeInfo.httpPort
+    }
+
     @Test
     fun `switch on successfully`() {
         wiremock.stubFor(
@@ -33,7 +41,7 @@ class RestSwitchClientTest {
         )
 
         restSwitchClient.switch(
-            ("http://localhost:" + wiremock.runtimeInfo.httpPort).asDeviceHost(),
+            host.asDeviceHost(),
             1.asIdOnDevice(),
             Status.ON
         ) shouldBe Unit.right()
@@ -47,7 +55,7 @@ class RestSwitchClientTest {
         )
 
         restSwitchClient.switch(
-            ("http://localhost:" + wiremock.runtimeInfo.httpPort).asDeviceHost(),
+            host.asDeviceHost(),
             2.asIdOnDevice(),
             Status.ON
         ) shouldBe SwitchError.StatusNotUpdatedError.left()
