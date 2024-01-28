@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 class ThingsController(
-    private val switchAction: SwitchAction,
     private val retrieveDeviceAction: RetrieveDeviceAction,
     private val removeThingsAction: RemoveThingsAction
 ) : BaseApiController() {
@@ -28,21 +27,6 @@ class ThingsController(
                         things = deviceToThingResponseAdapter.adapt(it)
                     )
                 )
-            }
-        )
-
-    @PostMapping("/v1/switch/{deviceId}/{thingId}")
-    fun switch(
-        @PathVariable deviceId: DeviceId,
-        @PathVariable thingId: ThingId,
-        @RequestBody request: SwitchRequest
-    ): ResponseEntity<*> =
-        switchAction.switch(deviceId, thingId, request.switch).fold(
-            {
-                ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
-            },
-            {
-                ResponseEntity.noContent().build()
             }
         )
 

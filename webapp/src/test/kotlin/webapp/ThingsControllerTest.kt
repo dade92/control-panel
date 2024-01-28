@@ -3,17 +3,13 @@ package webapp
 import arrow.core.left
 import arrow.core.right
 import com.springexample.utils.Fixtures
-import domain.Status
-import domain.actions.DefaultSwitchAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
-import domain.actions.SwitchError.DeviceNotAvailable
 import domain.repository.RetrieveError
 import domain.utils.aDevice
 import domain.utils.aDeviceId
 import domain.utils.aThingId
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
@@ -33,9 +29,6 @@ class ThingsControllerTest {
     private lateinit var mvc: MockMvc
 
     @MockBean
-    private lateinit var switchAction: DefaultSwitchAction
-
-    @MockBean
     private lateinit var retrieveDeviceAction: RetrieveDeviceAction
 
     @MockBean
@@ -53,36 +46,6 @@ class ThingsControllerTest {
         )
             .andExpect(status().isOk())
             .andExpect(content().json(Fixtures.readJson("/thingsResponse.json")))
-    }
-
-    @Test
-    fun `switch lamp ON successfully`() {
-        `when`(switchAction.switch(aDeviceId, aThingId, Status.ON)).thenReturn(
-            Unit.right()
-        )
-
-        mvc.perform(
-            post("/api/v1/switch/${aDeviceId}/${aThingId}")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"switch":  "ON"}""")
-        ).andExpect(status().isNoContent)
-
-        verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
-    }
-
-    @Test
-    fun `in case of error, returns 500 with the specific problem`() {
-        `when`(switchAction.switch(aDeviceId, aThingId, Status.ON)).thenReturn(
-            DeviceNotAvailable.left()
-        )
-
-        mvc.perform(
-            post("/api/v1/switch/${aDeviceId}/${aThingId}")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content("""{"switch":  "ON"}""")
-        ).andExpect(status().is5xxServerError).andExpect(content().json("""{"error": "DeviceNotAvailable"}"""))
-
-        verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
     }
 
     @Test
