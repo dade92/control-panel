@@ -4,8 +4,6 @@ import styled from "styled-components";
 import {Switch} from "@mui/material";
 import {ThingDetailText} from "./Texts";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
-import DeleteIcon from '@mui/icons-material/Delete';
-import LoadingButton from '@mui/lab/LoadingButton';
 import {RemoveThingButton} from "./RemoveThingButton";
 
 interface Props {
@@ -24,7 +22,13 @@ const Wrapper = styled.div`
   padding: 8px;
 `
 
-export const ThingDetails: FC<Props> = ({thing, onChangeStatus, switchStatusProvider, onThingRemoved, shouldBeLoading}) => {
+export const ThingDetails: FC<Props> = ({
+                                            thing,
+                                            onChangeStatus,
+                                            switchStatusProvider,
+                                            onThingRemoved,
+                                            shouldBeLoading
+                                        }) => {
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
 
