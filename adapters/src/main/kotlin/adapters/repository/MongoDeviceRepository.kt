@@ -63,7 +63,7 @@ class MongoDeviceRepository(
             SwitchError.DeviceNotFound.left()
         }
 
-    override fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<RetrieveError, Unit> {
+    override fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<RetrieveError, Unit> =
         try {
             val query = Query(Criteria.where("_id").`is`(deviceId.value.toString()))
 
@@ -71,12 +71,11 @@ class MongoDeviceRepository(
 
             // Perform the update
             mongoTemplate.updateFirst(query, update, COLLECTION_NAME)
-            return Unit.right()
+            Unit.right()
         } catch (e: Exception) {
             logger.error("Error removing thing ${thingId} from device ${deviceId} due to ", e)
-            return RetrieveError.DeviceRemoveError.left()
+            RetrieveError.DeviceRemoveError.left()
         }
-    }
 }
 
 data class MongoDevice(

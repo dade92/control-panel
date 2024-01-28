@@ -15,6 +15,10 @@
 
     <name>adapters</name>
 
+    <properties>
+        <wiremock-jre8-standalone.version>2.35.0</wiremock-jre8-standalone.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.projects.embedded</groupId>
@@ -45,6 +49,12 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>1.19.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8-standalone</artifactId>
+            <version>${wiremock-jre8-standalone.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
