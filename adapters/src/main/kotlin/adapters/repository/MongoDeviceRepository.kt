@@ -69,11 +69,11 @@ class MongoDeviceRepository(
 
             val update = Update().pull("things", BasicDBObject("_id", thingId.value.toString()))
 
-            // Perform the update
             mongoTemplate.updateFirst(query, update, COLLECTION_NAME)
+
             Unit.right()
         } catch (e: Exception) {
-            logger.error("Error removing thing ${thingId} from device ${deviceId} due to ", e)
+            logger.error("Error removing thing $thingId from device $deviceId due to ", e)
             RetrieveError.DeviceRemoveError.left()
         }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.client.RestOperations
 class RestSwitchClient(
     private val restClient: RestOperations
 ) : SwitchClient {
-
+    //TODO put a retry?
     private val logger = LoggerFactory.getLogger(RestSwitchClient::class.java)
 
     override fun switch(deviceHost: DeviceHost, idOnDevice: IdOnDevice, newStatus: Status): Either<SwitchError, Unit> =
@@ -26,7 +26,7 @@ class RestSwitchClient(
 
             Unit.right()
         } catch (e: Exception) {
-            logger.error("Error switching device ${deviceHost} due to ", e)
+            logger.error("Error switching device $deviceHost due to ", e)
             SwitchError.StatusNotUpdatedError.left()
         }
 
