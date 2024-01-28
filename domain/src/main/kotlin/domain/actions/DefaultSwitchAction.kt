@@ -38,6 +38,7 @@ class DefaultSwitchAction(
 
 sealed class SwitchError {
     object DeviceNotAvailable : SwitchError()
+    object DeviceNotFound : SwitchError()
     object MismatchStatusError : SwitchError()
     object ThingNotBelongingToDeviceError : SwitchError()
     object StatusAlreadySwitchedError : SwitchError()

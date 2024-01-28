@@ -19,4 +19,5 @@ interface DeviceRepository {
 
 sealed class RetrieveError {
     object DeviceRetrieveError: RetrieveError()
+    object DeviceRemoveError: RetrieveError()
 }

@@ -3,6 +3,7 @@ package adapters.repository
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
+import com.mongodb.BasicDBObject
 import domain.*
 import domain.actions.SwitchError
 import domain.repository.DeviceRepository
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
 import java.util.*
+
 
 private val COLLECTION_NAME = "device"
 
@@ -45,26 +47,36 @@ class MongoDeviceRepository(
             RetrieveError.DeviceRetrieveError.left()
         }
 
-    override fun updateStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit> {
+    override fun updateStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit> =
         try {
             val query = Query(
                 Criteria.where("_id").`is`(deviceId.value.toString())
                     .and("things._id").`is`(thingId.value.toString())
             )
 
-            val update = Update().set("management.$.switch", newStatus.name)
+            val update = Update().set("things.$.management", ThingManagement(newStatus))
 
             mongoTemplate.updateFirst(query, update, COLLECTION_NAME)
 
-            return Unit.right()
+            Unit.right()
         } catch (e: Exception) {
             logger.error("Error updating thing status due to ", e)
-            //TODO fix the error
-            return SwitchError.DeviceNotAvailable.left()
+            SwitchError.DeviceNotFound.left()
         }
-    }
+
     override fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<RetrieveError, Unit> {
-        TODO("Not yet implemented")
+        try {
+            val query = Query(Criteria.where("_id").`is`(deviceId.value.toString()))
+
+            val update = Update().pull("things", BasicDBObject("_id", thingId.value.toString()))
+
+            // Perform the update
+            mongoTemplate.updateFirst(query, update, COLLECTION_NAME)
+            return Unit.right()
+        } catch (e: Exception) {
+            logger.error("Error removing thing ${thingId} from device ${deviceId} due to ", e)
+            return RetrieveError.DeviceRemoveError.left()
+        }
     }
 }
 
