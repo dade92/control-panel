@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration
 class ActionsConfiguration {
 
     @Bean
-    fun retrieveThingsAction(deviceRepository: DeviceRepository): RetrieveDeviceAction {
-        return RetrieveDeviceAction(deviceRepository)
-    }
+    fun retrieveThingsAction(deviceRepository: DeviceRepository): RetrieveDeviceAction =
+        RetrieveDeviceAction(deviceRepository)
 
     @Bean
-    fun removeThingsAction(): RemoveThingsAction = RemoveThingsAction()
+    fun removeThingsAction(deviceRepository: DeviceRepository): RemoveThingsAction =
+        RemoveThingsAction(deviceRepository)
 
 }
