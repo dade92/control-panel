@@ -9,6 +9,8 @@ import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.annotation.DirtiesContext
+import org.springframework.test.annotation.DirtiesContext.ClassMode
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest(classes = [RepositoryConfiguration::class, MongoConfiguration::class, MongoDBTestContainerConfig::class])
@@ -77,6 +79,7 @@ class MongoDeviceRepositoryTest {
         ).right()
     }
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun `update status`() {
         mongoDeviceRepository.updateStatus(
@@ -108,6 +111,7 @@ class MongoDeviceRepositoryTest {
         ).right()
     }
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun `remove a thing`() {
         mongoDeviceRepository.removeThing(firstDeviceId, "19851c6d-89ad-48c9-9b0c-9abb9eb92eea".asThingId()) shouldBe
