@@ -1,11 +1,12 @@
-package webapp.ports
+package webapp.adapters
 
 import domain.*
 import domain.utils.aDevice
 import domain.utils.aThing
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
-import java.util.UUID
+import webapp.ports.DeviceToThingResponseAdapter
+import webapp.ports.ThingResponse
 
 class DeviceToThingResponseAdapterTest {
 

@@ -1,4 +1,4 @@
-package webapp
+package webapp.ports
 
 import arrow.core.left
 import arrow.core.right
