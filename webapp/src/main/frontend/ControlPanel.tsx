@@ -43,7 +43,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
 
     const onThingRemoved = (thing: Thing) => {
         setIdToBeRemoved(thing.id);
-        removeThingsProvider(thing.id)
+        removeThingsProvider(thing.deviceId, thing.id)
             .then(() => {
                 setThings(things!.filter((t) => t.id != thing.id));
                 setOutcome({
