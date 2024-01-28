@@ -1,6 +1,5 @@
 package adapters.repository
 
-import adapters.MongoDBTestContainerConfig
 import adapters.configuration.MongoConfiguration
 import adapters.configuration.RepositoryConfiguration
 import arrow.core.right
@@ -14,7 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest(classes = [RepositoryConfiguration::class, MongoConfiguration::class, MongoDBTestContainerConfig::class])
 @Testcontainers
-class MongoDeviceRepositoryIT {
+class MongoDeviceRepositoryTest {
 
     @Autowired
     private lateinit var mongoDeviceRepository: DeviceRepository

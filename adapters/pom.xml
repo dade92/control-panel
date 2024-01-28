@@ -15,10 +15,6 @@
 
     <name>adapters</name>
 
-    <properties>
-        <h2.version>2.1.214</h2.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.projects.embedded</groupId>
