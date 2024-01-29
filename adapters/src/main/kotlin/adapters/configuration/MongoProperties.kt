@@ -7,5 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 class MongoProperties {
 
     var url: String = ""
+    var database: String = ""
 
 }

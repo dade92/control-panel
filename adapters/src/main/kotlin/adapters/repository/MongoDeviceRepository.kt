@@ -46,7 +46,7 @@ class MongoDeviceRepository(
             RetrieveError.DeviceRetrieveError.left()
         }
 
-    override fun updateStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit> =
+    override fun updateThingStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit> =
         try {
             val query = Query(
                 Criteria.where("_id").`is`(deviceId.value.toString())

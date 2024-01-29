@@ -12,13 +12,12 @@ import java.time.temporal.ChronoUnit
 class ClientConfiguration {
 
     @Bean
-    fun switchClient(restTemplateBuilder: RestTemplateBuilder): SwitchClient {
-        return RestSwitchClient(
+    fun switchClient(restTemplateBuilder: RestTemplateBuilder): SwitchClient =
+        RestSwitchClient(
             restTemplateBuilder
                 .setConnectTimeout(Duration.of(5, ChronoUnit.SECONDS))
                 .setReadTimeout(Duration.of(5, ChronoUnit.SECONDS))
                 .build()
         )
-    }
 
 }

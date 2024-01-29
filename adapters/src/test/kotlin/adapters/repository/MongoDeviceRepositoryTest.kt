@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.annotation.DirtiesContext
-import org.springframework.test.annotation.DirtiesContext.ClassMode
 import org.testcontainers.junit.jupiter.Testcontainers
 
 @SpringBootTest(classes = [RepositoryConfiguration::class, MongoConfiguration::class, MongoDBTestContainerConfig::class])
@@ -82,7 +81,7 @@ class MongoDeviceRepositoryTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun `update status`() {
-        mongoDeviceRepository.updateStatus(
+        mongoDeviceRepository.updateThingStatus(
             firstDeviceId,
             "8a1ea8db-fffa-4c6f-935e-39a34eba871c".asThingId(),
             Status.ON

@@ -45,12 +45,12 @@ class DefaultSwitchActionTest {
             )
         ).right()
         every { switchClient.switch(deviceHost, idOnDevice, newStatus) } returns Unit.right()
-        every { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) } returns Unit.right()
+        every { deviceRepository.updateThingStatus(aDeviceId, aThingId, newStatus) } returns Unit.right()
 
         defaultSwitchAction.switch(aDeviceId, aThingId, newStatus) shouldBe Unit.right()
 
         verify { switchClient.switch(deviceHost, idOnDevice, newStatus) }
-        verify { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) }
+        verify { deviceRepository.updateThingStatus(aDeviceId, aThingId, newStatus) }
     }
 
     @Test
@@ -89,7 +89,7 @@ class DefaultSwitchActionTest {
         defaultSwitchAction.switch(aDeviceId, aThingId, newStatus) shouldBe expectedError
 
         verify { switchClient.switch(deviceHost, idOnDevice, newStatus) }
-        verify { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) wasNot Called }
+        verify { deviceRepository.updateThingStatus(aDeviceId, aThingId, newStatus) wasNot Called }
     }
 
     @Test
@@ -113,11 +113,11 @@ class DefaultSwitchActionTest {
             )
         ).right()
         every { switchClient.switch(deviceHost, idOnDevice, newStatus) } returns Unit.right()
-        every { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) } returns expectedError
+        every { deviceRepository.updateThingStatus(aDeviceId, aThingId, newStatus) } returns expectedError
 
         defaultSwitchAction.switch(aDeviceId, aThingId, newStatus) shouldBe expectedError
 
         verify { switchClient.switch(deviceHost, idOnDevice, newStatus) }
-        verify { deviceRepository.updateStatus(aDeviceId, aThingId, newStatus) }
+        verify { deviceRepository.updateThingStatus(aDeviceId, aThingId, newStatus) }
     }
 }

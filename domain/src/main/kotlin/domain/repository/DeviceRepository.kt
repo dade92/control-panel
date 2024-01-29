@@ -10,7 +10,7 @@ import domain.actions.SwitchError
 interface DeviceRepository {
     fun retrieve(deviceId: DeviceId): Either<RetrieveError, Device>
     fun retrieveAll(): Either<RetrieveError, List<Device>>
-    fun updateStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit>
+    fun updateThingStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit>
     fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<RetrieveError, Unit>
 }
 

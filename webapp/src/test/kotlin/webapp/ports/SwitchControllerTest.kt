@@ -8,14 +8,16 @@ import domain.actions.SwitchError
 import domain.utils.aDeviceId
 import domain.utils.aThingId
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
 @WebMvcTest(SwitchController::class)
 class SwitchControllerTest {
@@ -28,33 +30,33 @@ class SwitchControllerTest {
 
     @Test
     fun `switch lamp ON successfully`() {
-        Mockito.`when`(switchAction.switch(aDeviceId, aThingId, Status.ON)).thenReturn(
+        `when`(switchAction.switch(aDeviceId, aThingId, Status.ON)).thenReturn(
             Unit.right()
         )
 
         mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/switch/$aDeviceId/$aThingId")
+            post("/api/v1/switch/$aDeviceId/$aThingId")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""{"switch":  "ON"}""")
-        ).andExpect(MockMvcResultMatchers.status().isNoContent)
+        ).andExpect(status().isNoContent)
 
-        Mockito.verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
+        verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
     }
 
     @Test
     fun `in case of error, returns 500 with the specific problem`() {
-        Mockito.`when`(switchAction.switch(aDeviceId, aThingId, Status.ON)).thenReturn(
+        `when`(switchAction.switch(aDeviceId, aThingId, Status.ON)).thenReturn(
             SwitchError.DeviceNotAvailable.left()
         )
 
         mvc.perform(
-            MockMvcRequestBuilders.post("/api/v1/switch/$aDeviceId/$aThingId")
+            post("/api/v1/switch/$aDeviceId/$aThingId")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""{"switch":  "ON"}""")
-        ).andExpect(MockMvcResultMatchers.status().is5xxServerError)
-            .andExpect(MockMvcResultMatchers.content().json("""{"error": "DeviceNotAvailable"}"""))
+        ).andExpect(status().is5xxServerError)
+            .andExpect(content().json("""{"error": "DeviceNotAvailable"}"""))
 
-        Mockito.verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
+        verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
     }
 
 }

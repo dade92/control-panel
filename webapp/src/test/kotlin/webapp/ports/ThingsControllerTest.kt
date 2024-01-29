@@ -43,8 +43,7 @@ class ThingsControllerTest {
 
         mvc.perform(
             get("/api/v1/things").contentType(MediaType.APPLICATION_JSON)
-        )
-            .andExpect(status().isOk())
+        ).andExpect(status().isOk())
             .andExpect(content().json(Fixtures.readJson("/thingsResponse.json")))
     }
 

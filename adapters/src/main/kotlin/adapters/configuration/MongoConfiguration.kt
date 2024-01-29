@@ -14,13 +14,8 @@ import org.springframework.data.mongodb.core.MongoTemplate
 @EnableConfigurationProperties(MongoProperties::class)
 class MongoConfiguration {
 
-    //TODO can be specified in config too?
-    private val DATABASE = "control-panel-db"
-
     @Bean
-    fun mongoClient(
-        mongoProperties: MongoProperties
-    ): MongoClient {
+    fun mongoClient(mongoProperties: MongoProperties): MongoClient {
         val connectionString = ConnectionString(mongoProperties.url)
         val mongoClientSettings = MongoClientSettings.builder()
             .applyConnectionString(connectionString)
@@ -29,7 +24,6 @@ class MongoConfiguration {
     }
 
     @Bean
-    fun mongoTemplate(mongoClient: MongoClient?): MongoTemplate {
-        return MongoTemplate(mongoClient, DATABASE)
-    }
+    fun mongoTemplate(mongoClient: MongoClient?, mongoProperties: MongoProperties): MongoTemplate =
+        MongoTemplate(mongoClient!!, mongoProperties.database)
 }

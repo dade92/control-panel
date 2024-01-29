@@ -17,12 +17,6 @@ import org.springframework.web.client.RestTemplate
 
 class RestSwitchClientTest {
 
-    @RegisterExtension
-    @JvmField
-    var wiremock: WireMockExtension = WireMockExtension.newInstance()
-        .options(wireMockConfig().dynamicPort().dynamicHttpsPort())
-        .build()
-
 
     private val restSwitchClient = RestSwitchClient(RestTemplate())
 
@@ -59,5 +53,13 @@ class RestSwitchClientTest {
             2.asIdOnDevice(),
             Status.ON
         ) shouldBe SwitchError.StatusNotUpdatedError.left()
+    }
+
+    companion object {
+        @RegisterExtension
+        @JvmField
+        var wiremock: WireMockExtension = WireMockExtension.newInstance()
+            .options(wireMockConfig().dynamicPort().dynamicHttpsPort())
+            .build()
     }
 }

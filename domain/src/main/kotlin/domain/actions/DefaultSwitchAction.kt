@@ -29,7 +29,7 @@ class DefaultSwitchAction(
             { device ->
                 val thing = device.things.first { it.id == thingId }
                 switchClient.switch(device.host, thing.idOnDevice, newStatus).flatMap {
-                    deviceRepository.updateStatus(deviceId, thingId, newStatus)
+                    deviceRepository.updateThingStatus(deviceId, thingId, newStatus)
                 }
             }
         )
