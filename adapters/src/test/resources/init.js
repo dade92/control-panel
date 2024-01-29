@@ -4,7 +4,7 @@ db.createCollection('device', {capped: false});
 
 db.device.insert([
     {
-        "_id": 'c9e4c231-dbca-428f-9442-b01440f91330',
+        "_id": '0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb',
         "deviceName": "arduino-uno",
         "host": "http://esp32s3-654e44:8080",
         "things": [{
@@ -23,7 +23,7 @@ db.device.insert([
         "creationDate": '2023-12-29T08:48:06.742Z'
     },
     {
-        "_id": 'a9cc44cf-4fa0-4804-ba0c-f25ec6a63c12',
+        "_id": '10152e1b-d6d4-4536-8679-52a0446dc753',
         "deviceName": "arduino-uno-mega",
         "host": "http://esp32s3-654e44:8080",
         "things": [{

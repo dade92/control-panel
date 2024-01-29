@@ -5,6 +5,8 @@ import adapters.configuration.RepositoryConfiguration
 import arrow.core.right
 import domain.*
 import domain.repository.DeviceRepository
+import domain.utils.aDeviceId
+import domain.utils.anotherDeviceId
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -23,7 +25,7 @@ class MongoDeviceRepositoryTest {
     fun `retrieve all devices`() {
         mongoDeviceRepository.retrieveAll() shouldBe listOf(
             Device(
-                firstDeviceId,
+                aDeviceId,
                 "arduino-uno".asDeviceName(),
                 "http://esp32s3-654e44:8080".asDeviceHost(),
                 listOf(
@@ -44,7 +46,7 @@ class MongoDeviceRepositoryTest {
                 )
             ),
             Device(
-                secondDeviceId,
+                anotherDeviceId,
                 "arduino-uno-mega".asDeviceName(),
                 "http://esp32s3-654e44:8080".asDeviceHost(),
                 listOf(
@@ -62,8 +64,8 @@ class MongoDeviceRepositoryTest {
 
     @Test
     fun `retrieve a device`() {
-        mongoDeviceRepository.retrieve(secondDeviceId) shouldBe Device(
-            "a9cc44cf-4fa0-4804-ba0c-f25ec6a63c12".asDeviceId(),
+        mongoDeviceRepository.retrieve(anotherDeviceId) shouldBe Device(
+            anotherDeviceId,
             "arduino-uno-mega".asDeviceName(),
             "http://esp32s3-654e44:8080".asDeviceHost(),
             listOf(
@@ -82,13 +84,13 @@ class MongoDeviceRepositoryTest {
     @Test
     fun `update status`() {
         mongoDeviceRepository.updateThingStatus(
-            firstDeviceId,
+            aDeviceId,
             "8a1ea8db-fffa-4c6f-935e-39a34eba871c".asThingId(),
             Status.ON
         ) shouldBe Unit.right()
 
-        mongoDeviceRepository.retrieve(firstDeviceId) shouldBe Device(
-            firstDeviceId,
+        mongoDeviceRepository.retrieve(aDeviceId) shouldBe Device(
+            aDeviceId,
             "arduino-uno".asDeviceName(),
             "http://esp32s3-654e44:8080".asDeviceHost(),
             listOf(
@@ -113,11 +115,11 @@ class MongoDeviceRepositoryTest {
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
     fun `remove a thing`() {
-        mongoDeviceRepository.removeThing(firstDeviceId, "19851c6d-89ad-48c9-9b0c-9abb9eb92eea".asThingId()) shouldBe
+        mongoDeviceRepository.removeThing(aDeviceId, "19851c6d-89ad-48c9-9b0c-9abb9eb92eea".asThingId()) shouldBe
             Unit.right()
 
-        mongoDeviceRepository.retrieve(firstDeviceId) shouldBe Device(
-            firstDeviceId,
+        mongoDeviceRepository.retrieve(aDeviceId) shouldBe Device(
+            aDeviceId,
             "arduino-uno".asDeviceName(),
             "http://esp32s3-654e44:8080".asDeviceHost(),
             listOf(
@@ -130,10 +132,5 @@ class MongoDeviceRepositoryTest {
                 )
             )
         ).right()
-    }
-
-    companion object {
-        val firstDeviceId = "c9e4c231-dbca-428f-9442-b01440f91330".asDeviceId()
-        val secondDeviceId = "a9cc44cf-4fa0-4804-ba0c-f25ec6a63c12".asDeviceId()
     }
 }
