@@ -10,8 +10,6 @@ import org.springframework.data.mongodb.core.MongoTemplate
 class RepositoryConfiguration {
 
     @Bean
-    fun deviceRepository(
-        mongoTemplate: MongoTemplate
-    ): DeviceRepository = MongoDeviceRepository(mongoTemplate)
+    fun deviceRepository(mongoTemplate: MongoTemplate): DeviceRepository = MongoDeviceRepository(mongoTemplate)
 
 }
