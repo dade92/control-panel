@@ -48,7 +48,7 @@ class ThingsController(
         )
 
     @PostMapping("/v1/things/add/{deviceId}")
-    fun removeThing(
+    fun addThing(
         @PathVariable deviceId: DeviceId,
         @RequestBody addThingRequest: AddThingRequest
     ): ResponseEntity<*> =
