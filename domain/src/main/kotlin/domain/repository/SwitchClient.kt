@@ -7,6 +7,5 @@ import domain.Status
 import domain.actions.SwitchError
 
 interface SwitchClient {
-    //TODO should we pass the entire device with the thing?
     fun switch(deviceHost: DeviceHost, idOnDevice: IdOnDevice, newStatus: Status): Either<SwitchError, Unit>
 }

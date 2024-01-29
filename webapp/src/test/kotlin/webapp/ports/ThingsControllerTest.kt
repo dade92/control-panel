@@ -3,12 +3,22 @@ package webapp.ports
 import arrow.core.left
 import arrow.core.right
 import com.springexample.utils.Fixtures
+import domain.ThingType
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
 import domain.repository.RetrieveError
 import domain.utils.aDevice
+import domain.utils.aDeviceHost
 import domain.utils.aDeviceId
+import domain.utils.aDeviceName
+import domain.utils.aThing
 import domain.utils.aThingId
+import domain.utils.aThingName
+import domain.utils.anotherDeviceHost
+import domain.utils.anotherDeviceId
+import domain.utils.anotherDeviceName
+import domain.utils.anotherThingId
+import domain.utils.anotherThingName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
@@ -20,7 +30,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
-import webapp.ports.ThingsController
 
 @WebMvcTest(ThingsController::class)
 class ThingsControllerTest {
@@ -36,9 +45,35 @@ class ThingsControllerTest {
 
     @Test
     fun `retrieve things`() {
-        //TODO customize the response of the action
         `when`(retrieveDeviceAction.retrieveAll()).thenReturn(
-            listOf(aDevice(), aDevice()).right()
+            listOf(aDevice(
+                deviceId = aDeviceId,
+                deviceName = aDeviceName,
+                deviceHost = aDeviceHost,
+                things = listOf(
+                    aThing(
+                        thingId = aThingId,
+                        thingName = aThingName,
+                        thingType = ThingType.LAMP
+                    ),
+                    aThing(
+                        thingId = anotherThingId,
+                        thingName = anotherThingName,
+                        thingType = ThingType.ALARM
+                    )
+                )
+            ),
+                aDevice(
+                    deviceId = anotherDeviceId,
+                    deviceName = anotherDeviceName,
+                    deviceHost = anotherDeviceHost,
+                    things = listOf(
+                        aThing(
+                            thingId = anotherThingId,
+                            thingName = anotherThingName
+                        )
+                    )
+                )).right()
         )
 
         mvc.perform(

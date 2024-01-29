@@ -3,7 +3,7 @@
     {
       "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
       "name": "name",
-      "device": "name",
+      "device": "device name",
       "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
       "type": "LAMP",
       "management": {
@@ -11,30 +11,20 @@
       }
     },
     {
-      "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
-      "name": "name",
-      "device": "name",
+      "id": "279e65c3-a555-4ce4-a60c-827ec0a89d17",
+      "name": "another name",
+      "device": "device name",
       "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
-      "type": "LAMP",
+      "type": "ALARM",
       "management": {
         "switch": "OFF"
       }
     },
     {
-      "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
-      "name": "name",
-      "device": "name",
-      "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
-      "type": "LAMP",
-      "management": {
-        "switch": "OFF"
-      }
-    },
-    {
-      "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
-      "name": "name",
-      "device": "name",
-      "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
+      "id": "279e65c3-a555-4ce4-a60c-827ec0a89d17",
+      "name": "another name",
+      "device": "another device name",
+      "deviceId": "10152e1b-d6d4-4536-8679-52a0446dc753",
       "type": "LAMP",
       "management": {
         "switch": "OFF"

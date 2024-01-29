@@ -1,12 +1,11 @@
 package domain.utils
 
 import domain.*
-import java.util.UUID
 
 fun aDevice(
     deviceId: DeviceId = aDeviceId,
     deviceName: DeviceName = aDeviceName,
-    deviceHost: DeviceHost = asDeviceHost,
+    deviceHost: DeviceHost = aDeviceHost,
     things: List<Thing> = listOf(aThing(), aThing())
 ): Device = Device(
     deviceId,
@@ -40,4 +39,5 @@ val aDeviceId = "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb".asDeviceId()
 val anotherDeviceId = "10152e1b-d6d4-4536-8679-52a0446dc753".asDeviceId()
 val aDeviceName = "device name".asDeviceName()
 val anotherDeviceName = "another device name".asDeviceName()
-val asDeviceHost = "host".asDeviceHost()
+val aDeviceHost = "host".asDeviceHost()
+val anotherDeviceHost = "another host".asDeviceHost()

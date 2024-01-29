@@ -9,12 +9,11 @@ import domain.Status
 import domain.actions.SwitchError
 import domain.repository.SwitchClient
 import org.slf4j.LoggerFactory
-import org.springframework.web.client.RestOperations
+import org.springframework.web.client.RestTemplate
 
 class RestSwitchClient(
-    private val restClient: RestOperations
+    private val restClient: RestTemplate
 ) : SwitchClient {
-    //TODO put a retry?
     private val logger = LoggerFactory.getLogger(RestSwitchClient::class.java)
 
     override fun switch(deviceHost: DeviceHost, idOnDevice: IdOnDevice, newStatus: Status): Either<SwitchError, Unit> =

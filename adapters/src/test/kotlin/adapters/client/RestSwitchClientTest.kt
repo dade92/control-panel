@@ -16,8 +16,6 @@ import org.junit.jupiter.api.extension.RegisterExtension
 import org.springframework.web.client.RestTemplate
 
 class RestSwitchClientTest {
-
-
     private val restSwitchClient = RestSwitchClient(RestTemplate())
 
     private var host = ""
