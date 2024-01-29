@@ -1,16 +1,19 @@
 package webapp.ports
 
 import domain.*
+import domain.actions.AddThingAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
 import domain.actions.SwitchAction
+import domain.actions.request.AddThingRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 class ThingsController(
     private val retrieveDeviceAction: RetrieveDeviceAction,
-    private val removeThingsAction: RemoveThingsAction
+    private val removeThingsAction: RemoveThingsAction,
+    private val addThingAction: AddThingAction
 ) : BaseApiController() {
 
     private val deviceToThingResponseAdapter = DeviceToThingResponseAdapter()
@@ -36,6 +39,20 @@ class ThingsController(
         @PathVariable deviceId: DeviceId
     ): ResponseEntity<*> =
         removeThingsAction.remove(deviceId, thingId).fold(
+            {
+                ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
+            },
+            {
+                ResponseEntity.noContent().build()
+            }
+        )
+
+    @PostMapping("/v1/things/add/{deviceId}")
+    fun removeThing(
+        @PathVariable deviceId: DeviceId,
+        @RequestBody addThingRequest: AddThingRequest
+    ): ResponseEntity<*> =
+        addThingAction.add(deviceId, addThingRequest).fold(
             {
                 ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
             },

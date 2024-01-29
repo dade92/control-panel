@@ -5,6 +5,7 @@ import arrow.core.left
 import arrow.core.right
 import com.mongodb.BasicDBObject
 import domain.*
+import domain.actions.AddThingError
 import domain.actions.SwitchError
 import domain.repository.DeviceRepository
 import domain.repository.RetrieveError
@@ -76,6 +77,10 @@ class MongoDeviceRepository(
             logger.error("Error removing thing $thingId from device $deviceId due to ", e)
             RetrieveError.DeviceRemoveError.left()
         }
+
+    override fun addThing(deviceId: DeviceId, thing: Thing): Either<AddThingError, Unit> {
+        TODO("Not yet implemented")
+    }
 }
 
 data class MongoDevice(

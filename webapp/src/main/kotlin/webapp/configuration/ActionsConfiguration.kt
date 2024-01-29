@@ -1,5 +1,6 @@
 package webapp.configuration
 
+import domain.actions.AddThingAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
 import domain.repository.DeviceRepository
@@ -16,5 +17,10 @@ class ActionsConfiguration {
     @Bean
     fun removeThingsAction(deviceRepository: DeviceRepository): RemoveThingsAction =
         RemoveThingsAction(deviceRepository)
+
+    @Bean
+    fun addThingsAction(deviceRepository: DeviceRepository): AddThingAction =
+        AddThingAction(deviceRepository)
+
 
 }

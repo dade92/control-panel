@@ -3,9 +3,15 @@ package webapp.ports
 import arrow.core.left
 import arrow.core.right
 import com.springexample.utils.Fixtures
+import domain.Status
+import domain.ThingManagement
 import domain.ThingType
+import domain.actions.AddThingAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
+import domain.actions.request.AddThingRequest
+import domain.asIdOnDevice
+import domain.asThingName
 import domain.repository.RetrieveError
 import domain.utils.aDevice
 import domain.utils.aDeviceHost
@@ -42,6 +48,9 @@ class ThingsControllerTest {
 
     @MockBean
     private lateinit var removeThingsAction: RemoveThingsAction
+
+    @MockBean
+    private lateinit var addThingAction: AddThingAction
 
     @Test
     fun `retrieve things`() {
@@ -105,5 +114,20 @@ class ThingsControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
         ).andExpect(status().is5xxServerError)
             .andExpect(content().json("""{"error": "DeviceRetrieveError"}"""))
+    }
+
+    @Test
+    fun `add thing on a device`() {
+        `when`(addThingAction.add(aDeviceId,
+            AddThingRequest(
+                "new name".asThingName(),
+                ThingType.LAMP
+            ))).thenReturn(Unit.right())
+
+        mvc.perform(
+            post("/api/v1/things/add/${aDeviceId}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Fixtures.readJson("/addThingRequest.json"))
+        ).andExpect(status().isNoContent())
     }
 }
