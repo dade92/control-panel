@@ -4,9 +4,21 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import com.mongodb.BasicDBObject
-import domain.*
+import domain.Device
+import domain.DeviceId
+import domain.Status
+import domain.Thing
+import domain.ThingId
+import domain.ThingManagement
+import domain.ThingType
 import domain.actions.AddThingError
 import domain.actions.SwitchError
+import domain.asDeviceHost
+import domain.asDeviceId
+import domain.asDeviceName
+import domain.asIdOnDevice
+import domain.asThingId
+import domain.asThingName
 import domain.repository.DeviceRepository
 import domain.repository.RetrieveError
 import org.slf4j.LoggerFactory
@@ -78,10 +90,31 @@ class MongoDeviceRepository(
             RetrieveError.DeviceRemoveError.left()
         }
 
-    override fun addThing(deviceId: DeviceId, thing: Thing): Either<AddThingError, Unit> {
-        TODO("Not yet implemented")
-    }
+    override fun addThing(deviceId: DeviceId, thing: Thing): Either<AddThingError, Unit> =
+        try {
+            val query = Query.query(Criteria.where("_id").`is`(deviceId.value.toString()))
+
+            val update = Update().push("things", thing.toMongoThing())
+
+            mongoTemplate.updateFirst(
+                query, update, MongoDevice::class.java, COLLECTION_NAME
+            )
+            Unit.right()
+        } catch (e: Exception) {
+            logger.error("Error adding the thing ${thing.id} due to ", e)
+            //TODO should it add a new device with the thing?
+            AddThingError.MongoAddError.left()
+        }
 }
+
+fun Thing.toMongoThing(): MongoThing = MongoThing(
+    this.id.value.toString(),
+    this.name.value,
+    this.type.name,
+    MongoThing.Management(this.management.switch),
+    this.idOnDevice.value
+)
+
 
 data class MongoDevice(
     val id: String,

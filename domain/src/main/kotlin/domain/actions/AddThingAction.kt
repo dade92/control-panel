@@ -30,5 +30,5 @@ class AddThingAction(
 }
 
 sealed class AddThingError {
-
+    object MongoAddError: AddThingError()
 }

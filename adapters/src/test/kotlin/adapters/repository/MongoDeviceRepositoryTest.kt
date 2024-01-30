@@ -3,7 +3,17 @@ package adapters.repository
 import adapters.configuration.MongoConfiguration
 import adapters.configuration.RepositoryConfiguration
 import arrow.core.right
-import domain.*
+import domain.Device
+import domain.Status
+import domain.Thing
+import domain.ThingManagement
+import domain.ThingType
+import domain.asDeviceHost
+import domain.asDeviceId
+import domain.asDeviceName
+import domain.asIdOnDevice
+import domain.asThingId
+import domain.asThingName
 import domain.repository.DeviceRepository
 import domain.utils.aDeviceId
 import domain.utils.anotherDeviceId
@@ -25,7 +35,7 @@ class MongoDeviceRepositoryTest {
     fun `retrieve all devices`() {
         mongoDeviceRepository.retrieveAll() shouldBe listOf(
             Device(
-                aDeviceId,
+                "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb".asDeviceId(),
                 "arduino-uno".asDeviceName(),
                 "http://esp32s3-654e44:8080".asDeviceHost(),
                 listOf(
@@ -46,7 +56,7 @@ class MongoDeviceRepositoryTest {
                 )
             ),
             Device(
-                anotherDeviceId,
+                "10152e1b-d6d4-4536-8679-52a0446dc753".asDeviceId(),
                 "arduino-uno-mega".asDeviceName(),
                 "http://esp32s3-654e44:8080".asDeviceHost(),
                 listOf(
@@ -114,7 +124,7 @@ class MongoDeviceRepositoryTest {
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
-    fun `remove a thing`() {
+    fun `remove a thing on a device, then add a thing on another device`() {
         mongoDeviceRepository.removeThing(aDeviceId, "19851c6d-89ad-48c9-9b0c-9abb9eb92eea".asThingId()) shouldBe
             Unit.right()
 
@@ -130,6 +140,39 @@ class MongoDeviceRepositoryTest {
                     ThingManagement(Status.OFF),
                     1.asIdOnDevice()
                 )
+            )
+        ).right()
+
+        mongoDeviceRepository.addThing(
+            anotherDeviceId,
+            Thing(
+                id = "22173b68-71b6-4419-8cb3-f3ec90d52d79".asThingId(),
+                name = "new thing".asThingName(),
+                type = ThingType.LAMP,
+                management = ThingManagement(Status.OFF),
+                idOnDevice = 2.asIdOnDevice()
+            )
+        ) shouldBe Unit.right()
+
+        mongoDeviceRepository.retrieve(anotherDeviceId) shouldBe Device(
+            "10152e1b-d6d4-4536-8679-52a0446dc753".asDeviceId(),
+            "arduino-uno-mega".asDeviceName(),
+            "http://esp32s3-654e44:8080".asDeviceHost(),
+            listOf(
+                Thing(
+                    "392325c0-f023-4a87-95d2-2ca041bb5627".asThingId(),
+                    "kitchen lamp".asThingName(),
+                    ThingType.ALARM,
+                    ThingManagement(Status.OFF),
+                    1.asIdOnDevice()
+                ),
+                Thing(
+                    "22173b68-71b6-4419-8cb3-f3ec90d52d79".asThingId(),
+                    "new thing".asThingName(),
+                    ThingType.LAMP,
+                    ThingManagement(Status.OFF),
+                    2.asIdOnDevice()
+                ),
             )
         ).right()
     }
