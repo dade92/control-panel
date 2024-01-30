@@ -4,6 +4,7 @@ import domain.actions.AddThingAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
 import domain.repository.DeviceRepository
+import domain.utils.IdOnDeviceRetriever
 import domain.utils.RandomThingIdGenerator
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -21,7 +22,7 @@ class ActionsConfiguration {
 
     @Bean
     fun addThingsAction(deviceRepository: DeviceRepository): AddThingAction =
-        AddThingAction(deviceRepository, RandomThingIdGenerator())
+        AddThingAction(deviceRepository, RandomThingIdGenerator(), IdOnDeviceRetriever())
 
 
 }

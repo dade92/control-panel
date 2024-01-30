@@ -7,9 +7,10 @@ import domain.ThingType
 import domain.actions.AddThingAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
+import domain.actions.errors.ActionError
+import domain.actions.errors.ActionError.RetrieveError
 import domain.actions.request.AddThingRequest
 import domain.asThingName
-import domain.repository.RetrieveError
 import domain.utils.aDevice
 import domain.utils.aDeviceHost
 import domain.utils.aDeviceId

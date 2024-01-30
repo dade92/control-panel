@@ -3,15 +3,15 @@ package domain.actions
 import arrow.core.Either
 import domain.Device
 import domain.DeviceId
+import domain.actions.errors.ActionError
 import domain.repository.DeviceRepository
-import domain.repository.RetrieveError
 
 class RetrieveDeviceAction(
     private val deviceRepository: DeviceRepository
 ) {
 
-    fun retrieveAll(): Either<RetrieveError, List<Device>> = deviceRepository.retrieveAll()
+    fun retrieveAll(): Either<ActionError.RetrieveError, List<Device>> = deviceRepository.retrieveAll()
 
-    fun retrieve(deviceId: DeviceId): Either<RetrieveError, Device> = deviceRepository.retrieve(deviceId)
+    fun retrieve(deviceId: DeviceId): Either<ActionError.RetrieveError, Device> = deviceRepository.retrieve(deviceId)
 
 }

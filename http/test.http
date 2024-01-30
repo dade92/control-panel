@@ -15,3 +15,14 @@ Accept: application/json
   "switch": "ON"
 }
 
+### add thing
+
+POST {{host}}/api/v1/things/add/a9cc44cf-4fa0-4804-ba0c-f25ec6a63c12
+Content-Type: application/json
+Accept: application/json
+
+{
+  "name": "new name",
+  "type": "LAMP"
+}
+

@@ -6,11 +6,12 @@ import arrow.core.left
 import domain.DeviceId
 import domain.Status
 import domain.ThingId
+import domain.actions.errors.ActionError
 import domain.repository.DeviceRepository
 import domain.repository.SwitchClient
 
 interface SwitchAction {
-    fun switch(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit>
+    fun switch(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<ActionError, Unit>
 }
 
 class DefaultSwitchAction(
@@ -21,10 +22,10 @@ class DefaultSwitchAction(
         deviceId: DeviceId,
         thingId: ThingId,
         newStatus: Status
-    ): Either<SwitchError, Unit> =
+    ): Either<ActionError.SwitchError, Unit> =
         deviceRepository.retrieve(deviceId).fold(
             {
-                SwitchError.DeviceNotAvailable.left()
+                ActionError.SwitchError.DeviceNotAvailable.left()
             },
             { device ->
                 val thing = device.things.first { it.id == thingId }
@@ -34,13 +35,4 @@ class DefaultSwitchAction(
             }
         )
 
-}
-
-sealed class SwitchError {
-    object DeviceNotAvailable : SwitchError()
-    object DeviceNotFound : SwitchError()
-    object MismatchStatusError : SwitchError()
-    object ThingNotBelongingToDeviceError : SwitchError()
-    object StatusAlreadySwitchedError : SwitchError()
-    object StatusNotUpdatedError : SwitchError()
 }

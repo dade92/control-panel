@@ -6,7 +6,8 @@ import com.github.tomakehurst.wiremock.client.WireMock
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig
 import com.github.tomakehurst.wiremock.junit5.WireMockExtension
 import domain.Status
-import domain.actions.SwitchError
+import domain.actions.errors.ActionError
+import domain.actions.errors.ActionError.SwitchError
 import domain.asDeviceHost
 import domain.asIdOnDevice
 import io.kotest.matchers.shouldBe

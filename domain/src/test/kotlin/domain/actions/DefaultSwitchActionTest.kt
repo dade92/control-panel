@@ -3,11 +3,10 @@ package domain.actions
 import arrow.core.left
 import arrow.core.right
 import domain.Status
-import domain.actions.SwitchError.StatusNotUpdatedError
+import domain.actions.errors.ActionError
 import domain.asDeviceHost
 import domain.asIdOnDevice
 import domain.repository.DeviceRepository
-import domain.repository.RetrieveError
 import domain.repository.SwitchClient
 import domain.utils.*
 import io.kotest.matchers.shouldBe
@@ -57,9 +56,9 @@ class DefaultSwitchActionTest {
     fun `device not found`() {
         val newStatus = Status.ON
 
-        every { deviceRepository.retrieve(aDeviceId) } returns RetrieveError.DeviceRetrieveError.left()
+        every { deviceRepository.retrieve(aDeviceId) } returns ActionError.RetrieveError.DeviceRetrieveError.left()
 
-        defaultSwitchAction.switch(aDeviceId, aThingId, newStatus) shouldBe SwitchError.DeviceNotAvailable.left()
+        defaultSwitchAction.switch(aDeviceId, aThingId, newStatus) shouldBe ActionError.SwitchError.DeviceNotAvailable.left()
 
         verify { switchClient wasNot Called }
     }
@@ -69,7 +68,7 @@ class DefaultSwitchActionTest {
         val deviceHost = "XXX".asDeviceHost()
         val newStatus = Status.ON
         val idOnDevice = 1.asIdOnDevice()
-        val expectedError = SwitchError.StatusAlreadySwitchedError.left()
+        val expectedError = ActionError.SwitchError.StatusAlreadySwitchedError.left()
 
         every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
             deviceHost = deviceHost,
@@ -97,7 +96,7 @@ class DefaultSwitchActionTest {
         val deviceHost = "XXX".asDeviceHost()
         val newStatus = Status.ON
         val idOnDevice = 1.asIdOnDevice()
-        val expectedError = StatusNotUpdatedError.left()
+        val expectedError = ActionError.SwitchError.StatusNotUpdatedError.left()
 
         every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
             deviceHost = deviceHost,

@@ -11,8 +11,8 @@ import domain.Thing
 import domain.ThingId
 import domain.ThingManagement
 import domain.ThingType
-import domain.actions.AddThingError
-import domain.actions.SwitchError
+import domain.actions.errors.ActionError
+import domain.actions.errors.ActionError.*
 import domain.asDeviceHost
 import domain.asDeviceId
 import domain.asDeviceName
@@ -20,7 +20,6 @@ import domain.asIdOnDevice
 import domain.asThingId
 import domain.asThingName
 import domain.repository.DeviceRepository
-import domain.repository.RetrieveError
 import org.slf4j.LoggerFactory
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
@@ -105,6 +104,10 @@ class MongoDeviceRepository(
             //TODO should it add a new device with the thing?
             AddThingError.MongoAddError.left()
         }
+
+    override fun addDevice(device: Device): Either<AddThingError, Unit> {
+        TODO("Not yet implemented")
+    }
 }
 
 fun Thing.toMongoThing(): MongoThing = MongoThing(

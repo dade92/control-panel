@@ -4,7 +4,8 @@ import arrow.core.left
 import arrow.core.right
 import domain.Status
 import domain.actions.DefaultSwitchAction
-import domain.actions.SwitchError
+import domain.actions.errors.ActionError
+import domain.actions.errors.ActionError.SwitchError
 import domain.utils.aDeviceId
 import domain.utils.aThingId
 import org.junit.jupiter.api.Test

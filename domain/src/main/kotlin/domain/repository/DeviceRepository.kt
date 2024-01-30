@@ -6,18 +6,13 @@ import domain.DeviceId
 import domain.Status
 import domain.Thing
 import domain.ThingId
-import domain.actions.AddThingError
-import domain.actions.SwitchError
+import domain.actions.errors.ActionError
 
 interface DeviceRepository {
-    fun retrieve(deviceId: DeviceId): Either<RetrieveError, Device>
-    fun retrieveAll(): Either<RetrieveError, List<Device>>
-    fun updateThingStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<SwitchError, Unit>
-    fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<RetrieveError, Unit>
-    fun addThing(deviceId: DeviceId, thing: Thing): Either<AddThingError, Unit>
-}
-
-sealed class RetrieveError {
-    object DeviceRetrieveError : RetrieveError()
-    object DeviceRemoveError : RetrieveError()
+    fun retrieve(deviceId: DeviceId): Either<ActionError.RetrieveError, Device>
+    fun retrieveAll(): Either<ActionError.RetrieveError, List<Device>>
+    fun updateThingStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<ActionError.SwitchError, Unit>
+    fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<ActionError.RetrieveError, Unit>
+    fun addThing(deviceId: DeviceId, thing: Thing): Either<ActionError.AddThingError, Unit>
+    fun addDevice(device: Device): Either<ActionError.AddThingError, Unit>
 }
