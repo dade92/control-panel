@@ -2,7 +2,6 @@ package domain.actions
 
 import arrow.core.Either
 import arrow.core.flatMap
-import arrow.core.left
 import domain.DeviceId
 import domain.Status
 import domain.ThingId
@@ -22,17 +21,12 @@ class DefaultSwitchAction(
         deviceId: DeviceId,
         thingId: ThingId,
         newStatus: Status
-    ): Either<ActionError.SwitchError, Unit> =
-        deviceRepository.retrieve(deviceId).fold(
-            {
-                ActionError.SwitchError.DeviceNotAvailable.left()
-            },
-            { device ->
-                val thing = device.things.first { it.id == thingId }
-                switchClient.switch(device.host, thing.idOnDevice, newStatus).flatMap {
-                    deviceRepository.updateThingStatus(deviceId, thingId, newStatus)
-                }
+    ): Either<ActionError, Unit> =
+        deviceRepository.retrieve(deviceId).flatMap { device ->
+            val thing = device.things.first { it.id == thingId }
+            switchClient.switch(device.host, thing.idOnDevice, newStatus).flatMap {
+                deviceRepository.updateThingStatus(deviceId, thingId, newStatus)
             }
-        )
+        }
 
 }

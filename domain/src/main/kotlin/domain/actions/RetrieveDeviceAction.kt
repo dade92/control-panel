@@ -10,8 +10,8 @@ class RetrieveDeviceAction(
     private val deviceRepository: DeviceRepository
 ) {
 
-    fun retrieveAll(): Either<ActionError.RetrieveError, List<Device>> = deviceRepository.retrieveAll()
+    fun retrieveAll(): Either<ActionError, List<Device>> = deviceRepository.retrieveAll()
 
-    fun retrieve(deviceId: DeviceId): Either<ActionError.RetrieveError, Device> = deviceRepository.retrieve(deviceId)
+    fun retrieve(deviceId: DeviceId): Either<ActionError, Device> = deviceRepository.retrieve(deviceId)
 
 }
