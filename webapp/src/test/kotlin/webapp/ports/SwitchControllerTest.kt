@@ -4,6 +4,7 @@ import arrow.core.left
 import arrow.core.right
 import domain.Status
 import domain.actions.DefaultSwitchAction
+import domain.actions.SwitchAction
 import domain.actions.errors.ActionError
 import domain.actions.errors.ActionError.SwitchError
 import domain.utils.aDeviceId
@@ -27,7 +28,7 @@ class SwitchControllerTest {
     private lateinit var mvc: MockMvc
 
     @MockBean
-    private lateinit var switchAction: DefaultSwitchAction
+    private lateinit var switchAction: SwitchAction
 
     @Test
     fun `switch lamp ON successfully`() {
