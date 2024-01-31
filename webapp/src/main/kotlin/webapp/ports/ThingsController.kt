@@ -7,6 +7,7 @@ import domain.actions.RetrieveDeviceAction
 import domain.actions.SwitchAction
 import domain.actions.request.AddThingRequest
 import org.springframework.http.ResponseEntity
+import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -22,10 +23,10 @@ class ThingsController(
     fun retrieveThings(): ResponseEntity<*> =
         retrieveDeviceAction.retrieveAll().fold(
             {
-                ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
+                internalServerError().body(ErrorResponse(it.javaClass.simpleName))
             },
             {
-                ResponseEntity.ok(
+                ok(
                     ThingsResponse(
                         things = deviceToThingResponseAdapter.adapt(it)
                     )
@@ -40,10 +41,10 @@ class ThingsController(
     ): ResponseEntity<*> =
         removeThingsAction.remove(deviceId, thingId).fold(
             {
-                ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
+                internalServerError().body(ErrorResponse(it.javaClass.simpleName))
             },
             {
-                ResponseEntity.noContent().build()
+                noContent().build()
             }
         )
 
@@ -54,10 +55,10 @@ class ThingsController(
     ): ResponseEntity<*> =
         addThingAction.add(deviceId, addThingRequest).fold(
             {
-                ResponseEntity.internalServerError().body(ErrorResponse(it.javaClass.simpleName))
+                internalServerError().body(ErrorResponse(it.javaClass.simpleName))
             },
             {
-                ResponseEntity.noContent().build()
+                noContent().build()
             }
         )
 }

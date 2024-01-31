@@ -111,7 +111,7 @@ class MongoDeviceRepository(
             Unit.right()
         } catch (e: Exception) {
             logger.error("Error inserting device ${device.deviceId}", e)
-            AddError.AddThingError.left()
+            AddError.AddDeviceError.left()
         }
     }
 }
