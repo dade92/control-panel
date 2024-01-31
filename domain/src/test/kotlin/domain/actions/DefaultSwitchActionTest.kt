@@ -5,6 +5,7 @@ import arrow.core.right
 import domain.Status
 import domain.actions.errors.ActionError.RetrieveError
 import domain.actions.errors.ActionError.SwitchError
+import domain.actions.errors.ActionError.SwitchError.*
 import domain.asDeviceHost
 import domain.asIdOnDevice
 import domain.repository.DeviceRepository
@@ -71,11 +72,33 @@ class DefaultSwitchActionTest {
     }
 
     @Test
+    fun `thing not found`() {
+        val deviceHost = "XXX".asDeviceHost()
+        val newStatus = Status.ON
+        val idOnDevice = 1.asIdOnDevice()
+
+        every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
+            deviceHost = deviceHost,
+            things = listOf(
+                aThing(
+                    thingId = aThingId,
+                    idOnDevice = idOnDevice
+                )
+            )
+        ).right()
+
+        defaultSwitchAction.switch(aDeviceId, anotherThingId, newStatus) shouldBe ThingNotFound.left()
+
+        verify { switchClient wasNot Called }
+        verify { deviceRepository.updateThingStatus(aDeviceId, aThingId, newStatus) wasNot Called }
+    }
+
+    @Test
     fun `switch fails`() {
         val deviceHost = "XXX".asDeviceHost()
         val newStatus = Status.ON
         val idOnDevice = 1.asIdOnDevice()
-        val expectedError = SwitchError.StatusAlreadySwitchedError.left()
+        val expectedError = StatusAlreadySwitchedError.left()
 
         every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
             deviceHost = deviceHost,
@@ -103,7 +126,7 @@ class DefaultSwitchActionTest {
         val deviceHost = "XXX".asDeviceHost()
         val newStatus = Status.ON
         val idOnDevice = 1.asIdOnDevice()
-        val expectedError = SwitchError.StatusNotUpdatedError.left()
+        val expectedError = StatusNotUpdatedError.left()
 
         every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
             deviceHost = deviceHost,

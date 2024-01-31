@@ -12,6 +12,7 @@ sealed class ActionError {
     sealed class SwitchError: ActionError() {
         object DeviceNotAvailable : SwitchError()
         object DeviceNotFound : SwitchError()
+        object ThingNotFound : SwitchError()
         object MismatchStatusError : SwitchError()
         object ThingNotBelongingToDeviceError : SwitchError()
         object StatusAlreadySwitchedError : SwitchError()
