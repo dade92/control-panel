@@ -7,8 +7,7 @@ import domain.DeviceId
 import domain.Status
 import domain.ThingId
 import domain.actions.errors.ActionError
-import domain.actions.errors.ActionError.*
-import domain.actions.errors.ActionError.SwitchError.*
+import domain.actions.errors.ActionError.SwitchError.ThingNotFound
 import domain.repository.DeviceRepository
 import domain.repository.SwitchClient
 
@@ -26,12 +25,12 @@ class DefaultSwitchAction(
         newStatus: Status
     ): Either<ActionError, Unit> =
         deviceRepository.retrieve(deviceId).flatMap { device ->
-            val thing = device.things.firstOrNull { it.id == thingId }
-            thing?.let {
-                switchClient.switch(device.host, thing.idOnDevice, newStatus).flatMap {
+            device.things.firstOrNull { it.id == thingId }?.let {
+                switchClient.switch(device.host, it.idOnDevice, newStatus).flatMap {
                     deviceRepository.updateThingStatus(deviceId, thingId, newStatus)
                 }
             } ?: ThingNotFound.left()
+
         }
 
 }
