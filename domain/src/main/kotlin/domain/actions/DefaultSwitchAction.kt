@@ -30,7 +30,6 @@ class DefaultSwitchAction(
                     deviceRepository.updateThingStatus(deviceId, thingId, newStatus)
                 }
             } ?: ThingNotFound.left()
-
         }
 
 }
