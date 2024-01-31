@@ -176,4 +176,20 @@ class MongoDeviceRepositoryTest {
             )
         ).right()
     }
+
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @Test
+    fun `add a new device`() {
+        val deviceId = "ef4a33f3-2513-49a0-947d-5aee3642501e".asDeviceId()
+
+        val newDevice = Device(
+            deviceId,
+            "new device name".asDeviceName(),
+            "new device host".asDeviceHost(),
+            emptyList()
+        )
+        mongoDeviceRepository.addDevice(newDevice) shouldBe Unit.right()
+
+        mongoDeviceRepository.retrieve(deviceId) shouldBe newDevice.right()
+    }
 }

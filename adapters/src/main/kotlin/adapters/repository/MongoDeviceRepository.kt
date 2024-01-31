@@ -11,8 +11,9 @@ import domain.Thing
 import domain.ThingId
 import domain.ThingManagement
 import domain.ThingType
-import domain.actions.errors.ActionError
-import domain.actions.errors.ActionError.*
+import domain.actions.errors.ActionError.AddError
+import domain.actions.errors.ActionError.RetrieveError
+import domain.actions.errors.ActionError.SwitchError
 import domain.asDeviceHost
 import domain.asDeviceId
 import domain.asDeviceName
@@ -89,7 +90,7 @@ class MongoDeviceRepository(
             RetrieveError.DeviceRemoveError.left()
         }
 
-    override fun addThing(deviceId: DeviceId, thing: Thing): Either<AddThingError, Unit> =
+    override fun addThing(deviceId: DeviceId, thing: Thing): Either<AddError.AddThingError, Unit> =
         try {
             val query = Query.query(Criteria.where("_id").`is`(deviceId.value.toString()))
 
@@ -101,11 +102,17 @@ class MongoDeviceRepository(
             Unit.right()
         } catch (e: Exception) {
             logger.error("Error adding the thing ${thing.id} due to ", e)
-            AddThingError.MongoAddError.left()
+            AddError.AddThingError.left()
         }
 
-    override fun addDevice(device: Device): Either<AddThingError, Unit> {
-        TODO("Not yet implemented")
+    override fun addDevice(device: Device): Either<AddError, Unit> {
+        return try {
+            mongoTemplate.insert(device.toMongoDevice(), COLLECTION_NAME)
+            Unit.right()
+        } catch (e: Exception) {
+            logger.error("Error inserting device ${device.deviceId}", e)
+            AddError.AddThingError.left()
+        }
     }
 }
 
@@ -115,6 +122,13 @@ private fun Thing.toMongoThing(): MongoThing = MongoThing(
     this.type.name,
     MongoThing.Management(this.management.switch),
     this.idOnDevice.value
+)
+
+private fun Device.toMongoDevice(): MongoDevice = MongoDevice(
+    this.deviceId.value.toString(),
+    this.deviceName.value,
+    this.host.value,
+    this.things.map { it.toMongoThing() }
 )
 
 

@@ -6,11 +6,11 @@ import domain.asIdOnDevice
 
 class IdOnDeviceRetriever {
     fun get(device: Device): IdOnDevice =
-        device.things.map { it.idOnDevice.value }.let {
-            if (it.isEmpty()) {
+        device.things.map { it.idOnDevice.value }.let { idsOnDevice ->
+            if (idsOnDevice.isEmpty()) {
                 1.asIdOnDevice()
             } else {
-                (it.maxOf { it } + 1).asIdOnDevice()
+                (idsOnDevice.maxOf { it } + 1).asIdOnDevice()
             }
         }
 

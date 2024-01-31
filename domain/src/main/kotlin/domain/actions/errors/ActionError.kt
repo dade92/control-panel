@@ -1,8 +1,12 @@
 package domain.actions.errors
 
 sealed class ActionError {
-    sealed class AddThingError : ActionError() {
-        object MongoAddError : AddThingError()
+
+    sealed class AddError: ActionError() {
+        object AddThingError: AddError()
+
+        object AddDeviceError: AddError()
+
     }
 
     sealed class SwitchError: ActionError() {

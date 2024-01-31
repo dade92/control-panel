@@ -2,12 +2,16 @@ package domain.actions
 
 import arrow.core.left
 import arrow.core.right
+import domain.Device
+import domain.DeviceId
 import domain.Status
 import domain.Thing
 import domain.ThingManagement
 import domain.ThingType
 import domain.actions.errors.ActionError
 import domain.actions.request.AddThingRequest
+import domain.asDeviceHost
+import domain.asDeviceName
 import domain.asIdOnDevice
 import domain.repository.DeviceRepository
 import domain.utils.IdOnDeviceRetriever
@@ -19,6 +23,7 @@ import domain.utils.aThingName
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 class AddThingActionTest {
@@ -50,12 +55,29 @@ class AddThingActionTest {
         addThingAction.add(aDeviceId, AddThingRequest(aThingName, ThingType.LAMP)) shouldBe result
     }
 
-    //TODO fix this test, understand what to do
     @Test
-    fun `device not found`() {
+    fun `device not found, create a new one`() {
+        val thingType = ThingType.LAMP
+
         every { randomThingIdGenerator.retrieve() } returns aThingId
         every { deviceRepository.retrieve(aDeviceId) } returns ActionError.RetrieveError.DeviceRetrieveError.left()
+        every { deviceRepository.addDevice(Device(
+            aDeviceId,
+            "".asDeviceName(),
+            "".asDeviceHost(),
+            listOf(
+                Thing(
+                    aThingId,
+                    aThingName,
+                    thingType,
+                    ThingManagement(
+                        Status.OFF
+                    ),
+                    1.asIdOnDevice()
+                )
+            )
+        )) } returns Unit.right()
 
-        addThingAction.add(aDeviceId, AddThingRequest(aThingName, ThingType.LAMP)) shouldBe ActionError.AddThingError.MongoAddError.left()
+        addThingAction.add(aDeviceId, AddThingRequest(aThingName, thingType)) shouldBe Unit.right()
     }
 }

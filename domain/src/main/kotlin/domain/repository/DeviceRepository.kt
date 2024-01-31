@@ -13,6 +13,6 @@ interface DeviceRepository {
     fun retrieveAll(): Either<ActionError.RetrieveError, List<Device>>
     fun updateThingStatus(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<ActionError.SwitchError, Unit>
     fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<ActionError.RetrieveError, Unit>
-    fun addThing(deviceId: DeviceId, thing: Thing): Either<ActionError.AddThingError, Unit>
-    fun addDevice(device: Device): Either<ActionError.AddThingError, Unit>
+    fun addThing(deviceId: DeviceId, thing: Thing): Either<ActionError.AddError, Unit>
+    fun addDevice(device: Device): Either<ActionError.AddError, Unit>
 }
