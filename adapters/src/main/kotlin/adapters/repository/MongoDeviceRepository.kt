@@ -101,7 +101,6 @@ class MongoDeviceRepository(
             Unit.right()
         } catch (e: Exception) {
             logger.error("Error adding the thing ${thing.id} due to ", e)
-            //TODO should it add a new device with the thing?
             AddThingError.MongoAddError.left()
         }
 
@@ -110,7 +109,7 @@ class MongoDeviceRepository(
     }
 }
 
-fun Thing.toMongoThing(): MongoThing = MongoThing(
+private fun Thing.toMongoThing(): MongoThing = MongoThing(
     this.id.value.toString(),
     this.name.value,
     this.type.name,

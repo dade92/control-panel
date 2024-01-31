@@ -16,4 +16,11 @@ class IdOnDeviceRetrieverTest {
             )
         ) shouldBe 3.asIdOnDevice()
     }
+
+    @Test
+    fun `in case of empty list`() {
+        idOnDeviceRetriever.get(
+            aDevice(things = emptyList())
+        ) shouldBe 1.asIdOnDevice()
+    }
 }

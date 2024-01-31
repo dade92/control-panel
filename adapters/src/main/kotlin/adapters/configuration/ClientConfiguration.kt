@@ -15,8 +15,8 @@ class ClientConfiguration {
     fun switchClient(restTemplateBuilder: RestTemplateBuilder): SwitchClient =
         RestSwitchClient(
             restTemplateBuilder
-                .setConnectTimeout(Duration.of(5, ChronoUnit.SECONDS))
-                .setReadTimeout(Duration.of(5, ChronoUnit.SECONDS))
+                .setConnectTimeout(Duration.of(3, ChronoUnit.SECONDS))
+                .setReadTimeout(Duration.of(3, ChronoUnit.SECONDS))
                 .build()
         )
 
