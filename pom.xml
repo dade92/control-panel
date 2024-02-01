@@ -35,6 +35,7 @@
         <jmock.version>2.12.0</jmock.version>
         <log4j2.version>2.16.0</log4j2.version>
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
+        <mockk-jvm.version>1.13.9</mockk-jvm.version>
     </properties>
 
     <dependencies>
@@ -99,6 +100,13 @@
             <version>1.4.0</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.mockk</groupId>
+            <artifactId>mockk-jvm</artifactId>
+            <version>${mockk-jvm.version}</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

@@ -16,7 +16,7 @@
     <name>adapters</name>
 
     <properties>
-        <h2.version>2.1.214</h2.version>
+        <wiremock-jre8-standalone.version>2.35.0</wiremock-jre8-standalone.version>
     </properties>
 
     <dependencies>
@@ -24,6 +24,12 @@
             <groupId>com.projects.embedded</groupId>
             <artifactId>domain</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.projects.embedded</groupId>
+            <artifactId>domain</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <type>test-jar</type>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -43,6 +49,12 @@
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>1.19.3</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.tomakehurst</groupId>
+            <artifactId>wiremock-jre8-standalone</artifactId>
+            <version>${wiremock-jre8-standalone.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

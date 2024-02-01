@@ -14,12 +14,14 @@ describe('ControlPanel', () => {
             .id('123')
             .name('a thing')
             .type(ThingType.LAMP)
+            .deviceId('789')
             .management({switch: ThingStatus.OFF})
             .build();
         anotherThing = Builder<Thing>()
             .id('456')
             .name('another thing')
             .type(ThingType.LAMP)
+            .deviceId('789')
             .management({switch: ThingStatus.OFF})
             .build();
     })
@@ -132,7 +134,7 @@ describe('ControlPanel', () => {
             fireEvent.click(screen.getByTestId('confirm-button'));
 
             await waitFor(() => {
-                expect(removeThingsProvider).toHaveBeenCalledWith('123');
+                expect(removeThingsProvider).toHaveBeenCalledWith('789', '123');
                 expect(screen.queryByTestId('thing-wrapper-123')).toBeNull();
             });
         })

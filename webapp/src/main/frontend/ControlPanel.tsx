@@ -3,7 +3,7 @@ import {Thing} from "./Thing";
 import {Loader} from "./Loader";
 import {FeedbackMessage} from "./FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
-import {RetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
+import {RetrieveThingsProvider, ThingsRetrieveResponse} from "./logic/RetrieveThingsProvider";
 import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 
@@ -28,7 +28,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
 
     useEffect(() => {
         retrieveThingsProvider()
-            .then((response) => {
+            .then((response:ThingsRetrieveResponse) => {
                 setThings(response.things);
             })
             .catch(() => {
@@ -43,7 +43,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
 
     const onThingRemoved = (thing: Thing) => {
         setIdToBeRemoved(thing.id);
-        removeThingsProvider(thing.id)
+        removeThingsProvider(thing.deviceId, thing.id)
             .then(() => {
                 setThings(things!.filter((t) => t.id != thing.id));
                 setOutcome({
