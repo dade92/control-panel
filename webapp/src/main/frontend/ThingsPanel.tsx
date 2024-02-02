@@ -1,6 +1,6 @@
 import {FC, useState} from "react";
 import {ThingDetails} from "./ThingDetails";
-import {Thing} from "./Thing";
+import {Thing, ThingType} from "./Thing";
 import styled from "styled-components";
 import {Divider, List} from "@mui/material";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
@@ -93,7 +93,11 @@ export const ThingsPanel: FC<Props> = ({
                 <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
             {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
-            {addThing && <AddThingModal handleClose={() => setAddThing(false)}/>}
+            {addThing && <AddThingModal handleClose={() => setAddThing(false)}
+                                        onAddThing={(thingTpe: ThingType, thingName: string) => {
+                                            console.log(`${thingTpe} and ${thingName}`)
+                                        }}/>
+            }
         </ThingsPanelWrapper>
     );
 }
