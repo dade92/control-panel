@@ -69,8 +69,8 @@ export const ThingsPanel: FC<Props> = ({
         setRemovedThing(null);
     }
 
-    const onAddThing = (thingType: ThingType, thingName: string) => {
-        addThingProvider(null, thingType, thingName)
+    const onAddThing = (deviceId: string | null, thingType: ThingType, thingName: string) => {
+        addThingProvider(deviceId, thingType, thingName)
             .then(() => {
 
                 setAddThing(false);
@@ -108,11 +108,13 @@ export const ThingsPanel: FC<Props> = ({
                 <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
             {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
-            {addThing && <AddThingModal devices={thingsToDeviceAdapter(things)} handleClose={() => setAddThing(false)}
-                                        onAddThing={(thingType: ThingType, thingName: string) => {
-                                            console.log(`${thingType} and ${thingName}`);
-                                            onAddThing(thingType, thingName);
-                                        }}/>
+            {
+                addThing && <AddThingModal devices={thingsToDeviceAdapter(things)}
+                                           handleClose={() => setAddThing(false)}
+                                           onAddThing={(deviceId: string | null, thingType: ThingType, thingName: string) => {
+                                               console.log(`${thingType} and ${thingName}`);
+                                               onAddThing(deviceId, thingType, thingName);
+                                           }}/>
             }
         </ThingsPanelWrapper>
     );

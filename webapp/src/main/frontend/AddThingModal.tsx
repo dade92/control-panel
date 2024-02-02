@@ -27,7 +27,7 @@ const Wrapper = styled.div`
 interface Props {
     devices: Device[];
     handleClose: () => void;
-    onAddThing: (thingTpe: ThingType, thingName: string) => void;
+    onAddThing: (deviceId: string | null, thingTpe: ThingType, thingName: string) => void;
 }
 
 export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => {
@@ -37,7 +37,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
 
     const onConfirm = () => {
         if (thingName.length > 0) {
-            onAddThing(thingType, thingName)
+            onAddThing(deviceId, thingType, thingName);
         } else {
             console.log('name must be inserted!');
         }
