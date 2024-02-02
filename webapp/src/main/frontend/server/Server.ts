@@ -69,6 +69,7 @@ const things200 = (): Response => new Response(200, {}, thingsResponse);
 const things500 = (): Response => new Response(500);
 const switchStatus200 = (): Response => new Response(204);
 const removeThing200 = (): Response => new Response(204);
+const addThing200 = (): Response => new Response(204);
 const switchStatus500 = (): Response => new Response(500);
 
 export const server: () => Server = () =>
@@ -78,5 +79,6 @@ export const server: () => Server = () =>
             this.get('/api/v1/things', things200, {timing: 1000});
             this.post('/api/v1/switch/:deviceId/:thingId', switchStatus200, {timing: 1000});
             this.post('/api/v1/things/remove/:thingId', removeThing200, {timing: 1000});
+            this.post('/api/v1/things/add', addThing200, {timing: 1000});
         },
     });

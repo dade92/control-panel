@@ -33,6 +33,14 @@ export const AddThingModal: FC<Props> = ({handleClose, onAddThing}) => {
     const [thingType, setThingType] = useState<ThingType>(ThingType.LAMP);
     const [thingName, setThingName] = useState<string>('');
 
+    const onConfirm = () => {
+        if (thingName.length > 0) {
+            onAddThing(thingType, thingName)
+        } else {
+            console.log('name must be inserted!');
+        }
+    };
+
     return <Dialog sx={{padding: "8px"}} data-testid={'add-thing-modal'} open={true}>
         <DialogTitle sx={{m: 0, p: 2}}>Add a thing</DialogTitle>
         <IconButton
@@ -69,8 +77,7 @@ export const AddThingModal: FC<Props> = ({handleClose, onAddThing}) => {
             </Wrapper>
         </DialogContent>
         <DialogActions>
-            //TODO perform validation of the fields!
-            <Button data-testid={'confirm-button'} onClick={() => onAddThing(thingType, thingName)}>Add</Button>
+            <Button data-testid={'confirm-button'} onClick={onConfirm}>Add</Button>
         </DialogActions>
     </Dialog>
 }
