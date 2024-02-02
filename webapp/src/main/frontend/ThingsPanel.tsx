@@ -93,7 +93,7 @@ export const ThingsPanel: FC<Props> = ({
                 <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
             {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
-            {addThing && <AddThingModal/>}
+            {addThing && <AddThingModal handleClose={() => setAddThing(false)}/>}
         </ThingsPanelWrapper>
     );
 }
