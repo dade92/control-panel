@@ -7,6 +7,7 @@ import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingButton} from "./AddThingButton";
 import {ConfirmModal} from "./ConfirmModal";
 import {Subtitle} from "./Subtitle";
+import {AddThingModal} from "./AddThingModal";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -41,8 +42,15 @@ interface Props {
     idWaitingToBeRemoved: string | null;
 }
 
-export const ThingsPanel: FC<Props> = ({things, onChangeStatus, switchStatusProvider, onThingRemoved, idWaitingToBeRemoved}) => {
+export const ThingsPanel: FC<Props> = ({
+                                           things,
+                                           onChangeStatus,
+                                           switchStatusProvider,
+                                           onThingRemoved,
+                                           idWaitingToBeRemoved
+                                       }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
+    const [addThing, setAddThing] = useState<boolean>(false);
 
     const onRemove = (thing: Thing) => {
         setRemovedThing(thing);
@@ -82,9 +90,10 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, switchStatusProv
                         </>
                     })}
                 </List>
-                <AddThingButton onAddThingClicked={() => console.log('TODO!')}/>
+                <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
             {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
+            {addThing && <AddThingModal/>}
         </ThingsPanelWrapper>
     );
 }
