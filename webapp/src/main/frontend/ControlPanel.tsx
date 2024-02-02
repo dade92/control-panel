@@ -86,6 +86,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
                 switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={idToBeRemoved}
+                addThingProvider={addThingProvider}
             />
             {
                 outcome?.isSuccess && <FeedbackMessage

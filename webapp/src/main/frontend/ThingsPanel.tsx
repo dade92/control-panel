@@ -8,6 +8,7 @@ import {AddThingButton} from "./AddThingButton";
 import {ConfirmModal} from "./ConfirmModal";
 import {Subtitle} from "./Subtitle";
 import {AddThingModal} from "./AddThingModal";
+import {AddThingProvider} from "./logic/AddThingProvider";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -40,6 +41,7 @@ interface Props {
     switchStatusProvider: SwitchStatusProvider;
     onThingRemoved: (thing: Thing) => void;
     idWaitingToBeRemoved: string | null;
+    addThingProvider: AddThingProvider;
 }
 
 export const ThingsPanel: FC<Props> = ({
@@ -47,7 +49,8 @@ export const ThingsPanel: FC<Props> = ({
                                            onChangeStatus,
                                            switchStatusProvider,
                                            onThingRemoved,
-                                           idWaitingToBeRemoved
+                                           idWaitingToBeRemoved,
+                                           addThingProvider
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
@@ -63,6 +66,12 @@ export const ThingsPanel: FC<Props> = ({
     const onRemoveConfirmed = () => {
         onThingRemoved(removedThing!);
         setRemovedThing(null);
+    }
+
+    const onAddThing = (thingType: ThingType, thingName: string) => {
+        //TODO handle success/failure
+        addThingProvider(null, thingType, thingName);
+        setAddThing(false);
     }
 
     return (
@@ -94,9 +103,9 @@ export const ThingsPanel: FC<Props> = ({
             </ListWrapper>
             {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
             {addThing && <AddThingModal handleClose={() => setAddThing(false)}
-                                        onAddThing={(thingTpe: ThingType, thingName: string) => {
-                                            console.log(`${thingTpe} and ${thingName}`)
-                                            setAddThing(false)
+                                        onAddThing={(thingType: ThingType, thingName: string) => {
+                                            console.log(`${thingType} and ${thingName}`);
+                                            onAddThing(thingType, thingName);
                                         }}/>
             }
         </ThingsPanelWrapper>
