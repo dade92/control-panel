@@ -36,6 +36,7 @@ describe('ControlPanel', () => {
                 retrieveThingsProvider={retrieveThingsProvider}
                 removeThingsProvider={jest.fn()}
                 switchStatusProvider={jest.fn()}
+                addThingProvider={jest.fn()}
             />);
 
         expect(screen.getByTestId('loader-wrapper')).toBeVisible();
@@ -60,6 +61,7 @@ describe('ControlPanel', () => {
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={removeThingsProvider}
                     switchStatusProvider={switchStatusProvider}
+                    addThingProvider={jest.fn()}
                 />
             );
 
@@ -89,6 +91,7 @@ describe('ControlPanel', () => {
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={removeThingsProvider}
                     switchStatusProvider={switchStatusProvider}
+                    addThingProvider={jest.fn()}
                 />
             );
 
@@ -118,6 +121,7 @@ describe('ControlPanel', () => {
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={removeThingsProvider}
                     switchStatusProvider={switchStatusProvider}
+                    addThingProvider={jest.fn()}
                 />
             );
 
@@ -151,6 +155,7 @@ describe('ControlPanel', () => {
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={removeThingsProvider}
                     switchStatusProvider={switchStatusProvider}
+                    addThingProvider={jest.fn()}
                 />
             );
 

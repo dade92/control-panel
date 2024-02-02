@@ -96,6 +96,7 @@ export const ThingsPanel: FC<Props> = ({
             {addThing && <AddThingModal handleClose={() => setAddThing(false)}
                                         onAddThing={(thingTpe: ThingType, thingName: string) => {
                                             console.log(`${thingTpe} and ${thingName}`)
+                                            setAddThing(false)
                                         }}/>
             }
         </ThingsPanelWrapper>

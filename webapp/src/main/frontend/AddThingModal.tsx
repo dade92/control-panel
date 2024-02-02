@@ -69,6 +69,7 @@ export const AddThingModal: FC<Props> = ({handleClose, onAddThing}) => {
             </Wrapper>
         </DialogContent>
         <DialogActions>
+            //TODO perform validation of the fields!
             <Button data-testid={'confirm-button'} onClick={() => onAddThing(thingType, thingName)}>Add</Button>
         </DialogActions>
     </Dialog>

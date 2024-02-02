@@ -6,11 +6,13 @@ import {ThingsPanel} from "./ThingsPanel";
 import {RetrieveThingsProvider, ThingsRetrieveResponse} from "./logic/RetrieveThingsProvider";
 import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
+import {AddThingProvider} from "./logic/AddThingProvider";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
     removeThingsProvider: RemoveThingsProvider;
     switchStatusProvider: SwitchStatusProvider;
+    addThingProvider: AddThingProvider;
 }
 
 interface Outcome {
@@ -20,7 +22,7 @@ interface Outcome {
     changedThing: Thing | null;
 }
 
-export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsProvider, switchStatusProvider}) => {
+export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsProvider, switchStatusProvider, addThingProvider}) => {
     const [things, setThings] = useState<Thing[] | null>(null);
     const defaultOutcome = {isSuccess: false, error: false, message: null, changedThing: null};
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
