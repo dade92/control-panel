@@ -48,12 +48,11 @@ class ThingsController(
             }
         )
 
-    @PostMapping("/v1/things/add/{deviceId}")
+    @PostMapping("/v1/things/add")
     fun addThing(
-        @PathVariable deviceId: DeviceId,
         @RequestBody addThingRequest: AddThingRequest
     ): ResponseEntity<*> =
-        addThingAction.add(deviceId, addThingRequest).fold(
+        addThingAction.add(addThingRequest).fold(
             {
                 internalServerError().body(ErrorResponse(it.javaClass.simpleName))
             },

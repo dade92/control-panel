@@ -117,15 +117,15 @@ class ThingsControllerTest {
     @Test
     fun `add thing on a device`() {
         `when`(addThingAction.add(
-            aDeviceId,
             AddThingRequest(
+                aDeviceId,
                 "new name".asThingName(),
                 ThingType.LAMP
             ))
         ).thenReturn(Unit.right())
 
         mvc.perform(
-            post("/api/v1/things/add/${aDeviceId}")
+            post("/api/v1/things/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Fixtures.readJson("/addThingRequest.json"))
         ).andExpect(status().isNoContent())

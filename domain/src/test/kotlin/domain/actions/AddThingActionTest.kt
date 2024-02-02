@@ -52,7 +52,7 @@ class AddThingActionTest {
             )
         } returns result
 
-        addThingAction.add(aDeviceId, AddThingRequest(aThingName, ThingType.LAMP)) shouldBe result
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe result
     }
 
     @Test
@@ -78,6 +78,6 @@ class AddThingActionTest {
             )
         )) } returns Unit.right()
 
-        addThingAction.add(aDeviceId, AddThingRequest(aThingName, thingType)) shouldBe Unit.right()
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe Unit.right()
     }
 }

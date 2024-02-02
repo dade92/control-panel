@@ -23,11 +23,11 @@ class AddThingAction(
     private val idOnDeviceRetriever: IdOnDeviceRetriever
 ) {
 
-    fun add(deviceId: DeviceId, addThingRequest: AddThingRequest): Either<ActionError, Unit> =
-        deviceRepository.retrieve(deviceId).fold(
+    fun add(addThingRequest: AddThingRequest): Either<ActionError, Unit> =
+        deviceRepository.retrieve(addThingRequest.deviceId).fold(
             { error ->
                 deviceRepository.addDevice(Device(
-                    deviceId,
+                    addThingRequest.deviceId,
                     "".asDeviceName(),
                     "".asDeviceHost(),
                     listOf(Thing(
@@ -41,7 +41,7 @@ class AddThingAction(
             },
             { device ->
                 deviceRepository.addThing(
-                    deviceId,
+                    addThingRequest.deviceId,
                     Thing(
                         randomThingIdGenerator.retrieve(),
                         addThingRequest.name,
