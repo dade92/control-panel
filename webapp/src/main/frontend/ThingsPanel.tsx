@@ -9,6 +9,7 @@ import {ConfirmModal} from "./ConfirmModal";
 import {Subtitle} from "./Subtitle";
 import {AddThingModal} from "./AddThingModal";
 import {AddThingProvider} from "./logic/AddThingProvider";
+import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -69,9 +70,14 @@ export const ThingsPanel: FC<Props> = ({
     }
 
     const onAddThing = (thingType: ThingType, thingName: string) => {
-        //TODO handle success/failure
-        addThingProvider(null, thingType, thingName);
-        setAddThing(false);
+        addThingProvider(null, thingType, thingName)
+            .then(() => {
+
+                setAddThing(false);
+            })
+            .catch(() => {
+                console.log('Error while adding the new thing')
+            });
     }
 
     return (
@@ -102,7 +108,7 @@ export const ThingsPanel: FC<Props> = ({
                 <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
             {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
-            {addThing && <AddThingModal handleClose={() => setAddThing(false)}
+            {addThing && <AddThingModal devices={thingsToDeviceAdapter(things)} handleClose={() => setAddThing(false)}
                                         onAddThing={(thingType: ThingType, thingName: string) => {
                                             console.log(`${thingType} and ${thingName}`);
                                             onAddThing(thingType, thingName);

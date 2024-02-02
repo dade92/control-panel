@@ -1,10 +1,15 @@
 export interface Thing {
     id: string,
     name: string,
-    deviceName: string,
+    device: string,
     deviceId: string,
     type: ThingType,
     management: Management
+}
+
+export interface Device {
+    deviceId: string;
+    deviceName: string;
 }
 
 export enum ThingType {

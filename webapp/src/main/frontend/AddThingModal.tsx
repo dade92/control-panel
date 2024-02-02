@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import CloseIcon from '@mui/icons-material/Close';
-import {ThingType} from "./Thing";
+import {Device, ThingType} from "./Thing";
 
 
 const Wrapper = styled.div`
@@ -25,19 +25,30 @@ const Wrapper = styled.div`
 `
 
 interface Props {
+    devices: Device[];
     handleClose: () => void;
     onAddThing: (thingTpe: ThingType, thingName: string) => void;
 }
 
-export const AddThingModal: FC<Props> = ({handleClose, onAddThing}) => {
+export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => {
     const [thingType, setThingType] = useState<ThingType>(ThingType.LAMP);
     const [thingName, setThingName] = useState<string>('');
+    const [deviceId, setDeviceId] = useState<string | null>(null);
 
     const onConfirm = () => {
         if (thingName.length > 0) {
             onAddThing(thingType, thingName)
         } else {
             console.log('name must be inserted!');
+        }
+    };
+
+    const computeDeviceName = () => {
+        const result: Device[] = devices.filter((t) => t.deviceId == deviceId);
+        if (result.length == 0) {
+            return 'New device';
+        } else {
+            return devices[0].deviceName
         }
     };
 
@@ -58,7 +69,26 @@ export const AddThingModal: FC<Props> = ({handleClose, onAddThing}) => {
         <DialogContent dividers={true}>
             <Wrapper>
                 <FormControl fullWidth>
-                    <InputLabel id="demo-simple-select-label">Thing type</InputLabel>
+                    <InputLabel>Device</InputLabel>
+                    <Select
+                        labelId="device-name-selector"
+                        id="device-name-selector"
+                        defaultOpen={false}
+                        value={computeDeviceName()}
+                        label="Device name"
+                        onChange={(e: SelectChangeEvent) =>
+                            setDeviceId(devices.filter((d) => d.deviceName == e.target.value)[0]?.deviceId)}
+                    >
+                        <MenuItem id={'new-device'} value={''}>New device</MenuItem>
+                        {
+                            devices.map((d) => {
+                                return <MenuItem id={d.deviceId} value={d.deviceName}>{d.deviceName}</MenuItem>
+                            })
+                        }
+                    </Select>
+                </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel>Thing type</InputLabel>
                     <Select
                         labelId="thing-type-selector"
                         id="thing-type-selector"
@@ -67,7 +97,7 @@ export const AddThingModal: FC<Props> = ({handleClose, onAddThing}) => {
                         label="Thing type"
                         onChange={(e: SelectChangeEvent) => setThingType(e.target.value as ThingType)}
                     >
-                        <MenuItem value={'LAMP'}> LAMP</MenuItem>
+                        <MenuItem value={'LAMP'}>LAMP</MenuItem>
                         <MenuItem value={'ALARM'}>ALARM</MenuItem>
                     </Select>
                 </FormControl>
