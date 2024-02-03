@@ -65,11 +65,25 @@ const thingsResponse = {
     ]
 };
 
+const thingAddedResponse = {
+    thing: {
+        id: '888',
+        name: 'Allarme casa',
+        device: "arduino uno",
+        deviceId: "XYZ",
+        type: "ALARM",
+        management: {
+            switch: "OFF"
+        }
+    }
+}
+
 const things200 = (): Response => new Response(200, {}, thingsResponse);
 const things500 = (): Response => new Response(500);
 const switchStatus200 = (): Response => new Response(204);
 const removeThing200 = (): Response => new Response(204);
-const addThing200 = (): Response => new Response(204);
+const addThing200 = (): Response => new Response(200, {}, thingAddedResponse);
+const addThing500 = (): Response => new Response(500, {});
 const switchStatus500 = (): Response => new Response(500);
 
 export const server: () => Server = () =>

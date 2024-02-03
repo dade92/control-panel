@@ -22,7 +22,12 @@ interface Outcome {
     changedThing: Thing | null;
 }
 
-export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsProvider, switchStatusProvider, addThingProvider}) => {
+export const ControlPanel: FC<Props> = ({
+                                            retrieveThingsProvider,
+                                            removeThingsProvider,
+                                            switchStatusProvider,
+                                            addThingProvider
+                                        }) => {
     const [things, setThings] = useState<Thing[] | null>(null);
     const defaultOutcome = {isSuccess: false, error: false, message: null, changedThing: null};
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
@@ -30,7 +35,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
 
     useEffect(() => {
         retrieveThingsProvider()
-            .then((response:ThingsRetrieveResponse) => {
+            .then((response: ThingsRetrieveResponse) => {
                 setThings(response.things);
             })
             .catch(() => {
@@ -78,6 +83,27 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
         });
     }
 
+    const giveFeedbackOnThingAdded = (thing: Thing | null) => {
+        //TODO check this bang here
+        if (thing) {
+            things!.push(thing);
+            setThings(things);
+            setOutcome({
+                isSuccess: true,
+                error: false,
+                message: `${thing!.name} added successfully`,
+                changedThing: thing
+            })
+        } else {
+            setOutcome({
+                isSuccess: false,
+                error: true,
+                message: `the new thing couldn't be added due to some problems with server`,
+                changedThing: thing
+            })
+        }
+    }
+
     return things == null ? <Loader/> :
         <>
             <ThingsPanel
@@ -87,6 +113,7 @@ export const ControlPanel: FC<Props> = ({retrieveThingsProvider, removeThingsPro
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={idToBeRemoved}
                 addThingProvider={addThingProvider}
+                onThingAdded={(thing: Thing | null) => giveFeedbackOnThingAdded(thing)}
             />
             {
                 outcome?.isSuccess && <FeedbackMessage

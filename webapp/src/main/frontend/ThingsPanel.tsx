@@ -8,7 +8,7 @@ import {AddThingButton} from "./AddThingButton";
 import {ConfirmModal} from "./ConfirmModal";
 import {Subtitle} from "./Subtitle";
 import {AddThingModal} from "./AddThingModal";
-import {AddThingProvider} from "./logic/AddThingProvider";
+import {AddThingProvider, ThingAddedResponse} from "./logic/AddThingProvider";
 import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
 
 const ThingsPanelWrapper = styled.div`
@@ -43,6 +43,7 @@ interface Props {
     onThingRemoved: (thing: Thing) => void;
     idWaitingToBeRemoved: string | null;
     addThingProvider: AddThingProvider;
+    onThingAdded: (thing: Thing | null) => void;
 }
 
 export const ThingsPanel: FC<Props> = ({
@@ -51,7 +52,8 @@ export const ThingsPanel: FC<Props> = ({
                                            switchStatusProvider,
                                            onThingRemoved,
                                            idWaitingToBeRemoved,
-                                           addThingProvider
+                                           addThingProvider,
+                                           onThingAdded
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
@@ -71,13 +73,14 @@ export const ThingsPanel: FC<Props> = ({
 
     const onAddThing = (deviceId: string | null, thingType: ThingType, thingName: string) => {
         addThingProvider(deviceId, thingType, thingName)
-            .then(() => {
-
-                setAddThing(false);
+            .then((t: ThingAddedResponse) => {
+                onThingAdded(t.thing);
             })
             .catch(() => {
-                console.log('Error while adding the new thing')
-            });
+                onThingAdded(null);
+            }).finally(() => {
+            setAddThing(false);
+        });
     }
 
     return (

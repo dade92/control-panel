@@ -1,6 +1,5 @@
 import {FC, useState} from "react";
 import {
-    Button,
     Dialog,
     DialogActions,
     DialogContent,
@@ -17,13 +16,13 @@ import {
 import styled from "styled-components";
 import CloseIcon from '@mui/icons-material/Close';
 import {Device, ThingType} from "./Thing";
-
+import LoadingButton from "@mui/lab/LoadingButton";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   gap: 24px;
-`
+`;
 
 interface Props {
     devices: Device[];
@@ -36,9 +35,11 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
     const [thingName, setThingName] = useState<string>('');
     const [deviceId, setDeviceId] = useState<string | null>(null);
     const [textFieldError, setTextFieldError] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     const onConfirm = () => {
         if (thingName.length > 0) {
+            setLoading(true);
             onAddThing(deviceId, thingType, thingName);
         } else {
             setTextFieldError(true);
@@ -72,7 +73,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
         </IconButton>
         <DialogContent dividers={true}>
             <Wrapper>
-                <FormControl fullWidth>
+                <FormControl>
                     <InputLabel>Device</InputLabel>
                     <Select
                         labelId="device-name-selector"
@@ -92,7 +93,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                     <FormHelperText>Attach thing to an existing device, or leave this field empty for a new
                         device</FormHelperText>
                 </FormControl>
-                <FormControl fullWidth>
+                <FormControl>
                     <InputLabel>Thing type</InputLabel>
                     <Select
                         labelId="thing-type-selector"
@@ -106,11 +107,12 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                             return <MenuItem id={type} value={type}>{type}</MenuItem>
                         })}
                     </Select>
+                    <FormHelperText>Select the type of thing you want to add</FormHelperText>
                 </FormControl>
                 <TextField label="Thing name"
                            value={thingName}
                            error={textFieldError}
-                           helperText={"Thing name should be unique for every new thing"}
+                           helperText={"Thing name should be unique and not empty for every new thing"}
                            onChange={(e) => {
                                setThingName(e.target.value)
                            }}
@@ -118,7 +120,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
             </Wrapper>
         </DialogContent>
         <DialogActions>
-            <Button data-testid={'confirm-button'} onClick={onConfirm}>Add</Button>
+            <LoadingButton data-testid={'confirm-button'} onClick={onConfirm} loading={loading}>Add</LoadingButton>
         </DialogActions>
     </Dialog>
 }

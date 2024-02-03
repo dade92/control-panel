@@ -27,4 +27,3 @@ export enum ThingStatus {
     ON = "ON",
     OFF = "OFF"
 }
-
