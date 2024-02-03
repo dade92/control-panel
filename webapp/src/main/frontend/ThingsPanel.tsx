@@ -94,6 +94,7 @@ export const ThingsPanel: FC<Props> = ({
                     {things.map((thing) => {
                         return <>
                             <ThingDetails
+                                key={thing.id}
                                 data-testid={`details-${thing.id}`}
                                 thing={thing}
                                 onChangeStatus={onChangeStatus}
@@ -112,7 +113,7 @@ export const ThingsPanel: FC<Props> = ({
                 addThing && <AddThingModal devices={thingsToDeviceAdapter(things)}
                                            handleClose={() => setAddThing(false)}
                                            onAddThing={(deviceId: string | null, thingType: ThingType, thingName: string) => {
-                                               console.log(`${thingType} and ${thingName}`);
+                                               console.log(`${deviceId} and ${thingType} and ${thingName}`);
                                                onAddThing(deviceId, thingType, thingName);
                                            }}/>
             }

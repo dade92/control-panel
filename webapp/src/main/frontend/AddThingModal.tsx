@@ -34,19 +34,20 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
     const [thingType, setThingType] = useState<ThingType>(ThingType.LAMP);
     const [thingName, setThingName] = useState<string>('');
     const [deviceId, setDeviceId] = useState<string | null>(null);
+    const [textFieldError, setTextFieldError] = useState<boolean>(false);
 
     const onConfirm = () => {
         if (thingName.length > 0) {
             onAddThing(deviceId, thingType, thingName);
         } else {
-            console.log('name must be inserted!');
+            setTextFieldError(true);
         }
     };
 
     const computeDeviceName = () => {
         const result: Device[] = devices.filter((t) => t.deviceId == deviceId);
         if (result.length == 0) {
-            return 'New device';
+            return '';
         } else {
             return devices[0].deviceName
         }
@@ -62,8 +63,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                 right: 8,
                 top: 12,
                 color: (theme) => theme.palette.grey[500],
-            }}
-        >
+            }}>
             <CloseIcon/>
         </IconButton>
         <DialogContent dividers={true}>
@@ -73,7 +73,6 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                     <Select
                         labelId="device-name-selector"
                         id="device-name-selector"
-                        defaultOpen={false}
                         value={computeDeviceName()}
                         label="Device name"
                         onChange={(e: SelectChangeEvent) =>
@@ -97,12 +96,17 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                         label="Thing type"
                         onChange={(e: SelectChangeEvent) => setThingType(e.target.value as ThingType)}
                     >
-                        <MenuItem value={'LAMP'}>LAMP</MenuItem>
-                        <MenuItem value={'ALARM'}>ALARM</MenuItem>
+                        {Object.keys(ThingType).map((type) => {
+                            return <MenuItem id={type} value={type}>{type}</MenuItem>
+                        })}
                     </Select>
                 </FormControl>
-                <TextField label="Thing name" value={thingName}
-                           onChange={(e) => setThingName(e.target.value)}
+                <TextField label="Thing name"
+                           value={thingName}
+                           error={textFieldError}
+                           onChange={(e) => {
+                               setThingName(e.target.value)
+                           }}
                 />
             </Wrapper>
         </DialogContent>
