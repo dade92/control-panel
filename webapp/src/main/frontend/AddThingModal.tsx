@@ -81,14 +81,15 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                         id="device-name-selector"
                         value={computeDeviceName()}
                         label="Device name"
-                        data-testid={'device-id-selector'}
+                        data-testid={'device-name-selector'}
                         onChange={(e: SelectChangeEvent) =>
                             setDeviceId(devices.filter((d) => d.deviceName == e.target.value)[0]?.deviceId)}
                     >
                         <MenuItem id={'new-device'} value={''}>New device</MenuItem>
                         {
                             devices.map((d) => {
-                                return <MenuItem id={d.deviceId} value={d.deviceName}>{d.deviceName}</MenuItem>
+                                return <MenuItem data-testid={`selector-${d.deviceId}`} id={d.deviceId}
+                                                 value={d.deviceName}>{d.deviceName}</MenuItem>
                             })
                         }
                     </Select>

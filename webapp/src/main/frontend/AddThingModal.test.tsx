@@ -1,11 +1,10 @@
-import {fireEvent, render, screen} from "@testing-library/react";
+import {fireEvent, getByRole, render, screen, waitFor, within} from "@testing-library/react";
 import {AddThingModal} from "./AddThingModal";
 import '@testing-library/jest-dom';
-import {Device} from "./Thing";
+import {Device, ThingType} from "./Thing";
 import {Builder} from "builder-pattern";
 
 describe('AddThingModal', () => {
-
     let handleClose: jest.Mock;
     let onAddThing: jest.Mock;
 
@@ -14,7 +13,22 @@ describe('AddThingModal', () => {
         onAddThing = jest.fn();
     });
 
-    it('should render form correctly', () => {
+    const typeInputOnTextField = () => {
+        fireEvent.change(screen.getByTestId('thing-name-form')
+            .querySelector('input')!, {target: {value: 'new thing name'}});
+    }
+
+    const selectThingType = () => {
+        fireEvent.mouseDown(screen.getByTestId('thing-type-selector'));
+        fireEvent.click(screen.getByText('LAMP'));
+    }
+
+    const selectDeviceId = () => {
+        fireEvent.click(screen.getByTestId("device-name-selector"));
+        fireEvent.click(screen.getByTestId('selector-123'));
+    }
+
+    it('should render form correctly and call the add thing with the correct params', async () => {
         render(<AddThingModal devices={[
                 Builder<Device>().deviceId('123').deviceName('device 1').build(),
                 Builder<Device>().deviceId('456').deviceName('device 2').build(),
@@ -22,11 +36,19 @@ describe('AddThingModal', () => {
         );
 
         expect(screen.getByTestId('add-thing-content')).toBeVisible();
-        expect(screen.getByTestId('device-id-selector')).toBeVisible();
+        expect(screen.getByTestId('device-name-selector')).toBeVisible();
         expect(screen.getByTestId('thing-type-selector')).toBeVisible();
         expect(screen.getByTestId('thing-name-form')).toBeVisible();
 
-        //TODO check the call on onAddThing with the params inserted by the user
+        selectDeviceId();
+
+        selectThingType();
+
+        typeInputOnTextField();
+
+        fireEvent.click(screen.getByTestId('confirm-button'));
+
+        expect(onAddThing).toHaveBeenCalledWith('456', ThingType.LAMP, 'new thing name');
     });
 
     it('should call the onClose callback when clicking on X button', () => {
@@ -40,5 +62,4 @@ describe('AddThingModal', () => {
 
         expect(handleClose).toHaveBeenCalledTimes(1);
     });
-
 })
