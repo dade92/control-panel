@@ -19,7 +19,6 @@ interface Outcome {
     isSuccess: boolean;
     error: boolean;
     message: string | null;
-    changedThing: Thing | null;
 }
 
 export const ControlPanel: FC<Props> = ({
@@ -29,7 +28,7 @@ export const ControlPanel: FC<Props> = ({
                                             addThingProvider
                                         }) => {
     const [things, setThings] = useState<Thing[] | null>(null);
-    const defaultOutcome = {isSuccess: false, error: false, message: null, changedThing: null};
+    const defaultOutcome = {isSuccess: false, error: false, message: null, };
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
     const [idToBeRemoved, setIdToBeRemoved] = useState<string | null>(null);
 
@@ -43,7 +42,7 @@ export const ControlPanel: FC<Props> = ({
                     isSuccess: false,
                     error: true,
                     message: 'There was an error retrieving Things',
-                    changedThing: null
+
                 })
             })
     }, []);
@@ -57,7 +56,6 @@ export const ControlPanel: FC<Props> = ({
                     isSuccess: true,
                     error: false,
                     message: `Thing ${thing.name} removed successfully`,
-                    changedThing: null
                 });
             })
             .catch(() => {
@@ -65,7 +63,7 @@ export const ControlPanel: FC<Props> = ({
                     isSuccess: false,
                     error: true,
                     message: `error while removing thing ${thing.name}`,
-                    changedThing: null
+
                 });
             }).finally(() => {
             setIdToBeRemoved(null);
@@ -78,8 +76,7 @@ export const ControlPanel: FC<Props> = ({
             error: !isSuccess,
             message: isSuccess ?
                 `${thing!.name} turned ${thing!.management.switch}` :
-                `${thing!.name} couldn't be switched due to some problems with server`,
-            changedThing: thing
+                `${thing!.name} couldn't be switched due to some problems with server`
         });
     }
 
@@ -92,14 +89,12 @@ export const ControlPanel: FC<Props> = ({
                 isSuccess: true,
                 error: false,
                 message: `${thing!.name} added successfully`,
-                changedThing: thing
             })
         } else {
             setOutcome({
                 isSuccess: false,
                 error: true,
                 message: `the new thing couldn't be added due to some problems with server`,
-                changedThing: thing
             })
         }
     }
