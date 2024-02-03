@@ -177,4 +177,14 @@ describe('ControlPanel', () => {
             });
         })
     });
+
+    describe('Add thing', () => {
+        it('successfully adds a new thing', () => {
+
+        })
+
+        it('add thing fails', () => {
+
+        })
+    })
 });
