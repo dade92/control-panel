@@ -6,6 +6,7 @@ import {
     DialogContent,
     DialogTitle,
     FormControl,
+    FormHelperText,
     IconButton,
     InputLabel,
     MenuItem,
@@ -21,7 +22,7 @@ import {Device, ThingType} from "./Thing";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 24px;
 `
 
 interface Props {
@@ -53,8 +54,11 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
         }
     };
 
-    return <Dialog sx={{padding: "8px"}} data-testid={'add-thing-modal'} open={true}>
-        <DialogTitle sx={{m: 0, p: 2}}>Add a thing</DialogTitle>
+    return <Dialog sx={{padding: "8px"}}
+                   data-testid={'add-thing-modal'}
+                   open={true} fullWidth
+                   maxWidth="sm">
+        <DialogTitle sx={{m: 0, p: 2}}>New thing</DialogTitle>
         <IconButton
             aria-label="close"
             onClick={handleClose}
@@ -85,6 +89,8 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                             })
                         }
                     </Select>
+                    <FormHelperText>Attach thing to an existing device, or leave this field empty for a new
+                        device</FormHelperText>
                 </FormControl>
                 <FormControl fullWidth>
                     <InputLabel>Thing type</InputLabel>
@@ -104,6 +110,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                 <TextField label="Thing name"
                            value={thingName}
                            error={textFieldError}
+                           helperText={"Thing name should be unique for every new thing"}
                            onChange={(e) => {
                                setThingName(e.target.value)
                            }}

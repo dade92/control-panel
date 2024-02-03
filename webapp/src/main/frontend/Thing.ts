@@ -14,7 +14,9 @@ export interface Device {
 
 export enum ThingType {
     LAMP = "LAMP",
-    ALARM = "ALARM"
+    ALARM = "ALARM",
+    ROLLER_SHUTTER = "ROLLER_SHUTTER",
+    APPLIANCE = "APPLIANCE"
 }
 
 export interface Management {
