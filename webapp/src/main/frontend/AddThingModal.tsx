@@ -63,6 +63,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
         <IconButton
             aria-label="close"
             onClick={handleClose}
+            data-testid={'add-thing-close-button'}
             sx={{
                 position: 'absolute',
                 right: 8,
@@ -72,7 +73,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
             <CloseIcon/>
         </IconButton>
         <DialogContent dividers={true}>
-            <Wrapper>
+            <Wrapper data-testid={'add-thing-content'}>
                 <FormControl>
                     <InputLabel>Device</InputLabel>
                     <Select
@@ -80,6 +81,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                         id="device-name-selector"
                         value={computeDeviceName()}
                         label="Device name"
+                        data-testid={'device-id-selector'}
                         onChange={(e: SelectChangeEvent) =>
                             setDeviceId(devices.filter((d) => d.deviceName == e.target.value)[0]?.deviceId)}
                     >
@@ -101,6 +103,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                         value={thingType}
                         defaultOpen={false}
                         label="Thing type"
+                        data-testid={'thing-type-selector'}
                         onChange={(e: SelectChangeEvent) => setThingType(e.target.value as ThingType)}
                     >
                         {Object.keys(ThingType).map((type) => {
@@ -112,6 +115,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                 <TextField label="Thing name"
                            value={thingName}
                            error={textFieldError}
+                           data-testid={'thing-name-form'}
                            helperText={"Thing name should be unique and not empty for every new thing"}
                            onChange={(e) => {
                                setThingName(e.target.value)

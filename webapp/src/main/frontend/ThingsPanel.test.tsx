@@ -130,5 +130,11 @@ describe('ThingsPanel', () => {
         await waitFor(() => {
             expect(screen.getByTestId('add-thing-modal')).toBeVisible();
         });
+
+        fireEvent.click(screen.getByTestId('add-thing-close-button'));
+
+        await waitFor(() => {
+            expect(screen.queryByTestId('add-thing-modal')).toBeNull();
+        });
     });
 });

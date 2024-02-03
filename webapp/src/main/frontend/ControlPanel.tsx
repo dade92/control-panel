@@ -28,7 +28,7 @@ export const ControlPanel: FC<Props> = ({
                                             addThingProvider
                                         }) => {
     const [things, setThings] = useState<Thing[] | null>(null);
-    const defaultOutcome = {isSuccess: false, error: false, message: null, };
+    const defaultOutcome = {isSuccess: false, error: false, message: null,};
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
     const [idToBeRemoved, setIdToBeRemoved] = useState<string | null>(null);
 
