@@ -1,16 +1,11 @@
 package domain.actions
 
 import arrow.core.Either
-import domain.Device
-import domain.DeviceId
-import domain.Status
-import domain.Thing
-import domain.ThingManagement
+import arrow.core.flatMap
+import arrow.core.right
+import domain.*
 import domain.actions.errors.ActionError
 import domain.actions.request.AddThingRequest
-import domain.asDeviceHost
-import domain.asDeviceName
-import domain.asIdOnDevice
 import domain.repository.DeviceRepository
 import domain.utils.IdOnDeviceRetriever
 import domain.utils.RandomThingIdGenerator
@@ -23,33 +18,41 @@ class AddThingAction(
     private val idOnDeviceRetriever: IdOnDeviceRetriever
 ) {
 
-    fun add(addThingRequest: AddThingRequest): Either<ActionError, Unit> =
+    fun add(addThingRequest: AddThingRequest): Either<ActionError, Thing> =
         deviceRepository.retrieve(addThingRequest.deviceId).fold(
             { error ->
-                deviceRepository.addDevice(Device(
-                    addThingRequest.deviceId,
-                    "".asDeviceName(),
-                    "".asDeviceHost(),
-                    listOf(Thing(
-                        randomThingIdGenerator.retrieve(),
-                        addThingRequest.name,
-                        addThingRequest.type,
-                        ThingManagement(Status.OFF),
-                        1.asIdOnDevice()
-                    ))
-                ))
+                val addedThing = Thing(
+                    randomThingIdGenerator.retrieve(),
+                    addThingRequest.name,
+                    addThingRequest.type,
+                    DEFAULT_THING_MANAGEMENT,
+                    1.asIdOnDevice()
+                )
+                deviceRepository.addDevice(
+                    Device(
+                        addThingRequest.deviceId,
+                        "".asDeviceName(),
+                        "".asDeviceHost(),
+                        listOf(addedThing)
+                    )
+                ).flatMap {
+                    addedThing.right()
+                }
             },
             { device ->
+                val addedThing = Thing(
+                    randomThingIdGenerator.retrieve(),
+                    addThingRequest.name,
+                    addThingRequest.type,
+                    DEFAULT_THING_MANAGEMENT,
+                    idOnDeviceRetriever.get(device)
+                )
                 deviceRepository.addThing(
                     addThingRequest.deviceId,
-                    Thing(
-                        randomThingIdGenerator.retrieve(),
-                        addThingRequest.name,
-                        addThingRequest.type,
-                        DEFAULT_THING_MANAGEMENT,
-                        idOnDeviceRetriever.get(device)
-                    )
-                )
+                    addedThing
+                ).flatMap {
+                    addedThing.right()
+                }
             }
         )
 }

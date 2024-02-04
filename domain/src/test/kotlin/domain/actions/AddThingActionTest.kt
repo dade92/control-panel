@@ -2,28 +2,17 @@ package domain.actions
 
 import arrow.core.left
 import arrow.core.right
-import domain.Device
-import domain.DeviceId
-import domain.Status
-import domain.Thing
-import domain.ThingManagement
-import domain.ThingType
+import domain.*
 import domain.actions.errors.ActionError
+import domain.actions.errors.ActionError.AddError
+import domain.actions.errors.ActionError.AddError.*
+import domain.actions.errors.ActionError.RetrieveError.DeviceRetrieveError
 import domain.actions.request.AddThingRequest
-import domain.asDeviceHost
-import domain.asDeviceName
-import domain.asIdOnDevice
 import domain.repository.DeviceRepository
-import domain.utils.IdOnDeviceRetriever
-import domain.utils.RandomThingIdGenerator
-import domain.utils.aDevice
-import domain.utils.aDeviceId
-import domain.utils.aThingId
-import domain.utils.aThingName
+import domain.utils.*
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import org.junit.jupiter.api.Test
 
 class AddThingActionTest {
@@ -38,9 +27,9 @@ class AddThingActionTest {
 
     @Test
     fun `happy path`() {
-        val result = Unit.right()
         val device = aDevice()
         val idOnDevice = 1.asIdOnDevice()
+        val addedThing = Thing(aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), idOnDevice)
 
         every { randomThingIdGenerator.retrieve() } returns aThingId
         every { deviceRepository.retrieve(aDeviceId) } returns device.right()
@@ -48,36 +37,89 @@ class AddThingActionTest {
         every {
             deviceRepository.addThing(
                 aDeviceId,
-                Thing(aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), idOnDevice)
+                addedThing
             )
-        } returns result
+        } returns Unit.right()
 
-        addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe result
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe addedThing.right()
+    }
+
+    @Test
+    fun `add thing fails`() {
+        val device = aDevice()
+        val idOnDevice = 1.asIdOnDevice()
+        val addedThing = Thing(aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), idOnDevice)
+        val error = AddThingError.left()
+
+        every { randomThingIdGenerator.retrieve() } returns aThingId
+        every { deviceRepository.retrieve(aDeviceId) } returns device.right()
+        every { idOnDeviceRetriever.get(device) } returns idOnDevice
+        every {
+            deviceRepository.addThing(
+                aDeviceId,
+                addedThing
+            )
+        } returns error
+
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe error
     }
 
     @Test
     fun `device not found, create a new one`() {
         val thingType = ThingType.LAMP
+        val addedThing = Thing(
+            aThingId,
+            aThingName,
+            thingType,
+            ThingManagement(
+                Status.OFF
+            ),
+            1.asIdOnDevice()
+        )
 
         every { randomThingIdGenerator.retrieve() } returns aThingId
-        every { deviceRepository.retrieve(aDeviceId) } returns ActionError.RetrieveError.DeviceRetrieveError.left()
-        every { deviceRepository.addDevice(Device(
-            aDeviceId,
-            "".asDeviceName(),
-            "".asDeviceHost(),
-            listOf(
-                Thing(
-                    aThingId,
-                    aThingName,
-                    thingType,
-                    ThingManagement(
-                        Status.OFF
-                    ),
-                    1.asIdOnDevice()
+        every { deviceRepository.retrieve(aDeviceId) } returns DeviceRetrieveError.left()
+        every {
+            deviceRepository.addDevice(
+                Device(
+                    aDeviceId,
+                    "".asDeviceName(),
+                    "".asDeviceHost(),
+                    listOf(addedThing)
                 )
             )
-        )) } returns Unit.right()
+        } returns Unit.right()
 
-        addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe Unit.right()
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe addedThing.right()
+    }
+
+    @Test
+    fun `device not found, creates a new one and fails`() {
+        val thingType = ThingType.LAMP
+        val addedThing = Thing(
+            aThingId,
+            aThingName,
+            thingType,
+            ThingManagement(
+                Status.OFF
+            ),
+            1.asIdOnDevice()
+        )
+        val error = AddDeviceError.left()
+
+        every { randomThingIdGenerator.retrieve() } returns aThingId
+        every { deviceRepository.retrieve(aDeviceId) } returns DeviceRetrieveError.left()
+        every {
+            deviceRepository.addDevice(
+                Device(
+                    aDeviceId,
+                    "".asDeviceName(),
+                    "".asDeviceHost(),
+                    listOf(addedThing)
+                )
+            )
+        } returns error
+
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe error
     }
 }

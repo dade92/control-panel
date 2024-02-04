@@ -47,7 +47,7 @@ class ThingsController(
                 noContent().build()
             }
         )
-    //TODO this is wrong, it should return all the info about the added thing
+
     @PostMapping("/v1/things/add")
     fun addThing(
         @RequestBody addThingRequest: AddThingRequest
