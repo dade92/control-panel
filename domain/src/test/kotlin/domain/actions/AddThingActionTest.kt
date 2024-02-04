@@ -3,7 +3,8 @@ package domain.actions
 import arrow.core.left
 import arrow.core.right
 import domain.*
-import domain.actions.errors.ActionError.AddError.*
+import domain.actions.errors.ActionError.AddError.AddDeviceError
+import domain.actions.errors.ActionError.AddError.AddThingError
 import domain.actions.errors.ActionError.RetrieveError.DeviceRetrieveError
 import domain.actions.request.AddThingRequest
 import domain.repository.DeviceRepository
@@ -33,7 +34,30 @@ class AddThingActionTest {
     }
 
     @Test
-    fun `happy path`() {
+    fun `no device id provided, create a new one`() {
+        val idOnDevice = 1.asIdOnDevice()
+        val addedThing = Thing(aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), idOnDevice)
+
+        every { randomIdGenerator.retrieveThingId() } returns aThingId
+        every { randomIdGenerator.retrieveDeviceId() } returns anotherDeviceId
+        every {
+            deviceRepository.addDevice(
+                Device(
+                    anotherDeviceId,
+                    anotherDeviceName,
+                    "".asDeviceHost(),
+                    listOf(addedThing)
+                )
+            )
+        } returns Unit.right()
+
+        addThingAction.add(AddThingRequest(null, aThingName, ThingType.LAMP)) shouldBe AddedThing(
+            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, anotherDeviceName
+        ).right()
+    }
+
+    @Test
+    fun `add thing on an already existing device`() {
         val device = aDevice()
         val idOnDevice = 1.asIdOnDevice()
         val addedThing = Thing(aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), idOnDevice)
@@ -101,7 +125,7 @@ class AddThingActionTest {
         } returns Unit.right()
 
         addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe AddedThing(
-            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, "".asDeviceName()
+            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, anotherDeviceName
         ).right()
     }
 

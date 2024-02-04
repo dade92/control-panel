@@ -62,11 +62,12 @@ class AddThingAction(
             1.asIdOnDevice()
         )
         val newDeviceId = randomIdGenerator.retrieveDeviceId()
+        val deviceName = deviceNameGenerator.generate()
 
         return deviceRepository.addDevice(
             Device(
                 newDeviceId,
-                deviceNameGenerator.generate(),
+                deviceName,
                 "".asDeviceHost(),
                 listOf(addedThing)
             )
@@ -77,7 +78,7 @@ class AddThingAction(
                 addedThing.type,
                 addedThing.management,
                 newDeviceId,
-                "".asDeviceName()
+                deviceName
             ).right()
         }
     }
