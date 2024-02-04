@@ -91,7 +91,7 @@ export const ThingsPanel: FC<Props> = ({
                     sx={{
                         width: '100%',
                         overflow: 'auto',
-                        maxHeight: 250,
+                        maxHeight: 350,
                     }}
                 >
                     {things.map((thing) => {
