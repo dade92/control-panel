@@ -28,6 +28,8 @@ import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 
 private val COLLECTION_NAME = "device"
@@ -132,7 +134,7 @@ private fun Device.toMongoDevice(creationDate: LocalDateTime): MongoDevice = Mon
     this.deviceName.value,
     this.host.value,
     this.things.map { it.toMongoThing() },
-    creationDate
+    creationDate.toString()
 )
 
 
@@ -141,7 +143,7 @@ data class MongoDevice(
     val deviceName: String,
     val host: String,
     val things: List<MongoThing>,
-    val creationDate: LocalDateTime
+    val creationDate: String
 ) {
     fun toDomain(): Device = Device(
         deviceId = id.asDeviceId(),

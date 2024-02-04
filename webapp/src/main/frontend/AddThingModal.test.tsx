@@ -1,4 +1,4 @@
-import {fireEvent, getByRole, render, screen, waitFor, within} from "@testing-library/react";
+import {fireEvent, render, screen} from "@testing-library/react";
 import {AddThingModal} from "./AddThingModal";
 import '@testing-library/jest-dom';
 import {Device, ThingType} from "./Thing";
@@ -13,9 +13,9 @@ describe('AddThingModal', () => {
         onAddThing = jest.fn();
     });
 
-    const typeInputOnTextField = () => {
+    const typeInputOnTextField = (text: string) => {
         fireEvent.change(screen.getByTestId('thing-name-form')
-            .querySelector('input')!, {target: {value: 'new thing name'}});
+            .querySelector('input')!, {target: {value: text}});
     }
 
     const selectThingType = () => {
@@ -44,12 +44,33 @@ describe('AddThingModal', () => {
 
         selectThingType();
 
-        typeInputOnTextField();
+        typeInputOnTextField('new thing name');
 
         fireEvent.click(screen.getByTestId('confirm-button'));
 
         expect(onAddThing).toHaveBeenCalledWith('456', ThingType.LAMP, 'new thing name');
     });
+
+    it('should create a new device if no one is selected', () => {
+        render(<AddThingModal devices={[
+                Builder<Device>().deviceId('123').deviceName('device 1').build(),
+                Builder<Device>().deviceId('456').deviceName('device 2').build(),
+            ]} handleClose={handleClose} onAddThing={onAddThing}/>
+        );
+
+        expect(screen.getByTestId('add-thing-content')).toBeVisible();
+        expect(screen.getByTestId('device-name-selector')).toBeVisible();
+        expect(screen.getByTestId('thing-type-selector')).toBeVisible();
+        expect(screen.getByTestId('thing-name-form')).toBeVisible();
+
+        selectThingType();
+
+        typeInputOnTextField('new thing name');
+
+        fireEvent.click(screen.getByTestId('confirm-button'));
+
+        expect(onAddThing).toHaveBeenCalledWith(null, ThingType.LAMP, 'new thing name');
+    })
 
     it('should call the onClose callback when clicking on X button', () => {
         render(<AddThingModal devices={[
