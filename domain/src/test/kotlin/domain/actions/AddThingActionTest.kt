@@ -11,17 +11,26 @@ import domain.utils.*
 import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.mockk
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class AddThingActionTest {
 
     private val deviceRepository = mockk<DeviceRepository>()
 
-    private val randomIdGenerator = mockk<RandomThingIdGenerator>()
+    private val randomIdGenerator = mockk<RandomIdGenerator>()
 
     private val idOnDeviceRetriever = mockk<IdOnDeviceRetriever>()
 
-    private val addThingAction = AddThingAction(deviceRepository, randomIdGenerator, idOnDeviceRetriever)
+    private val deviceNameGenerator = mockk<DeviceNameGenerator>()
+
+    private val addThingAction =
+        AddThingAction(deviceRepository, randomIdGenerator, idOnDeviceRetriever, deviceNameGenerator)
+
+    @BeforeEach
+    fun setUp() {
+        every { deviceNameGenerator.generate() } returns anotherDeviceName
+    }
 
     @Test
     fun `happy path`() {
@@ -84,7 +93,7 @@ class AddThingActionTest {
             deviceRepository.addDevice(
                 Device(
                     anotherDeviceId,
-                    "".asDeviceName(),
+                    anotherDeviceName,
                     "".asDeviceHost(),
                     listOf(addedThing)
                 )
@@ -117,7 +126,7 @@ class AddThingActionTest {
             deviceRepository.addDevice(
                 Device(
                     anotherDeviceId,
-                    "".asDeviceName(),
+                    anotherDeviceName,
                     "".asDeviceHost(),
                     listOf(addedThing)
                 )

@@ -7,15 +7,17 @@ import domain.*
 import domain.actions.errors.ActionError
 import domain.actions.request.AddThingRequest
 import domain.repository.DeviceRepository
+import domain.utils.DeviceNameGenerator
 import domain.utils.IdOnDeviceRetriever
-import domain.utils.RandomThingIdGenerator
+import domain.utils.RandomIdGenerator
 
 private val DEFAULT_THING_MANAGEMENT = ThingManagement(Status.OFF)
 
 class AddThingAction(
     private val deviceRepository: DeviceRepository,
-    private val randomIdGenerator: RandomThingIdGenerator,
-    private val idOnDeviceRetriever: IdOnDeviceRetriever
+    private val randomIdGenerator: RandomIdGenerator,
+    private val idOnDeviceRetriever: IdOnDeviceRetriever,
+    private val deviceNameGenerator: DeviceNameGenerator
 ) {
 
     fun add(addThingRequest: AddThingRequest): Either<ActionError, AddedThing> =
@@ -64,7 +66,7 @@ class AddThingAction(
         return deviceRepository.addDevice(
             Device(
                 newDeviceId,
-                "".asDeviceName(),
+                deviceNameGenerator.generate(),
                 "".asDeviceHost(),
                 listOf(addedThing)
             )

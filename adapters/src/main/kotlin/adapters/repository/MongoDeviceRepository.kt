@@ -30,6 +30,8 @@ import org.springframework.data.mongodb.core.query.Update
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.ZonedDateTime
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalUnit
 
 
 private val COLLECTION_NAME = "device"
@@ -134,7 +136,7 @@ private fun Device.toMongoDevice(creationDate: LocalDateTime): MongoDevice = Mon
     this.deviceName.value,
     this.host.value,
     this.things.map { it.toMongoThing() },
-    creationDate.toString()
+    creationDate.truncatedTo(ChronoUnit.SECONDS).toString()
 )
 
 

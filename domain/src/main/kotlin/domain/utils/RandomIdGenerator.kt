@@ -6,7 +6,7 @@ import domain.asDeviceId
 import domain.asThingId
 import java.util.UUID
 
-class RandomThingIdGenerator {
+class RandomIdGenerator {
 
     fun retrieveThingId(): ThingId = UUID.randomUUID().toString().asThingId()
     fun retrieveDeviceId(): DeviceId = UUID.randomUUID().toString().asDeviceId()
