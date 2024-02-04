@@ -51,7 +51,7 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
         if (result.length == 0) {
             return '';
         } else {
-            return devices[0].deviceName
+            return result[0].deviceName
         }
     };
 
@@ -102,7 +102,6 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                         labelId="thing-type-selector"
                         id="thing-type-selector"
                         value={thingType}
-                        defaultOpen={false}
                         label="Thing type"
                         data-testid={'thing-type-selector'}
                         onChange={(e: SelectChangeEvent) => setThingType(e.target.value as ThingType)}

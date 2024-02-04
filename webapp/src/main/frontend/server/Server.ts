@@ -25,8 +25,8 @@ const thingsResponse = {
         {
             id: '67777',
             name: 'Luce camera',
-            device: "arduino uno",
-            deviceId: "XYZ",
+            device: "arduino due",
+            deviceId: "YYY",
             type: "LAMP",
             management: {
                 switch: "OFF"
@@ -35,8 +35,8 @@ const thingsResponse = {
         {
             id: '456',
             name: 'Allarme casa',
-            device: "arduino uno",
-            deviceId: "XYZ",
+            device: "arduino due",
+            deviceId: "YYY",
             type: "ALARM",
             management: {
                 switch: "OFF"
@@ -45,8 +45,8 @@ const thingsResponse = {
         {
             id: '777',
             name: 'Allarme casa',
-            device: "arduino uno",
-            deviceId: "XYZ",
+            device: "arduino tre",
+            deviceId: "XXX",
             type: "ALARM",
             management: {
                 switch: "OFF"
