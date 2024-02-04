@@ -66,5 +66,5 @@ enum class Status {
 }
 
 enum class ThingType {
-    LAMP, ALARM
+    LAMP, ALARM, ROLLER_SHUTTER, APPLIANCE
 }

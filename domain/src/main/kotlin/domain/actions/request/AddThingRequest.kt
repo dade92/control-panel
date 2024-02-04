@@ -5,7 +5,7 @@ import domain.ThingName
 import domain.ThingType
 
 data class AddThingRequest(
-    val deviceId: DeviceId,
+    val deviceId: DeviceId?,
     val name: ThingName,
     val type: ThingType
 )

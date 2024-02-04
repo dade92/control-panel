@@ -3,8 +3,6 @@ package domain.actions
 import arrow.core.left
 import arrow.core.right
 import domain.*
-import domain.actions.errors.ActionError
-import domain.actions.errors.ActionError.AddError
 import domain.actions.errors.ActionError.AddError.*
 import domain.actions.errors.ActionError.RetrieveError.DeviceRetrieveError
 import domain.actions.request.AddThingRequest
@@ -19,11 +17,11 @@ class AddThingActionTest {
 
     private val deviceRepository = mockk<DeviceRepository>()
 
-    private val randomThingIdGenerator = mockk<RandomThingIdGenerator>()
+    private val randomIdGenerator = mockk<RandomThingIdGenerator>()
 
     private val idOnDeviceRetriever = mockk<IdOnDeviceRetriever>()
 
-    private val addThingAction = AddThingAction(deviceRepository, randomThingIdGenerator, idOnDeviceRetriever)
+    private val addThingAction = AddThingAction(deviceRepository, randomIdGenerator, idOnDeviceRetriever)
 
     @Test
     fun `happy path`() {
@@ -31,7 +29,7 @@ class AddThingActionTest {
         val idOnDevice = 1.asIdOnDevice()
         val addedThing = Thing(aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), idOnDevice)
 
-        every { randomThingIdGenerator.retrieve() } returns aThingId
+        every { randomIdGenerator.retrieveThingId() } returns aThingId
         every { deviceRepository.retrieve(aDeviceId) } returns device.right()
         every { idOnDeviceRetriever.get(device) } returns idOnDevice
         every {
@@ -51,7 +49,7 @@ class AddThingActionTest {
         val addedThing = Thing(aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), idOnDevice)
         val error = AddThingError.left()
 
-        every { randomThingIdGenerator.retrieve() } returns aThingId
+        every { randomIdGenerator.retrieveThingId() } returns aThingId
         every { deviceRepository.retrieve(aDeviceId) } returns device.right()
         every { idOnDeviceRetriever.get(device) } returns idOnDevice
         every {
@@ -77,12 +75,13 @@ class AddThingActionTest {
             1.asIdOnDevice()
         )
 
-        every { randomThingIdGenerator.retrieve() } returns aThingId
+        every { randomIdGenerator.retrieveThingId() } returns aThingId
+        every { randomIdGenerator.retrieveDeviceId() } returns anotherDeviceId
         every { deviceRepository.retrieve(aDeviceId) } returns DeviceRetrieveError.left()
         every {
             deviceRepository.addDevice(
                 Device(
-                    aDeviceId,
+                    anotherDeviceId,
                     "".asDeviceName(),
                     "".asDeviceHost(),
                     listOf(addedThing)
@@ -107,12 +106,13 @@ class AddThingActionTest {
         )
         val error = AddDeviceError.left()
 
-        every { randomThingIdGenerator.retrieve() } returns aThingId
+        every { randomIdGenerator.retrieveThingId() } returns aThingId
+        every { randomIdGenerator.retrieveDeviceId() } returns anotherDeviceId
         every { deviceRepository.retrieve(aDeviceId) } returns DeviceRetrieveError.left()
         every {
             deviceRepository.addDevice(
                 Device(
-                    aDeviceId,
+                    anotherDeviceId,
                     "".asDeviceName(),
                     "".asDeviceHost(),
                     listOf(addedThing)
