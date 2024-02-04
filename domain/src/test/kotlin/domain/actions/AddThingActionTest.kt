@@ -39,7 +39,9 @@ class AddThingActionTest {
             )
         } returns Unit.right()
 
-        addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe addedThing.right()
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe AddedThing(
+            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), aDeviceId, aDeviceName
+        ).right()
     }
 
     @Test
@@ -89,7 +91,9 @@ class AddThingActionTest {
             )
         } returns Unit.right()
 
-        addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe addedThing.right()
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe AddedThing(
+            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, "".asDeviceName()
+        ).right()
     }
 
     @Test
