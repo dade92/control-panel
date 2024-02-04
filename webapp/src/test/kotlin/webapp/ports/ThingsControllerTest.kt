@@ -7,22 +7,10 @@ import domain.ThingType
 import domain.actions.AddThingAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
-import domain.actions.errors.ActionError
 import domain.actions.errors.ActionError.RetrieveError
 import domain.actions.request.AddThingRequest
 import domain.asThingName
-import domain.utils.aDevice
-import domain.utils.aDeviceHost
-import domain.utils.aDeviceId
-import domain.utils.aDeviceName
-import domain.utils.aThing
-import domain.utils.aThingId
-import domain.utils.aThingName
-import domain.utils.anotherDeviceHost
-import domain.utils.anotherDeviceId
-import domain.utils.anotherDeviceName
-import domain.utils.anotherThingId
-import domain.utils.anotherThingName
+import domain.utils.*
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
@@ -53,23 +41,24 @@ class ThingsControllerTest {
     @Test
     fun `retrieve things`() {
         `when`(retrieveDeviceAction.retrieveAll()).thenReturn(
-            listOf(aDevice(
-                deviceId = aDeviceId,
-                deviceName = aDeviceName,
-                deviceHost = aDeviceHost,
-                things = listOf(
-                    aThing(
-                        thingId = aThingId,
-                        thingName = aThingName,
-                        thingType = ThingType.LAMP
-                    ),
-                    aThing(
-                        thingId = anotherThingId,
-                        thingName = anotherThingName,
-                        thingType = ThingType.ALARM
+            listOf(
+                aDevice(
+                    deviceId = aDeviceId,
+                    deviceName = aDeviceName,
+                    deviceHost = aDeviceHost,
+                    things = listOf(
+                        aThing(
+                            thingId = aThingId,
+                            thingName = aThingName,
+                            thingType = ThingType.LAMP
+                        ),
+                        aThing(
+                            thingId = anotherThingId,
+                            thingName = anotherThingName,
+                            thingType = ThingType.ALARM
+                        )
                     )
-                )
-            ),
+                ),
                 aDevice(
                     deviceId = anotherDeviceId,
                     deviceName = anotherDeviceName,
@@ -80,7 +69,8 @@ class ThingsControllerTest {
                             thingName = anotherThingName
                         )
                     )
-                )).right()
+                )
+            ).right()
         )
 
         mvc.perform(
@@ -116,18 +106,21 @@ class ThingsControllerTest {
 
     @Test
     fun `add thing on a device`() {
-        `when`(addThingAction.add(
-            AddThingRequest(
-                aDeviceId,
-                "new name".asThingName(),
-                ThingType.LAMP
-            ))
-        ).thenReturn(Unit.right())
+        `when`(
+            addThingAction.add(
+                AddThingRequest(
+                    aDeviceId,
+                    "new name".asThingName(),
+                    ThingType.LAMP
+                )
+            )
+        ).thenReturn(aThing().right())
 
         mvc.perform(
             post("/api/v1/things/add")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Fixtures.readJson("/addThingRequest.json"))
-        ).andExpect(status().isNoContent())
+        ).andExpect(status().is2xxSuccessful())
+            .andExpect(content().json(Fixtures.readJson("/addThingResponse.json")))
     }
 }

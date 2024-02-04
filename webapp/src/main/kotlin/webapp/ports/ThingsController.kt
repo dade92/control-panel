@@ -57,10 +57,14 @@ class ThingsController(
                 internalServerError().body(ErrorResponse(it.javaClass.simpleName))
             },
             {
-                noContent().build()
+                ok(AddThingResponse(it))
             }
         )
 }
+
+data class AddThingResponse(
+    val thing: Thing
+)
 
 data class ErrorResponse(val error: String)
 
