@@ -21,17 +21,20 @@ import domain.asIdOnDevice
 import domain.asThingId
 import domain.asThingName
 import domain.repository.DeviceRepository
+import domain.utils.NowProvider
 import org.slf4j.LoggerFactory
 import org.springframework.data.mongodb.core.MongoTemplate
 import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
+import java.time.LocalDateTime
 
 
 private val COLLECTION_NAME = "device"
 
 class MongoDeviceRepository(
-    private val mongoTemplate: MongoTemplate
+    private val mongoTemplate: MongoTemplate,
+    private val nowProvider: NowProvider
 ) : DeviceRepository {
 
     private val logger = LoggerFactory.getLogger(MongoDeviceRepository::class.java)
@@ -107,7 +110,7 @@ class MongoDeviceRepository(
 
     override fun addDevice(device: Device): Either<AddError, Unit> {
         return try {
-            mongoTemplate.insert(device.toMongoDevice(), COLLECTION_NAME)
+            mongoTemplate.insert(device.toMongoDevice(nowProvider.get()), COLLECTION_NAME)
             Unit.right()
         } catch (e: Exception) {
             logger.error("Error inserting device ${device.deviceId}", e)
@@ -124,11 +127,12 @@ private fun Thing.toMongoThing(): MongoThing = MongoThing(
     this.idOnDevice.value
 )
 
-private fun Device.toMongoDevice(): MongoDevice = MongoDevice(
+private fun Device.toMongoDevice(creationDate: LocalDateTime): MongoDevice = MongoDevice(
     this.deviceId.value.toString(),
     this.deviceName.value,
     this.host.value,
-    this.things.map { it.toMongoThing() }
+    this.things.map { it.toMongoThing() },
+    creationDate
 )
 
 
@@ -136,7 +140,8 @@ data class MongoDevice(
     val id: String,
     val deviceName: String,
     val host: String,
-    val things: List<MongoThing>
+    val things: List<MongoThing>,
+    val creationDate: LocalDateTime
 ) {
     fun toDomain(): Device = Device(
         deviceId = id.asDeviceId(),
