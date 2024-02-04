@@ -3,7 +3,7 @@ package webapp.configuration
 import domain.actions.DefaultSwitchAction
 import domain.actions.SwitchAction
 import domain.repository.DeviceRepository
-import domain.repository.SwitchClient
+import domain.client.SwitchClient
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 

@@ -1,7 +1,7 @@
 package adapters.configuration
 
 import adapters.client.RestSwitchClient
-import domain.repository.SwitchClient
+import domain.client.SwitchClient
 import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

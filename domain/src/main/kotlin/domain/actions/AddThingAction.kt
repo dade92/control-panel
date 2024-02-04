@@ -23,9 +23,7 @@ class AddThingAction(
     fun add(addThingRequest: AddThingRequest): Either<ActionError, AddedThing> =
         addThingRequest.deviceId?.let {
             deviceRepository.retrieve(addThingRequest.deviceId).fold(
-                {
-                    addNewDeviceWithThing(addThingRequest)
-                },
+                { addNewDeviceWithThing(addThingRequest) },
                 { device ->
                     val addedThing = Thing(
                         randomIdGenerator.retrieveThingId(),

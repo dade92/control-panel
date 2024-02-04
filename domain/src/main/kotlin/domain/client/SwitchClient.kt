@@ -1,4 +1,4 @@
-package domain.repository
+package domain.client
 
 import arrow.core.Either
 import domain.DeviceHost
