@@ -18,11 +18,11 @@ class AddThingAction(
     private val idOnDeviceRetriever: IdOnDeviceRetriever
 ) {
 
-    fun add(addThingRequest: AddThingRequest): Either<ActionError, Thing> =
+    fun add(addThingRequest: AddThingRequest): Either<ActionError, AddedThing> =
         addThingRequest.deviceId?.let {
             deviceRepository.retrieve(addThingRequest.deviceId).fold(
                 {
-                    addDeviceWithThing(addThingRequest)
+                    addNewDeviceWithThing(addThingRequest)
                 },
                 { device ->
                     val addedThing = Thing(
@@ -36,15 +36,22 @@ class AddThingAction(
                         addThingRequest.deviceId,
                         addedThing
                     ).flatMap {
-                        addedThing.right()
+                        AddedThing(
+                            addedThing.id,
+                            addedThing.name,
+                            addedThing.type,
+                            addedThing.management,
+                            device.deviceId,
+                            device.deviceName
+                        ).right()
                     }
                 }
             )
-        } ?: addDeviceWithThing(addThingRequest)
+        } ?: addNewDeviceWithThing(addThingRequest)
 
-    private fun addDeviceWithThing(
+    private fun addNewDeviceWithThing(
         addThingRequest: AddThingRequest
-    ): Either<ActionError, Thing> {
+    ): Either<ActionError, AddedThing> {
         val addedThing = Thing(
             randomIdGenerator.retrieveThingId(),
             addThingRequest.name,
@@ -52,16 +59,33 @@ class AddThingAction(
             DEFAULT_THING_MANAGEMENT,
             1.asIdOnDevice()
         )
+        val newDeviceId = randomIdGenerator.retrieveDeviceId()
 
         return deviceRepository.addDevice(
             Device(
-                randomIdGenerator.retrieveDeviceId(),
+                newDeviceId,
                 "".asDeviceName(),
                 "".asDeviceHost(),
                 listOf(addedThing)
             )
         ).flatMap {
-            addedThing.right()
+            AddedThing(
+                addedThing.id,
+                addedThing.name,
+                addedThing.type,
+                addedThing.management,
+                newDeviceId,
+                "".asDeviceName()
+            ).right()
         }
     }
 }
+
+data class AddedThing(
+    val id: ThingId,
+    val name: ThingName,
+    val type: ThingType,
+    val management: ThingManagement,
+    val deviceId: DeviceId,
+    val device: DeviceName
+)

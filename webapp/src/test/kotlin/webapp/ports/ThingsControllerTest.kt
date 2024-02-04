@@ -114,7 +114,7 @@ class ThingsControllerTest {
                     ThingType.LAMP
                 )
             )
-        ).thenReturn(aThing().right())
+        ).thenReturn(anAddedThing().right())
 
         mvc.perform(
             post("/api/v1/things/add")

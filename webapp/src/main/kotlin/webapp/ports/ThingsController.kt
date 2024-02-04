@@ -1,10 +1,7 @@
 package webapp.ports
 
 import domain.*
-import domain.actions.AddThingAction
-import domain.actions.RemoveThingsAction
-import domain.actions.RetrieveDeviceAction
-import domain.actions.SwitchAction
+import domain.actions.*
 import domain.actions.request.AddThingRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
@@ -63,7 +60,7 @@ class ThingsController(
 }
 
 data class AddThingResponse(
-    val thing: Thing
+    val thing: AddedThing
 )
 
 data class ErrorResponse(val error: String)

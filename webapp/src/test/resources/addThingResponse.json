@@ -4,6 +4,7 @@
     "name": "name",
     "type": "LAMP",
     "management": {"switch": "OFF"},
-    "idOnDevice": 1
+    "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
+    "device": "device name"
   }
 }
