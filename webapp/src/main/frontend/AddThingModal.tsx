@@ -107,7 +107,8 @@ export const AddThingModal: FC<Props> = ({devices, handleClose, onAddThing}) => 
                         onChange={(e: SelectChangeEvent) => setThingType(e.target.value as ThingType)}
                     >
                         {Object.keys(ThingType).map((type) => {
-                            return <MenuItem id={type} value={type}>{type}</MenuItem>
+                            return <MenuItem data-testid={`type-selector-${type}`} id={type}
+                                             value={type}>{type}</MenuItem>
                         })}
                     </Select>
                     <FormHelperText>Select the type of thing you want to add</FormHelperText>

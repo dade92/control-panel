@@ -1,7 +1,7 @@
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {fireEvent, render, screen, waitFor, within} from "@testing-library/react";
 import {ControlPanel} from "./ControlPanel";
 import {Builder} from "builder-pattern";
-import {Thing, ThingStatus, ThingType} from "./Thing";
+import {Management, Thing, ThingStatus, ThingType} from "./Thing";
 import '@testing-library/jest-dom';
 
 describe('ControlPanel', () => {
@@ -13,6 +13,7 @@ describe('ControlPanel', () => {
         thing = Builder<Thing>()
             .id('123')
             .name('a thing')
+            .device('device 1')
             .type(ThingType.LAMP)
             .deviceId('789')
             .management({switch: ThingStatus.OFF})
@@ -179,12 +180,118 @@ describe('ControlPanel', () => {
     });
 
     describe('Add thing', () => {
-        it('successfully adds a new thing', () => {
 
+        const typeInputOnTextField = (text: string) => {
+            fireEvent.change(screen.getByTestId('thing-name-form')
+                .querySelector('input')!, {target: {value: text}});
+        }
+
+        const selectThingType = async () => {
+            fireEvent.click(screen.getByTestId('thing-type-selector'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('type-selector-ALARM')).toBeVisible();
+                fireEvent.click(screen.getByText('ALARM'));
+            })
+        }
+
+        const selectDeviceId = async () => {
+            fireEvent.click(within(await screen.findByTestId("device-name-selector")).getByRole("combobox"));
+
+            await waitFor(() => {
+                expect(screen.getByRole("option", {name: "device 1"})).toBeInTheDocument();
+            });
+        }
+
+        it('successfully adds a new thing', async () => {
+            const retrieveThingsProvider = jest.fn(
+                () => Promise.resolve({things: [thing]})
+            );
+
+            const addThingProvider = jest.fn(
+                () => Promise.resolve({
+                        thing: Builder<Thing>().id('NEW-THING').management(
+                            Builder<Management>().switch(ThingStatus.OFF).build()
+                        ).build()
+                    }
+                )
+            );
+
+            render(
+                <ControlPanel
+                    retrieveThingsProvider={retrieveThingsProvider}
+                    removeThingsProvider={jest.fn()}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={addThingProvider}
+                />
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
+            });
+
+            fireEvent.click(screen.getByTestId('add-thing-button'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('add-thing-modal')).toBeVisible();
+            });
+
+            // await selectDeviceId();
+            // await selectThingType();
+            await typeInputOnTextField('thing name');
+
+            fireEvent.click(screen.getByTestId('confirm-button'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('feedback-wrapper-success')).toBeVisible();
+                expect(screen.getByTestId('thing-wrapper-NEW-THING')).toBeVisible();
+                expect(screen.queryByTestId('add-thing-modal')).toBeNull();
+            });
         })
 
-        it('add thing fails', () => {
+        it('add thing fails', async () => {
+            const retrieveThingsProvider = jest.fn(
+                () => Promise.resolve({things: [thing]})
+            );
+            const removeThingsProvider = jest.fn();
+            const switchStatusProvider = jest.fn(
+                () => Promise.reject()
+            );
 
+            const addThingProvider = jest.fn(
+                () => Promise.reject()
+            );
+
+            render(
+                <ControlPanel
+                    retrieveThingsProvider={retrieveThingsProvider}
+                    removeThingsProvider={jest.fn()}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={addThingProvider}
+                />
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
+            });
+
+            fireEvent.click(screen.getByTestId('add-thing-button'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('add-thing-modal')).toBeVisible();
+            });
+
+            // await selectDeviceId();
+            // await selectThingType();
+            await typeInputOnTextField('thing name');
+
+            fireEvent.click(screen.getByTestId('confirm-button'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('feedback-wrapper-error')).toBeVisible();
+                expect(screen.queryByTestId('thing-wrapper-NEW-THING')).toBeNull();
+                expect(screen.queryByTestId('add-thing-modal')).toBeNull();
+            });
         })
     })
 });
