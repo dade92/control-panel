@@ -6,5 +6,5 @@ export const ThingDetailText: FC<{ children: ReactNode }> = ({children}) => {
 }
 
 export const ThingPanelText: FC<{ children: ReactNode }> = ({children}) => {
-    return <Typography variant="body1" gutterBottom>{children}</Typography>
+    return <Typography data-testid={'no-thing-text'} variant="body1" gutterBottom>{children}</Typography>
 }
