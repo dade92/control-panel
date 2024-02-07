@@ -1,68 +1,7 @@
 import {createServer, Server, Response} from "miragejs";
 
 const thingsResponse = {
-    things: [
-        {
-            id: '12333',
-            name: 'Luce soggiorno',
-            device: "arduino uno",
-            deviceId: "XYZ",
-            type: "LAMP",
-            management: {
-                switch: "OFF"
-            }
-        },
-        {
-            id: '45666',
-            name: 'Luce cucina',
-            device: "arduino uno",
-            deviceId: "XYZ",
-            type: "LAMP",
-            management: {
-                switch: "OFF"
-            }
-        },
-        {
-            id: '67777',
-            name: 'Luce camera',
-            device: "arduino due",
-            deviceId: "YYY",
-            type: "LAMP",
-            management: {
-                switch: "OFF"
-            }
-        },
-        {
-            id: '456',
-            name: 'Allarme casa',
-            device: "arduino due",
-            deviceId: "YYY",
-            type: "ALARM",
-            management: {
-                switch: "OFF"
-            }
-        },
-        {
-            id: '777',
-            name: 'Allarme casa',
-            device: "arduino tre",
-            deviceId: "XXX",
-            type: "ALARM",
-            management: {
-                switch: "OFF"
-            }
-        },
-        {
-            id: '888',
-            name: 'Soggiorno',
-            device: "arduino quattro",
-            deviceId: "YYY",
-            type: "ROLLER_SHUTTER",
-            management: {
-                switch: "OFF"
-            }
-        }
-    ]
+    things: []
 };
 
 const thingAddedResponse = {
