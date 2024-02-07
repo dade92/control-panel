@@ -54,10 +54,10 @@ const thingsResponse = {
         },
         {
             id: '888',
-            name: 'Allarme casa',
-            device: "arduino uno",
-            deviceId: "XYZ",
-            type: "ALARM",
+            name: 'Soggiorno',
+            device: "arduino quattro",
+            deviceId: "YYY",
+            type: "ROLLER_SHUTTER",
             management: {
                 switch: "OFF"
             }

@@ -20,6 +20,7 @@ const Wrapper = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 8px;
+  height: 48px;
 `
 
 export const ThingDetails: FC<Props> = ({
