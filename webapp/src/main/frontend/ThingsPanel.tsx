@@ -1,12 +1,15 @@
 import {FC, useState} from "react";
 import {ThingDetails} from "./ThingDetails";
-import {Thing} from "./Thing";
+import {Thing, ThingType} from "./Thing";
 import styled from "styled-components";
 import {Divider, List} from "@mui/material";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingButton} from "./AddThingButton";
 import {ConfirmModal} from "./ConfirmModal";
 import {Subtitle} from "./Subtitle";
+import {AddThingModal} from "./AddThingModal";
+import {AddThingProvider, ThingAddedResponse} from "./logic/AddThingProvider";
+import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -39,10 +42,21 @@ interface Props {
     switchStatusProvider: SwitchStatusProvider;
     onThingRemoved: (thing: Thing) => void;
     idWaitingToBeRemoved: string | null;
+    addThingProvider: AddThingProvider;
+    onThingAdded: (thing: Thing | null) => void;
 }
 
-export const ThingsPanel: FC<Props> = ({things, onChangeStatus, switchStatusProvider, onThingRemoved, idWaitingToBeRemoved}) => {
+export const ThingsPanel: FC<Props> = ({
+                                           things,
+                                           onChangeStatus,
+                                           switchStatusProvider,
+                                           onThingRemoved,
+                                           idWaitingToBeRemoved,
+                                           addThingProvider,
+                                           onThingAdded
+                                       }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
+    const [addThing, setAddThing] = useState<boolean>(false);
 
     const onRemove = (thing: Thing) => {
         setRemovedThing(thing);
@@ -57,6 +71,18 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, switchStatusProv
         setRemovedThing(null);
     }
 
+    const onAddThing = (deviceId: string | null, thingType: ThingType, thingName: string) => {
+        addThingProvider(deviceId, thingType, thingName)
+            .then((t: ThingAddedResponse) => {
+                onThingAdded(t.thing);
+            })
+            .catch(() => {
+                onThingAdded(null);
+            }).finally(() => {
+            setAddThing(false);
+        });
+    }
+
     return (
         <ThingsPanelWrapper data-testid={'things-panel-wrapper'}>
             <Subtitle subtitle={'Control Panel'}/>
@@ -65,12 +91,13 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, switchStatusProv
                     sx={{
                         width: '100%',
                         overflow: 'auto',
-                        maxHeight: 250,
+                        maxHeight: 350,
                     }}
                 >
                     {things.map((thing) => {
                         return <>
                             <ThingDetails
+                                key={thing.id}
                                 data-testid={`details-${thing.id}`}
                                 thing={thing}
                                 onChangeStatus={onChangeStatus}
@@ -82,9 +109,17 @@ export const ThingsPanel: FC<Props> = ({things, onChangeStatus, switchStatusProv
                         </>
                     })}
                 </List>
-                <AddThingButton onAddThingClicked={() => console.log('TODO!')}/>
+                <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
             {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
+            {
+                addThing && <AddThingModal devices={thingsToDeviceAdapter(things)}
+                                           handleClose={() => setAddThing(false)}
+                                           onAddThing={(deviceId: string | null, thingType: ThingType, thingName: string) => {
+                                               console.log(`${deviceId} and ${thingType} and ${thingName}`);
+                                               onAddThing(deviceId, thingType, thingName);
+                                           }}/>
+            }
         </ThingsPanelWrapper>
     );
 }

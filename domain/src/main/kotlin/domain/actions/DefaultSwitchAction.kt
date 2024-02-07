@@ -9,7 +9,7 @@ import domain.ThingId
 import domain.actions.errors.ActionError
 import domain.actions.errors.ActionError.SwitchError.ThingNotFound
 import domain.repository.DeviceRepository
-import domain.repository.SwitchClient
+import domain.client.SwitchClient
 
 interface SwitchAction {
     fun switch(deviceId: DeviceId, thingId: ThingId, newStatus: Status): Either<ActionError, Unit>

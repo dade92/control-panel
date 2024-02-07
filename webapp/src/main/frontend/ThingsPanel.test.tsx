@@ -40,6 +40,8 @@ describe('ThingsPanel', () => {
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={''}
                 switchStatusProvider={jest.fn()}
+                addThingProvider={jest.fn()}
+                onThingAdded={jest.fn()}
             />
         );
 
@@ -63,6 +65,8 @@ describe('ThingsPanel', () => {
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={''}
                 switchStatusProvider={jest.fn()}
+                addThingProvider={jest.fn()}
+                onThingAdded={jest.fn()}
             />
         );
 
@@ -89,6 +93,8 @@ describe('ThingsPanel', () => {
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={''}
                 switchStatusProvider={jest.fn()}
+                addThingProvider={jest.fn()}
+                onThingAdded={jest.fn()}
             />
         );
 
@@ -102,4 +108,33 @@ describe('ThingsPanel', () => {
 
         expect(onThingRemoved).not.toHaveBeenCalled();
     })
+
+    it('should show add thing modal on clicking on add thing', async () => {
+        render(
+            <ThingsPanel
+                things={[
+                    thing,
+                    anotherThing
+                ]}
+                onChangeStatus={onChangeStatus}
+                onThingRemoved={onThingRemoved}
+                idWaitingToBeRemoved={''}
+                switchStatusProvider={jest.fn()}
+                addThingProvider={jest.fn()}
+                onThingAdded={jest.fn()}
+            />
+        );
+
+        fireEvent.click(screen.getByTestId('add-thing-button'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('add-thing-modal')).toBeVisible();
+        });
+
+        fireEvent.click(screen.getByTestId('add-thing-close-button'));
+
+        await waitFor(() => {
+            expect(screen.queryByTestId('add-thing-modal')).toBeNull();
+        });
+    });
 });

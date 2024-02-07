@@ -1,6 +1,7 @@
 package domain.utils
 
 import domain.*
+import domain.actions.AddedThing
 
 fun aDevice(
     deviceId: DeviceId = aDeviceId,
@@ -26,6 +27,22 @@ fun aThing(
     thingType,
     thingManagement,
     idOnDevice
+)
+
+fun anAddedThing(
+    thingId: ThingId = aThingId,
+    thingName: ThingName = aThingName,
+    thingType: ThingType = aThingType,
+    thingManagement: ThingManagement = aThingManagement,
+    deviceId: DeviceId = aDeviceId,
+    deviceName: DeviceName = aDeviceName,
+): AddedThing = AddedThing(
+    thingId,
+    thingName,
+    thingType,
+    thingManagement,
+    deviceId,
+    deviceName
 )
 
 val aThingId = "638a3db2-69e7-471d-90c2-f51360077ae9".asThingId()

@@ -4,12 +4,11 @@ import arrow.core.left
 import arrow.core.right
 import domain.Status
 import domain.actions.errors.ActionError.RetrieveError
-import domain.actions.errors.ActionError.SwitchError
 import domain.actions.errors.ActionError.SwitchError.*
 import domain.asDeviceHost
 import domain.asIdOnDevice
 import domain.repository.DeviceRepository
-import domain.repository.SwitchClient
+import domain.client.SwitchClient
 import domain.utils.aDevice
 import domain.utils.aDeviceId
 import domain.utils.aThing

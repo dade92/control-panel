@@ -1,55 +1,92 @@
 package domain.actions
 
 import arrow.core.Either
-import domain.Device
-import domain.DeviceId
-import domain.Status
-import domain.Thing
-import domain.ThingManagement
+import arrow.core.flatMap
+import arrow.core.right
+import domain.*
 import domain.actions.errors.ActionError
 import domain.actions.request.AddThingRequest
-import domain.asDeviceHost
-import domain.asDeviceName
-import domain.asIdOnDevice
 import domain.repository.DeviceRepository
+import domain.utils.DeviceNameGenerator
 import domain.utils.IdOnDeviceRetriever
-import domain.utils.RandomThingIdGenerator
+import domain.utils.RandomIdGenerator
 
 private val DEFAULT_THING_MANAGEMENT = ThingManagement(Status.OFF)
 
 class AddThingAction(
     private val deviceRepository: DeviceRepository,
-    private val randomThingIdGenerator: RandomThingIdGenerator,
-    private val idOnDeviceRetriever: IdOnDeviceRetriever
+    private val randomIdGenerator: RandomIdGenerator,
+    private val idOnDeviceRetriever: IdOnDeviceRetriever,
+    private val deviceNameGenerator: DeviceNameGenerator
 ) {
 
-    fun add(deviceId: DeviceId, addThingRequest: AddThingRequest): Either<ActionError, Unit> =
-        deviceRepository.retrieve(deviceId).fold(
-            { error ->
-                deviceRepository.addDevice(Device(
-                    deviceId,
-                    "".asDeviceName(),
-                    "".asDeviceHost(),
-                    listOf(Thing(
-                        randomThingIdGenerator.retrieve(),
-                        addThingRequest.name,
-                        addThingRequest.type,
-                        ThingManagement(Status.OFF),
-                        1.asIdOnDevice()
-                    ))
-                ))
-            },
-            { device ->
-                deviceRepository.addThing(
-                    deviceId,
-                    Thing(
-                        randomThingIdGenerator.retrieve(),
+    fun add(addThingRequest: AddThingRequest): Either<ActionError, AddedThing> =
+        addThingRequest.deviceId?.let {
+            deviceRepository.retrieve(addThingRequest.deviceId).fold(
+                { addNewDeviceWithThing(addThingRequest) },
+                { device ->
+                    val addedThing = Thing(
+                        randomIdGenerator.retrieveThingId(),
                         addThingRequest.name,
                         addThingRequest.type,
                         DEFAULT_THING_MANAGEMENT,
                         idOnDeviceRetriever.get(device)
                     )
-                )
-            }
+                    deviceRepository.addThing(
+                        addThingRequest.deviceId,
+                        addedThing
+                    ).flatMap {
+                        AddedThing(
+                            addedThing.id,
+                            addedThing.name,
+                            addedThing.type,
+                            addedThing.management,
+                            device.deviceId,
+                            device.deviceName
+                        ).right()
+                    }
+                }
+            )
+        } ?: addNewDeviceWithThing(addThingRequest)
+
+    private fun addNewDeviceWithThing(
+        addThingRequest: AddThingRequest
+    ): Either<ActionError, AddedThing> {
+        val addedThing = Thing(
+            randomIdGenerator.retrieveThingId(),
+            addThingRequest.name,
+            addThingRequest.type,
+            DEFAULT_THING_MANAGEMENT,
+            1.asIdOnDevice()
         )
+        val newDeviceId = randomIdGenerator.retrieveDeviceId()
+        val deviceName = deviceNameGenerator.generate()
+
+        return deviceRepository.addDevice(
+            Device(
+                newDeviceId,
+                deviceName,
+                "".asDeviceHost(),
+                listOf(addedThing)
+            )
+        ).flatMap {
+            AddedThing(
+                addedThing.id,
+                addedThing.name,
+                addedThing.type,
+                addedThing.management,
+                newDeviceId,
+                deviceName
+            ).right()
+        }
+    }
 }
+
+data class AddedThing(
+    val id: ThingId,
+    val name: ThingName,
+    val type: ThingType,
+    val management: ThingManagement,
+    val deviceId: DeviceId,
+    val device: DeviceName
+)

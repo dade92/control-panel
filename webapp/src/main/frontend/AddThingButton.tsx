@@ -8,14 +8,14 @@ interface Props {
 }
 
 const Wrapper = styled.div`
-    align-self: end;
-    margin-top: 60px;
+  align-self: end;
+  margin-top: 60px;
 `
 
 export const AddThingButton: FC<Props> = ({onAddThingClicked}) => {
-    return <Wrapper data-testid={'add-thing-button'}>
-        <Fab onClick={onAddThingClicked} color="success" aria-label="add">
-            <AddIcon />
+    return <Wrapper>
+        <Fab data-testid={'add-thing-button'} onClick={onAddThingClicked} color="success" aria-label="add">
+            <AddIcon/>
         </Fab>
     </Wrapper>
 }

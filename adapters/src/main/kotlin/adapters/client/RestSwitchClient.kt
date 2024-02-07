@@ -7,7 +7,7 @@ import domain.DeviceHost
 import domain.IdOnDevice
 import domain.Status
 import domain.actions.errors.ActionError
-import domain.repository.SwitchClient
+import domain.client.SwitchClient
 import org.slf4j.LoggerFactory
 import org.springframework.web.client.RestTemplate
 
