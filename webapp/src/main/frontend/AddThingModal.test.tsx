@@ -35,28 +35,7 @@ describe('AddThingModal', () => {
         });
     }
 
-    // it('should render form correctly and call the add thing with the correct params', async () => {
-    //     render(<AddThingModal devices={[
-    //             Builder<Device>().deviceId('123').deviceName('device 1').build(),
-    //             Builder<Device>().deviceId('456').deviceName('device 2').build(),
-    //         ]} handleClose={handleClose} onAddThing={onAddThing}/>
-    //     );
-    //
-    //     expect(screen.getByTestId('add-thing-content')).toBeVisible();
-    //     expect(screen.getByTestId('device-name-selector')).toBeVisible();
-    //     expect(screen.getByTestId('thing-type-selector')).toBeVisible();
-    //     expect(screen.getByTestId('thing-name-form')).toBeVisible();
-    //
-    //     await selectDeviceId();
-    //
-    //     await selectThingType();
-    //
-    //     typeInputOnTextField('new thing name');
-    //
-    //     fireEvent.click(screen.getByTestId('confirm-button'));
-    //
-    //     expect(onAddThing).toHaveBeenCalledWith('456', ThingType.ALARM, 'new thing name');
-    // });
+    //TODO test the device selector if possible
 
     it('should create a new device if no one is selected', () => {
         render(<AddThingModal devices={[
