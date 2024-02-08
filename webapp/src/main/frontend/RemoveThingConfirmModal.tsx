@@ -6,7 +6,7 @@ interface Props {
     onCancel: () => void;
 }
 
-export const ConfirmModal: FC<Props> = ({onConfirm, onCancel}) =>
+export const RemoveThingConfirmModal: FC<Props> = ({onConfirm, onCancel}) =>
     (
         <Dialog data-testid={'confirm-modal'} open={true}>
             <DialogTitle>Are you sure?</DialogTitle>
