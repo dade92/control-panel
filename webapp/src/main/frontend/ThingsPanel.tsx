@@ -115,7 +115,7 @@ export const ThingsPanel: FC<Props> = ({
                         Thing</ThingPanelText>}
                 <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
-            {removedThing != null && <RemoveThingConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
+            {removedThing != null && <RemoveThingConfirmModal thing={removedThing} onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
             {
                 addThing && <AddThingModal devices={thingsToDeviceAdapter(things)}
                                            handleClose={() => setAddThing(false)}
