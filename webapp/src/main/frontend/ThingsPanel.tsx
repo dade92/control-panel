@@ -115,12 +115,12 @@ export const ThingsPanel: FC<Props> = ({
                         Thing</ThingPanelText>}
                 <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
-            {removedThing != null && <RemoveThingConfirmModal thing={removedThing} onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
+            {removedThing != null &&
+                <RemoveThingConfirmModal thing={removedThing} onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
             {
                 addThing && <AddThingModal devices={thingsToDeviceAdapter(things)}
                                            handleClose={() => setAddThing(false)}
                                            onAddThing={(deviceId: string | null, thingType: ThingType, thingName: string) => {
-                                               console.log(`${deviceId} and ${thingType} and ${thingName}`);
                                                onAddThing(deviceId, thingType, thingName);
                                            }}/>
             }
