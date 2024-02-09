@@ -6,7 +6,7 @@ import {ThingDetailText} from "./Texts";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {RemoveThingButton} from "./RemoveThingButton";
 import LightIcon from '@mui/icons-material/Light';
-import KitchenIcon from '@mui/icons-material/Kitchen';
+import RollerShadesIcon from '@mui/icons-material/RollerShades';
 import CameraIndoorIcon from '@mui/icons-material/CameraIndoor';
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 
@@ -22,6 +22,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 4px;
   align-items: center;
   padding: 8px;
   height: 48px;
@@ -74,9 +75,8 @@ export const ThingDetails: FC<Props> = ({
                 return <LightIcon data-testid={'light-icon'}/>;
             case ThingType.APPLIANCE:
                 return <LocalLaundryServiceIcon data-testid={'appliance-icon'}/>;
-            //TODO
             case ThingType.ROLLER_SHUTTER:
-                return <KitchenIcon data-testid={'roller-shutter-icon'}/>;
+                return <RollerShadesIcon data-testid={'roller-shutter-icon'}/>;
         }
     }
 
