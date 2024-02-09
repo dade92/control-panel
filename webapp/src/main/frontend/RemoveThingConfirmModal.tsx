@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Button, Dialog, DialogActions, DialogTitle} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle} from "@mui/material";
 
 interface Props {
     onConfirm: () => void;
@@ -9,8 +9,9 @@ interface Props {
 export const RemoveThingConfirmModal: FC<Props> = ({onConfirm, onCancel}) =>
     (
         <Dialog data-testid={'confirm-modal'} open={true}>
-            <DialogTitle>Are you sure?</DialogTitle>
-            <DialogActions>
+            <DialogTitle sx={{textAlign: "center"}}>Are you sure?</DialogTitle>
+            <DialogActions sx={{display: "flex", flexDirection: "row", gap: "48px", justifyContent: "space-evenly"}}
+                           disableSpacing={false}>
                 <Button data-testid={'no-button'} onClick={onCancel}>
                     No
                 </Button>
