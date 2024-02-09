@@ -54,6 +54,21 @@ describe('ThingsPanel', () => {
         })
     })
 
+    it('should show no thing text if array is empty', () => {
+        render(
+            <ThingsPanel things={[]}
+                onChangeStatus={onChangeStatus}
+                onThingRemoved={onThingRemoved}
+                idWaitingToBeRemoved={''}
+                switchStatusProvider={jest.fn()}
+                addThingProvider={jest.fn()}
+                onThingAdded={jest.fn()}
+            />
+        );
+
+        expect(screen.getByTestId('no-thing-text')).toBeVisible();
+    });
+
     it('clicking on cancel button opens the modal, when choice is confirmed, callback is called', async () => {
         render(
             <ThingsPanel

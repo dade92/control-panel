@@ -5,11 +5,12 @@ import styled from "styled-components";
 import {Divider, List} from "@mui/material";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingButton} from "./AddThingButton";
-import {ConfirmModal} from "./ConfirmModal";
+import {RemoveThingConfirmModal} from "./RemoveThingConfirmModal";
 import {Subtitle} from "./Subtitle";
 import {AddThingModal} from "./AddThingModal";
 import {AddThingProvider, ThingAddedResponse} from "./logic/AddThingProvider";
 import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
+import {ThingPanelText} from "./Texts";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -109,9 +110,12 @@ export const ThingsPanel: FC<Props> = ({
                         </>
                     })}
                 </List>
+                {things.length == 0 &&
+                    <ThingPanelText>No things at the moment, click on the add button to add a new
+                        Thing</ThingPanelText>}
                 <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
             </ListWrapper>
-            {removedThing != null && <ConfirmModal onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
+            {removedThing != null && <RemoveThingConfirmModal thing={removedThing} onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
             {
                 addThing && <AddThingModal devices={thingsToDeviceAdapter(things)}
                                            handleClose={() => setAddThing(false)}

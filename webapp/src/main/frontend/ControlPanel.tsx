@@ -42,7 +42,6 @@ export const ControlPanel: FC<Props> = ({
                     isSuccess: false,
                     error: true,
                     message: 'There was an error retrieving Things',
-
                 })
             })
     }, []);
@@ -82,8 +81,8 @@ export const ControlPanel: FC<Props> = ({
 
     const giveFeedbackOnThingAdded = (thing: Thing | null) => {
         //TODO check this bang here
-        if (thing) {
-            things!.push(thing);
+        if (thing && things) {
+            things.push(thing);
             setThings(things);
             setOutcome({
                 isSuccess: true,

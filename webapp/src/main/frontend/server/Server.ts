@@ -1,4 +1,4 @@
-import {createServer, Server, Response} from "miragejs";
+import {createServer, Response, Server} from "miragejs";
 
 const thingsResponse = {
     things: [
@@ -34,10 +34,10 @@ const thingsResponse = {
         },
         {
             id: '456',
-            name: 'Allarme casa',
+            name: 'Lavastoviglie',
             device: "arduino due",
             deviceId: "YYY",
-            type: "ALARM",
+            type: "APPLIANCE",
             management: {
                 switch: "OFF"
             }
@@ -54,10 +54,10 @@ const thingsResponse = {
         },
         {
             id: '888',
-            name: 'Allarme casa',
-            device: "arduino uno",
-            deviceId: "XYZ",
-            type: "ALARM",
+            name: 'Tapparella Soggiorno',
+            device: "arduino quattro",
+            deviceId: "YYY",
+            type: "ROLLER_SHUTTER",
             management: {
                 switch: "OFF"
             }

@@ -1,10 +1,15 @@
-import {FC, useState} from "react";
-import {Management, Thing, ThingStatus} from "./Thing";
+import {FC, ReactElement} from "react";
+import {Thing, ThingStatus, ThingType} from "./Thing";
 import styled from "styled-components";
 import {Switch} from "@mui/material";
 import {ThingDetailText} from "./Texts";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {RemoveThingButton} from "./RemoveThingButton";
+import LightIcon from '@mui/icons-material/Light';
+import RollerShadesIcon from '@mui/icons-material/RollerShades';
+import CameraIndoorIcon from '@mui/icons-material/CameraIndoor';
+import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
+import {useThingDetailsStore} from "./ThingDetailsStore";
 
 interface Props {
     thing: Thing;
@@ -18,8 +23,10 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 4px;
   align-items: center;
   padding: 8px;
+  height: 48px;
 `
 
 export const ThingDetails: FC<Props> = ({
@@ -29,47 +36,33 @@ export const ThingDetails: FC<Props> = ({
                                             onThingRemoved,
                                             shouldBeLoading
                                         }) => {
-    const [status, setStatus] = useState<Management>(thing.management);
-    const [disabled, setDisabled] = useState<boolean>(false);
+    const store = useThingDetailsStore(thing, switchStatusProvider, onChangeStatus, onThingRemoved);
 
-    const changeStatus = () => {
-        let newStatus = ThingStatus.OFF;
-        let oldStatus = status.switch;
-
-        if (status.switch == "ON") {
-            newStatus = ThingStatus.OFF;
-        } else {
-            newStatus = ThingStatus.ON;
+    const renderIcon = (thingType: ThingType): ReactElement => {
+        switch (thingType) {
+            case ThingType.ALARM:
+                return <CameraIndoorIcon data-testid={'alarm-icon'}/>;
+            case ThingType.LAMP:
+                return <LightIcon data-testid={'light-icon'}/>;
+            case ThingType.APPLIANCE:
+                return <LocalLaundryServiceIcon data-testid={'appliance-icon'}/>;
+            case ThingType.ROLLER_SHUTTER:
+                return <RollerShadesIcon data-testid={'roller-shutter-icon'}/>;
         }
-        setStatus({switch: newStatus});
-        setDisabled(true);
-
-        switchStatusProvider(thing, {switch: newStatus})
-            .then(() => {
-                thing.management.switch = newStatus;
-                onChangeStatus(true, thing);
-            })
-            .catch(() => {
-                onChangeStatus(false, thing);
-                setStatus({switch: oldStatus});
-            }).finally(() => {
-            setDisabled(false);
-        });
     }
 
-    const onRemoved = (thing: Thing) => {
-        onThingRemoved(thing);
-    }
+    const isOn = (status: ThingStatus) => status === ThingStatus.ON
 
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
-            <ThingDetailText data-testid={'type'}>{thing.type}</ThingDetailText>
+            {renderIcon(thing.type)}
             <ThingDetailText data-testid={'name'}>{thing.name}</ThingDetailText>
-            <Switch checked={status.switch === ThingStatus.ON} disabled={disabled} onChange={changeStatus}/>
+            <Switch checked={isOn(store.state.status)} disabled={store.state.disabled}
+                    onChange={store.actions.changeStatus}/>
             <RemoveThingButton
                 loading={shouldBeLoading}
                 thing={thing}
-                onRemoved={() => onRemoved(thing)}
+                onRemoved={() => store.actions.onRemoved(thing)}
             />
         </Wrapper>
     </>
