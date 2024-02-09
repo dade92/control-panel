@@ -1,5 +1,5 @@
-import {FC, ReactElement, useState} from "react";
-import {Management, Thing, ThingStatus, ThingType} from "./Thing";
+import {FC, ReactElement} from "react";
+import {Thing, ThingStatus, ThingType} from "./Thing";
 import styled from "styled-components";
 import {Switch} from "@mui/material";
 import {ThingDetailText} from "./Texts";
@@ -9,6 +9,7 @@ import LightIcon from '@mui/icons-material/Light';
 import RollerShadesIcon from '@mui/icons-material/RollerShades';
 import CameraIndoorIcon from '@mui/icons-material/CameraIndoor';
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
+import {useThingDetailsStore} from "./ThingDetailsStore";
 
 interface Props {
     thing: Thing;
@@ -35,37 +36,7 @@ export const ThingDetails: FC<Props> = ({
                                             onThingRemoved,
                                             shouldBeLoading
                                         }) => {
-    const [status, setStatus] = useState<Management>(thing.management);
-    const [disabled, setDisabled] = useState<boolean>(false);
-
-    const changeStatus = () => {
-        let newStatus = ThingStatus.OFF;
-        let oldStatus = status.switch;
-
-        if (status.switch == "ON") {
-            newStatus = ThingStatus.OFF;
-        } else {
-            newStatus = ThingStatus.ON;
-        }
-        setStatus({switch: newStatus});
-        setDisabled(true);
-
-        switchStatusProvider(thing, {switch: newStatus})
-            .then(() => {
-                thing.management.switch = newStatus;
-                onChangeStatus(true, thing);
-            })
-            .catch(() => {
-                onChangeStatus(false, thing);
-                setStatus({switch: oldStatus});
-            }).finally(() => {
-            setDisabled(false);
-        });
-    }
-
-    const onRemoved = (thing: Thing) => {
-        onThingRemoved(thing);
-    }
+    const store = useThingDetailsStore(thing, switchStatusProvider, onChangeStatus, onThingRemoved);
 
     const renderIcon = (thingType: ThingType): ReactElement => {
         switch (thingType) {
@@ -86,11 +57,12 @@ export const ThingDetails: FC<Props> = ({
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
             {renderIcon(thing.type)}
             <ThingDetailText data-testid={'name'}>{thing.name}</ThingDetailText>
-            <Switch checked={isOn(status.switch)} disabled={disabled} onChange={changeStatus}/>
+            <Switch checked={isOn(store.state.status)} disabled={store.state.disabled}
+                    onChange={store.actions.changeStatus}/>
             <RemoveThingButton
                 loading={shouldBeLoading}
                 thing={thing}
-                onRemoved={() => onRemoved(thing)}
+                onRemoved={() => store.actions.onRemoved(thing)}
             />
         </Wrapper>
     </>
