@@ -11,6 +11,7 @@ import {AddThingModal} from "./AddThingModal";
 import {AddThingProvider, ThingAddedResponse} from "./logic/AddThingProvider";
 import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
 import {ThingPanelText} from "./Texts";
+import {InfoThingModal} from "./InfoThingModal";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -58,6 +59,7 @@ export const ThingsPanel: FC<Props> = ({
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
+    const [infoThing, setInfoThing] = useState<Thing | null>(null);
 
     const onRemove = (thing: Thing) => {
         setRemovedThing(thing);
@@ -105,6 +107,7 @@ export const ThingsPanel: FC<Props> = ({
                                 switchStatusProvider={switchStatusProvider}
                                 onThingRemoved={onRemove}
                                 shouldBeLoading={idWaitingToBeRemoved == thing.id}
+                                onInfoClicked={(thing: Thing) => setInfoThing(thing)}
                             />
                             <Divider/>
                         </>
@@ -124,6 +127,7 @@ export const ThingsPanel: FC<Props> = ({
                                                onAddThing(deviceId, thingType, thingName);
                                            }}/>
             }
+            {infoThing != null && <InfoThingModal thing={infoThing}/>}
         </ThingsPanelWrapper>
     );
 }

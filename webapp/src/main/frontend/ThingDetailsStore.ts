@@ -10,6 +10,7 @@ interface ThingDetailsStore {
     actions: {
         changeStatus: () => void;
         onRemoved: (thing: Thing) => void;
+        onInfoClicked: (thing: Thing) => void;
     }
 }
 
@@ -17,8 +18,8 @@ export const useThingDetailsStore = (
     thing: Thing,
     switchStatusProvider: SwitchStatusProvider,
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void,
-    onThingRemoved: (thing: Thing) => void
-): ThingDetailsStore => {
+    onThingRemoved: (thing: Thing) => void,
+    onThingInfoClicked: (thing: Thing) => void): ThingDetailsStore => {
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -51,6 +52,10 @@ export const useThingDetailsStore = (
         onThingRemoved(thing);
     }
 
+    const onInfoClicked = (thing: Thing) => {
+        onThingInfoClicked(thing)
+    }
+
     return {
         state: {
             status: status.switch,
@@ -58,7 +63,8 @@ export const useThingDetailsStore = (
         },
         actions: {
             changeStatus,
-            onRemoved
+            onRemoved,
+            onInfoClicked
         }
     }
 }

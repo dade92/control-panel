@@ -34,6 +34,7 @@ describe('ThingDetails', () => {
                 switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
+                onInfoClicked={jest.fn()}
             />
         );
 
@@ -60,6 +61,7 @@ describe('ThingDetails', () => {
                 switchStatusProvider={failSwitchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
+                onInfoClicked={jest.fn()}
             />
         )
 
@@ -82,6 +84,7 @@ describe('ThingDetails', () => {
                 switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
+                onInfoClicked={jest.fn()}
             />
         )
 
