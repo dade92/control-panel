@@ -69,7 +69,7 @@ export const ThingDetails: FC<Props> = ({
             <Switch checked={isOn(store.state.status)} disabled={store.state.disabled}
                     onChange={store.actions.changeStatus}/>
             <ActionsWrapper>
-                <ThingInfoButton onClick={() => store.actions.onInfoClicked(thing)}/>
+                <ThingInfoButton thing={thing} onClick={() => store.actions.onInfoClicked(thing)}/>
                 <RemoveThingButton
                     loading={shouldBeLoading}
                     thing={thing}
