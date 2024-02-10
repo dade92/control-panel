@@ -152,4 +152,36 @@ describe('ThingsPanel', () => {
             expect(screen.queryByTestId('add-thing-modal')).toBeNull();
         });
     });
+
+    it('should show info modal when info button clicked', async () => {
+        render(
+            <ThingsPanel
+                things={[
+                    thing,
+                    anotherThing
+                ]}
+                onChangeStatus={onChangeStatus}
+                onThingRemoved={onThingRemoved}
+                idWaitingToBeRemoved={''}
+                switchStatusProvider={jest.fn()}
+                addThingProvider={jest.fn()}
+                onThingAdded={jest.fn()}
+            />
+        );
+
+        fireEvent.click(screen.getByTestId('info-button-123'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('info-modal')).toBeVisible();
+            expect(screen.getByTestId('info-thing-name')).toBeVisible();
+            expect(screen.getByTestId('info-thing-device')).toBeVisible();
+            expect(screen.getByTestId('info-thing-type')).toBeVisible();
+        });
+
+        fireEvent.click(screen.getByTestId('info-thing-close-button'));
+
+        await waitFor(() => {
+            expect(screen.queryByTestId('info-modal')).toBeNull();
+        });
+    })
 });

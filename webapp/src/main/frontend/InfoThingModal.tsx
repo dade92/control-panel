@@ -25,9 +25,9 @@ export const InfoThingModal: FC<Props> = ({thing, handleClose}) => {
             <CloseIcon/>
         </IconButton>
         <DialogContent sx={{display: "flex", flexDirection: "column", gap: "8px"}}>
-            <Typography>{thing.name}</Typography>
-            <Typography>{thing.device}</Typography>
-            <Typography>{thing.type}</Typography>
+            <Typography data-testid={'info-thing-name'}>{thing.name}</Typography>
+            <Typography data-testid={'info-thing-device'}>{thing.device}</Typography>
+            <Typography data-testid={'info-thing-type'}>{thing.type}</Typography>
         </DialogContent>
     </Dialog>
 }
