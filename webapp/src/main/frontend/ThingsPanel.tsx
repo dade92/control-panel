@@ -127,7 +127,7 @@ export const ThingsPanel: FC<Props> = ({
                                                onAddThing(deviceId, thingType, thingName);
                                            }}/>
             }
-            {infoThing != null && <InfoThingModal thing={infoThing}/>}
+            {infoThing != null && <InfoThingModal thing={infoThing} handleClose={() => setInfoThing(null)}/>}
         </ThingsPanelWrapper>
     );
 }
