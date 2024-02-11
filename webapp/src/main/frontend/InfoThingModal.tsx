@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {Button, Dialog, DialogContent, DialogTitle, IconButton, TextField, Typography} from "@mui/material";
 import {Thing} from "./Thing";
 import CloseIcon from "@mui/icons-material/Close";
@@ -8,16 +8,19 @@ import {InfoLabelText} from "./Texts";
 interface Props {
     thing: Thing;
     handleClose: () => void;
+    onChangeHost: (deviceHost: string, deviceId: string) => void;
 }
 
 const InfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 8px;
+  gap: 16px;
   align-items: center;
 `
 
-export const InfoThingModal: FC<Props> = ({thing, handleClose}) => {
+export const InfoThingModal: FC<Props> = ({thing, handleClose, onChangeHost}) => {
+    const [host, setHost] = useState<string>(thing.deviceHost);
+
     return <Dialog data-testid={'info-modal'} open={true} fullWidth>
         <DialogTitle sx={{m: 0, p: 2}}>{thing.name}</DialogTitle>
         <IconButton
@@ -39,8 +42,9 @@ export const InfoThingModal: FC<Props> = ({thing, handleClose}) => {
                 data-testid={'info-thing-device'}>{thing.device}</Typography></InfoWrapper>
             <InfoWrapper><InfoLabelText text={'Device host:'}/><TextField
                 data-testid={'info-thing-device-host'} size="small" margin="dense" label={'host'} variant="standard"
-                defaultValue={thing.deviceHost}/>
-                <Button onClick={() => console.log('changing host')}>Change</Button></InfoWrapper>
+                value={host} onChange={(e) => setHost(e.target.value)}/>
+                <Button data-testid={'host-change-button'}
+                        onClick={() => onChangeHost(host, thing.deviceId)}>Change</Button></InfoWrapper>
             <InfoWrapper><InfoLabelText text={'Type:'}/><Typography
                 data-testid={'info-thing-type'}>{thing.type}</Typography></InfoWrapper>
         </DialogContent>

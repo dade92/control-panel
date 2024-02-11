@@ -46,6 +46,7 @@ interface Props {
     idWaitingToBeRemoved: string | null;
     addThingProvider: AddThingProvider;
     onThingAdded: (thing: Thing | null) => void;
+    onHostChanged: (deviceHost: string, thingId: string) => void;
 }
 
 export const ThingsPanel: FC<Props> = ({
@@ -55,7 +56,8 @@ export const ThingsPanel: FC<Props> = ({
                                            onThingRemoved,
                                            idWaitingToBeRemoved,
                                            addThingProvider,
-                                           onThingAdded
+                                           onThingAdded,
+                                           onHostChanged
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
@@ -84,6 +86,13 @@ export const ThingsPanel: FC<Props> = ({
             }).finally(() => {
             setAddThing(false);
         });
+    }
+
+    const onChangeHost = (deviceHost: string, thingId: string) => {
+        //TODO rest call here to update the server properly
+        //TODO in any case, close the modal after the rest call
+        setInfoThing(null);
+        onHostChanged(deviceHost, thingId);
     }
 
     return (
@@ -127,7 +136,9 @@ export const ThingsPanel: FC<Props> = ({
                                                onAddThing(deviceId, thingType, thingName);
                                            }}/>
             }
-            {infoThing != null && <InfoThingModal thing={infoThing} handleClose={() => setInfoThing(null)}/>}
+            {infoThing != null &&
+                <InfoThingModal onChangeHost={onChangeHost} thing={infoThing}
+                                handleClose={() => setInfoThing(null)}/>}
         </ThingsPanelWrapper>
     );
 }

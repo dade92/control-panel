@@ -80,7 +80,7 @@ export const ControlPanel: FC<Props> = ({
     }
 
     const giveFeedbackOnThingAdded = (thing: Thing | null) => {
-        //TODO check this bang here
+        //TODO rename or do something for this code that changes the list displayed, it's important!
         if (thing && things) {
             things.push(thing);
             setThings(things);
@@ -98,6 +98,16 @@ export const ControlPanel: FC<Props> = ({
         }
     }
 
+    const hostChanged = (newHost: string, deviceId: string) => {
+        setThings(things!.map((t: Thing) => {
+            if(t.deviceId == deviceId) {
+                return {...t, deviceHost : newHost}
+            } else {
+                return t
+            }
+        }));
+    }
+
     return things == null ? <Loader/> :
         <>
             <ThingsPanel
@@ -108,6 +118,7 @@ export const ControlPanel: FC<Props> = ({
                 idWaitingToBeRemoved={idToBeRemoved}
                 addThingProvider={addThingProvider}
                 onThingAdded={(thing: Thing | null) => giveFeedbackOnThingAdded(thing)}
+                onHostChanged={hostChanged}
             />
             {
                 outcome?.isSuccess && <FeedbackMessage

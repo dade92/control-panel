@@ -42,6 +42,7 @@ describe('ThingsPanel', () => {
                 switchStatusProvider={jest.fn()}
                 addThingProvider={jest.fn()}
                 onThingAdded={jest.fn()}
+                onHostChanged={jest.fn()}
             />
         );
 
@@ -63,6 +64,7 @@ describe('ThingsPanel', () => {
                 switchStatusProvider={jest.fn()}
                 addThingProvider={jest.fn()}
                 onThingAdded={jest.fn()}
+                         onHostChanged={jest.fn()}
             />
         );
 
@@ -82,6 +84,7 @@ describe('ThingsPanel', () => {
                 switchStatusProvider={jest.fn()}
                 addThingProvider={jest.fn()}
                 onThingAdded={jest.fn()}
+                onHostChanged={jest.fn()}
             />
         );
 
@@ -110,6 +113,7 @@ describe('ThingsPanel', () => {
                 switchStatusProvider={jest.fn()}
                 addThingProvider={jest.fn()}
                 onThingAdded={jest.fn()}
+                onHostChanged={jest.fn()}
             />
         );
 
@@ -137,6 +141,7 @@ describe('ThingsPanel', () => {
                 switchStatusProvider={jest.fn()}
                 addThingProvider={jest.fn()}
                 onThingAdded={jest.fn()}
+                onHostChanged={jest.fn()}
             />
         );
 
@@ -166,6 +171,7 @@ describe('ThingsPanel', () => {
                 switchStatusProvider={jest.fn()}
                 addThingProvider={jest.fn()}
                 onThingAdded={jest.fn()}
+                onHostChanged={jest.fn()}
             />
         );
 
