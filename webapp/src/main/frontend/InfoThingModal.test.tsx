@@ -22,7 +22,7 @@ describe('InfoThingModal', () => {
         expect(screen.getByTestId('info-modal')).toBeVisible();
         expect(screen.getByTestId('info-thing-name')).toHaveTextContent('TEST NAME');
         expect(screen.getByTestId('info-thing-device')).toHaveTextContent('DEVICE NAME');
-        expect(screen.getByTestId('info-thing-device-host')).toHaveTextContent('host');
+        expect(screen.getByTestId('info-thing-device-host')).toBeVisible();
     })
 
     it('should call the on change callback with the correct host', () => {

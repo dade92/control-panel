@@ -41,7 +41,7 @@ export const InfoThingModal: FC<Props> = ({thing, handleClose, onChangeHost}) =>
             <InfoWrapper><InfoLabelText text={'Device:'}/><Typography
                 data-testid={'info-thing-device'}>{thing.device}</Typography></InfoWrapper>
             <InfoWrapper><InfoLabelText text={'Device host:'}/><TextField
-                data-testid={'info-thing-device-host'} size="small" margin="dense" label={'host'} variant="standard"
+                data-testid={'info-thing-device-host'} size="small" margin="dense" variant="standard"
                 value={host} onChange={(e) => setHost(e.target.value)}/>
                 <Button data-testid={'host-change-button'}
                         onClick={() => onChangeHost(host, thing.deviceId)}>Change</Button></InfoWrapper>

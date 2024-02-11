@@ -42,47 +42,49 @@ describe('ThingsPanel', () => {
             .querySelector('input')!, {target: {value: text}});
     }
 
-    it('Shows subtitle, add thing button and list of things correctly', async () => {
-        render(
-            <ThingsPanel
-                things={[
-                    thing,
-                    anotherThing
-                ]}
-                onChangeStatus={onChangeStatus}
-                onThingRemoved={onThingRemoved}
-                idWaitingToBeRemoved={''}
-                switchStatusProvider={jest.fn()}
-                addThingProvider={jest.fn()}
-                onThingAdded={jest.fn()}
-                onHostChanged={jest.fn()}
-            />
-        );
+    describe('Things display', () => {
+        it('Shows subtitle, add thing button and list of things correctly', async () => {
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={jest.fn()}
+                    onThingAdded={jest.fn()}
+                    onHostChanged={jest.fn()}
+                />
+            );
 
-        await waitFor(() => {
-            expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
-            expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
-            expect(screen.getByTestId('thing-wrapper-456')).toBeVisible();
-            expect(screen.getByTestId('add-thing-button')).toBeVisible();
-            expect(screen.getByTestId('panel-subtitle')).toBeVisible();
+            await waitFor(() => {
+                expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
+                expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
+                expect(screen.getByTestId('thing-wrapper-456')).toBeVisible();
+                expect(screen.getByTestId('add-thing-button')).toBeVisible();
+                expect(screen.getByTestId('panel-subtitle')).toBeVisible();
+            })
         })
+
+        it('should show no thing text if array is empty', () => {
+            render(
+                <ThingsPanel things={[]}
+                             onChangeStatus={onChangeStatus}
+                             onThingRemoved={onThingRemoved}
+                             idWaitingToBeRemoved={''}
+                             switchStatusProvider={jest.fn()}
+                             addThingProvider={jest.fn()}
+                             onThingAdded={jest.fn()}
+                             onHostChanged={jest.fn()}
+                />
+            );
+
+            expect(screen.getByTestId('no-thing-text')).toBeVisible();
+        });
     })
-
-    it('should show no thing text if array is empty', () => {
-        render(
-            <ThingsPanel things={[]}
-                         onChangeStatus={onChangeStatus}
-                         onThingRemoved={onThingRemoved}
-                         idWaitingToBeRemoved={''}
-                         switchStatusProvider={jest.fn()}
-                         addThingProvider={jest.fn()}
-                         onThingAdded={jest.fn()}
-                         onHostChanged={jest.fn()}
-            />
-        );
-
-        expect(screen.getByTestId('no-thing-text')).toBeVisible();
-    });
 
     describe('Cancel action', () => {
         it('clicking on cancel button opens the modal, when choice is confirmed, callback is called', async () => {
@@ -114,7 +116,7 @@ describe('ThingsPanel', () => {
             expect(onThingRemoved).toHaveBeenCalledWith(thing);
         })
 
-        it('refusing the modal, do not call the callback', async () => {
+        it('closing the modal, do not call the callback', async () => {
             render(
                 <ThingsPanel
                     things={[
