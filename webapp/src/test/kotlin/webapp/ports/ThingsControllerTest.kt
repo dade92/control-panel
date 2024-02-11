@@ -5,12 +5,14 @@ import arrow.core.right
 import com.springexample.utils.Fixtures
 import domain.ThingType
 import domain.actions.AddThingAction
+import domain.actions.ChangeHostAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
 import domain.actions.errors.ActionError.RetrieveError
 import domain.actions.request.AddThingRequest
 import domain.asThingName
 import domain.utils.*
+import org.jmock.auto.Mock
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
@@ -18,8 +20,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
@@ -37,6 +38,9 @@ class ThingsControllerTest {
 
     @MockBean
     private lateinit var addThingAction: AddThingAction
+
+    @MockBean
+    private lateinit var changeHostAction: ChangeHostAction
 
     @Test
     fun `retrieve things`() {
@@ -122,5 +126,21 @@ class ThingsControllerTest {
                 .content(Fixtures.readJson("/addThingRequest.json"))
         ).andExpect(status().is2xxSuccessful())
             .andExpect(content().json(Fixtures.readJson("/addThingResponse.json")))
+    }
+
+    @Test
+    fun `change device host`() {
+        `when`(
+            changeHostAction.changeHost(
+                aDeviceId,
+                anotherDeviceHost
+            )
+        ).thenReturn(Unit.right())
+
+        mvc.perform(
+            put("/api/v1/things/changeHost/$aDeviceId")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Fixtures.readJson("/changeHostRequest.json"))
+        ).andExpect(status().is2xxSuccessful())
     }
 }
