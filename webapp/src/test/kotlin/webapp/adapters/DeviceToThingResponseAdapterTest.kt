@@ -1,16 +1,7 @@
 package webapp.adapters
 
 import domain.*
-import domain.utils.aDevice
-import domain.utils.aDeviceId
-import domain.utils.aDeviceName
-import domain.utils.aThing
-import domain.utils.aThingId
-import domain.utils.aThingName
-import domain.utils.anotherDeviceId
-import domain.utils.anotherDeviceName
-import domain.utils.anotherThingId
-import domain.utils.anotherThingName
+import domain.utils.*
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import webapp.ports.DeviceToThingResponseAdapter
@@ -26,7 +17,7 @@ class DeviceToThingResponseAdapterTest {
             aDevice(
                 deviceId = anotherDeviceId,
                 deviceName = aDeviceName,
-                deviceHost = "host".asDeviceHost(),
+                deviceHost = aDeviceHost,
                 listOf(
                     aThing(
                         thingId = aThingId,
@@ -40,7 +31,7 @@ class DeviceToThingResponseAdapterTest {
             aDevice(
                 deviceId = aDeviceId,
                 deviceName = anotherDeviceName,
-                deviceHost = "host2".asDeviceHost(),
+                deviceHost = anotherDeviceHost,
                 listOf(
                     aThing(
                         thingId = anotherThingId,
@@ -60,6 +51,7 @@ class DeviceToThingResponseAdapterTest {
                     name = aThingName,
                     device = aDeviceName,
                     deviceId = anotherDeviceId,
+                    deviceHost = aDeviceHost,
                     type = ThingType.LAMP,
                     management = ThingManagement(Status.ON)
                 ),
@@ -68,6 +60,7 @@ class DeviceToThingResponseAdapterTest {
                     name = anotherThingName,
                     device = anotherDeviceName,
                     deviceId = aDeviceId,
+                    deviceHost = anotherDeviceHost,
                     type = ThingType.ALARM,
                     management = ThingManagement(Status.OFF)
                 )

@@ -11,4 +11,4 @@ export const ThingPanelText: FC<{ children: ReactNode }> = ({children}) =>
                 gutterBottom>{children}</Typography>
 
 export const InfoLabelText: FC<{ text: string }> = ({text}) =>
-    <Typography color={'#717070'} sx={{width: "56px"}} gutterBottom>{text}</Typography>
+    <Typography color={'#717070'} sx={{width: "100px"}} gutterBottom>{text}</Typography>

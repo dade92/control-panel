@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {Dialog, DialogContent, DialogTitle, IconButton, Typography, withStyles} from "@mui/material";
+import {Button, Dialog, DialogContent, DialogTitle, IconButton, TextField, Typography} from "@mui/material";
 import {Thing} from "./Thing";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "styled-components";
@@ -14,6 +14,7 @@ const InfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
   gap: 8px;
+  align-items: center;
 `
 
 export const InfoThingModal: FC<Props> = ({thing, handleClose}) => {
@@ -36,6 +37,10 @@ export const InfoThingModal: FC<Props> = ({thing, handleClose}) => {
                 data-testid={'info-thing-name'}>{thing.name}</Typography></InfoWrapper>
             <InfoWrapper><InfoLabelText text={'Device:'}/><Typography
                 data-testid={'info-thing-device'}>{thing.device}</Typography></InfoWrapper>
+            <InfoWrapper><InfoLabelText text={'Device host:'}/><TextField
+                data-testid={'info-thing-device-host'} size="small" margin="dense" label={'host'} variant="standard"
+                defaultValue={thing.deviceHost}/>
+                <Button onClick={() => console.log('changing host')}>Change</Button></InfoWrapper>
             <InfoWrapper><InfoLabelText text={'Type:'}/><Typography
                 data-testid={'info-thing-type'}>{thing.type}</Typography></InfoWrapper>
         </DialogContent>

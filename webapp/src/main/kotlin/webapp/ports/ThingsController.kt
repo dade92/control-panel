@@ -78,6 +78,7 @@ data class ThingResponse(
     val name: ThingName,
     val device: DeviceName,
     val deviceId: DeviceId,
+    val deviceHost: DeviceHost,
     val type: ThingType,
     val management: ThingManagement
 )

@@ -7,6 +7,7 @@ const thingsResponse = {
             name: 'Luce soggiorno',
             device: "arduino uno",
             deviceId: "XYZ",
+            deviceHost: "http://localhost:8080",
             type: "LAMP",
             management: {
                 switch: "OFF"
@@ -17,6 +18,7 @@ const thingsResponse = {
             name: 'Luce cucina',
             device: "arduino uno",
             deviceId: "XYZ",
+            deviceHost: "http://localhost:8080",
             type: "LAMP",
             management: {
                 switch: "OFF"
@@ -27,6 +29,7 @@ const thingsResponse = {
             name: 'Luce camera',
             device: "arduino due",
             deviceId: "YYY",
+            deviceHost: "http://raspberry:8080",
             type: "LAMP",
             management: {
                 switch: "OFF"
@@ -37,6 +40,7 @@ const thingsResponse = {
             name: 'Lavastoviglie',
             device: "arduino due",
             deviceId: "YYY",
+            deviceHost: "http://raspberry:8080",
             type: "APPLIANCE",
             management: {
                 switch: "OFF"
@@ -47,6 +51,7 @@ const thingsResponse = {
             name: 'Allarme casa',
             device: "arduino tre",
             deviceId: "XXX",
+            deviceHost: "http://raspberry2:8080",
             type: "ALARM",
             management: {
                 switch: "OFF"
@@ -57,6 +62,7 @@ const thingsResponse = {
             name: 'Tapparella Soggiorno',
             device: "arduino quattro",
             deviceId: "YYY",
+            deviceHost: "http://raspberry:8080",
             type: "ROLLER_SHUTTER",
             management: {
                 switch: "OFF"

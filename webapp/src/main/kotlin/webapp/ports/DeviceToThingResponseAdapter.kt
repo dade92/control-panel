@@ -16,6 +16,7 @@ class DeviceToThingResponseAdapter {
                 it.name,
                 device.deviceName,
                 device.deviceId,
+                device.host,
                 it.type,
                 it.management
             )
