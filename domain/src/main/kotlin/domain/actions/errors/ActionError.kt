@@ -22,4 +22,8 @@ sealed class ActionError {
         object DeviceRemoveError : RetrieveError()
     }
 
+    sealed class UpdateError: ActionError() {
+        object UpdateDeviceHostError: UpdateError()
+    }
+
 }

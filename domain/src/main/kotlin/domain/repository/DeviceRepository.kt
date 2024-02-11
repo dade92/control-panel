@@ -1,12 +1,9 @@
 package domain.repository
 
 import arrow.core.Either
-import domain.Device
-import domain.DeviceId
-import domain.Status
-import domain.Thing
-import domain.ThingId
+import domain.*
 import domain.actions.errors.ActionError
+import domain.actions.errors.ActionError.UpdateError
 
 interface DeviceRepository {
     fun retrieve(deviceId: DeviceId): Either<ActionError.RetrieveError, Device>
@@ -15,4 +12,5 @@ interface DeviceRepository {
     fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<ActionError.RetrieveError, Unit>
     fun addThing(deviceId: DeviceId, thing: Thing): Either<ActionError.AddError, Unit>
     fun addDevice(device: Device): Either<ActionError.AddError, Unit>
+    fun changeDeviceHost(deviceId: DeviceId, deviceHost: DeviceHost): Either<UpdateError, Unit>
 }

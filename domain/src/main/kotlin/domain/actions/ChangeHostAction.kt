@@ -9,8 +9,7 @@ import domain.repository.DeviceRepository
 
 class ChangeHostAction(private val deviceRepository: DeviceRepository) {
 
-    fun changeHost(deviceId: DeviceId, deviceHost: DeviceHost): Either<ActionError, Unit> {
-        return Unit.right()
-    }
+    fun changeHost(deviceId: DeviceId, deviceHost: DeviceHost): Either<ActionError, Unit> =
+        deviceRepository.changeDeviceHost(deviceId, deviceHost)
 
 }
