@@ -38,4 +38,14 @@ describe('InfoThingModal', () => {
         expect(onChangeHost).toHaveBeenCalledWith('new host', 'device id')
     })
 
+    it('should call onClose when clicking on the X button', () => {
+        render(<InfoThingModal
+            thing={Builder<Thing>().name('TEST NAME').deviceId('device id').device('DEVICE NAME').deviceHost('host').build()}
+            handleClose={handleClose} onChangeHost={onChangeHost}/>);
+
+        fireEvent.click(screen.getByTestId('info-thing-close-button'));
+
+        expect(handleClose).toHaveBeenCalled();
+    })
+
 })
