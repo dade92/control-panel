@@ -4,6 +4,7 @@ import {Thing} from "./Thing";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "styled-components";
 import {InfoLabelText} from "./Texts";
+import UpdateIcon from '@mui/icons-material/Update';
 
 interface Props {
     thing: Thing;
@@ -43,8 +44,8 @@ export const InfoThingModal: FC<Props> = ({thing, handleClose, onChangeHost}) =>
             <InfoWrapper><InfoLabelText text={'Device host:'}/><TextField
                 data-testid={'info-thing-device-host'} size="small" margin="dense" variant="standard"
                 value={host} onChange={(e) => setHost(e.target.value)}/>
-                <Button data-testid={'host-change-button'}
-                        onClick={() => onChangeHost(host, thing.deviceId)}>Change</Button></InfoWrapper>
+                <Button startIcon={<UpdateIcon/>} data-testid={'host-change-button'}
+                        onClick={() => onChangeHost(host, thing.deviceId)}/></InfoWrapper>
             <InfoWrapper><InfoLabelText text={'Type:'}/><Typography
                 data-testid={'info-thing-type'}>{thing.type}</Typography></InfoWrapper>
         </DialogContent>
