@@ -79,11 +79,14 @@ export const ControlPanel: FC<Props> = ({
         });
     }
 
-    const giveFeedbackOnThingAdded = (thing: Thing | null) => {
-        //TODO rename or do something for this code that changes the list displayed, it's important!
-        if (thing && things) {
-            things.push(thing);
-            setThings(things);
+    const updateThingsList = (newThing: Thing) => {
+        things!.push(newThing);
+        setThings(things);
+    }
+
+    const onThingAdded = (thing: Thing | null) => {
+        if (thing) {
+            updateThingsList(thing);
             setOutcome({
                 isSuccess: true,
                 error: false,
@@ -98,10 +101,10 @@ export const ControlPanel: FC<Props> = ({
         }
     }
 
-    const hostChanged = (newHost: string, deviceId: string) => {
+    const onHostChanged = (newHost: string, deviceId: string) => {
         setThings(things!.map((t: Thing) => {
-            if(t.deviceId == deviceId) {
-                return {...t, deviceHost : newHost}
+            if (t.deviceId == deviceId) {
+                return {...t, deviceHost: newHost}
             } else {
                 return t
             }
@@ -117,8 +120,8 @@ export const ControlPanel: FC<Props> = ({
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={idToBeRemoved}
                 addThingProvider={addThingProvider}
-                onThingAdded={(thing: Thing | null) => giveFeedbackOnThingAdded(thing)}
-                onHostChanged={hostChanged}
+                onThingAdded={onThingAdded}
+                onHostChanged={onHostChanged}
             />
             {
                 outcome?.isSuccess && <FeedbackMessage
