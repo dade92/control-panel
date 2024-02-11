@@ -88,11 +88,11 @@ export const ThingsPanel: FC<Props> = ({
         });
     }
 
-    const onChangeHost = (deviceHost: string, thingId: string) => {
+    const onChangeHost = (deviceHost: string, deviceId: string) => {
         //TODO rest call here to update the server properly
         //TODO in any case, close the modal after the rest call
         setInfoThing(null);
-        onHostChanged(deviceHost, thingId);
+        onHostChanged(deviceHost, deviceId);
     }
 
     return (

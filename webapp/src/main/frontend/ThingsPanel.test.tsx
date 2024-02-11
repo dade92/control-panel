@@ -7,6 +7,9 @@ import {Thing, ThingStatus, ThingType} from "./Thing";
 describe('ThingsPanel', () => {
     let onThingRemoved: jest.Mock;
     let onChangeStatus: jest.Mock;
+    let addThingProvider: jest.Mock;
+    let onHostChanged: jest.Mock;
+    let onThingAdded: jest.Mock;
 
     let thing: Thing;
     let anotherThing: Thing;
@@ -14,10 +17,14 @@ describe('ThingsPanel', () => {
     beforeEach(() => {
         onThingRemoved = jest.fn();
         onChangeStatus = jest.fn();
+        onHostChanged = jest.fn();
+        addThingProvider = jest.fn();
+        onThingAdded = jest.fn();
 
         thing = Builder<Thing>()
             .id('123')
             .name('lamp 1')
+            .deviceId('XXX')
             .type(ThingType.LAMP)
             .management({switch: ThingStatus.ON})
             .build();
@@ -25,9 +32,15 @@ describe('ThingsPanel', () => {
             .id('456')
             .name('lamp 2')
             .type(ThingType.LAMP)
+            .deviceId('YYY')
             .management({switch: ThingStatus.OFF})
             .build();
     });
+
+    const typeInputOnTextField = (text: string) => {
+        fireEvent.change(screen.getByTestId('thing-name-form')
+            .querySelector('input')!, {target: {value: text}});
+    }
 
     it('Shows subtitle, add thing button and list of things correctly', async () => {
         render(
@@ -58,12 +71,12 @@ describe('ThingsPanel', () => {
     it('should show no thing text if array is empty', () => {
         render(
             <ThingsPanel things={[]}
-                onChangeStatus={onChangeStatus}
-                onThingRemoved={onThingRemoved}
-                idWaitingToBeRemoved={''}
-                switchStatusProvider={jest.fn()}
-                addThingProvider={jest.fn()}
-                onThingAdded={jest.fn()}
+                         onChangeStatus={onChangeStatus}
+                         onThingRemoved={onThingRemoved}
+                         idWaitingToBeRemoved={''}
+                         switchStatusProvider={jest.fn()}
+                         addThingProvider={jest.fn()}
+                         onThingAdded={jest.fn()}
                          onHostChanged={jest.fn()}
             />
         );
@@ -71,123 +84,201 @@ describe('ThingsPanel', () => {
         expect(screen.getByTestId('no-thing-text')).toBeVisible();
     });
 
-    it('clicking on cancel button opens the modal, when choice is confirmed, callback is called', async () => {
-        render(
-            <ThingsPanel
-                things={[
-                    thing,
-                    anotherThing
-                ]}
-                onChangeStatus={onChangeStatus}
-                onThingRemoved={onThingRemoved}
-                idWaitingToBeRemoved={''}
-                switchStatusProvider={jest.fn()}
-                addThingProvider={jest.fn()}
-                onThingAdded={jest.fn()}
-                onHostChanged={jest.fn()}
-            />
-        );
+    describe('Cancel action', () => {
+        it('clicking on cancel button opens the modal, when choice is confirmed, callback is called', async () => {
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={jest.fn()}
+                    onThingAdded={jest.fn()}
+                    onHostChanged={jest.fn()}
+                />
+            );
 
-        fireEvent.click(screen.getByTestId('cancel-button-123'));
+            fireEvent.click(screen.getByTestId('cancel-button-123'));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('confirm-modal')).toBeVisible();
-        });
+            await waitFor(() => {
+                expect(screen.getByTestId('confirm-modal')).toBeVisible();
+            });
 
-        fireEvent.click(screen.getByTestId('confirm-button'));
+            fireEvent.click(screen.getByTestId('confirm-button'));
 
-        expect(onThingRemoved).toHaveBeenCalledTimes(1);
-        expect(onThingRemoved).toHaveBeenCalledWith(thing);
+            expect(onThingRemoved).toHaveBeenCalledTimes(1);
+            expect(onThingRemoved).toHaveBeenCalledWith(thing);
+        })
+
+        it('refusing the modal, do not call the callback', async () => {
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={jest.fn()}
+                    onThingAdded={jest.fn()}
+                    onHostChanged={jest.fn()}
+                />
+            );
+
+            fireEvent.click(screen.getByTestId('cancel-button-123'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('confirm-modal')).toBeVisible();
+            });
+
+            fireEvent.click(screen.getByTestId('no-button'));
+
+            expect(onThingRemoved).not.toHaveBeenCalled();
+        })
     })
 
-    it('refusing the modal, do not call the callback', async () => {
-        render(
-            <ThingsPanel
-                things={[
-                    thing,
-                    anotherThing
-                ]}
-                onChangeStatus={onChangeStatus}
-                onThingRemoved={onThingRemoved}
-                idWaitingToBeRemoved={''}
-                switchStatusProvider={jest.fn()}
-                addThingProvider={jest.fn()}
-                onThingAdded={jest.fn()}
-                onHostChanged={jest.fn()}
-            />
-        );
+    describe('Add thing action', () => {
+        it('should show add thing modal on clicking on add thing', async () => {
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={addThingProvider}
+                    onThingAdded={onThingAdded}
+                    onHostChanged={jest.fn()}
+                />
+            );
 
-        fireEvent.click(screen.getByTestId('cancel-button-123'));
+            fireEvent.click(screen.getByTestId('add-thing-button'));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('confirm-modal')).toBeVisible();
+            await waitFor(() => {
+                expect(screen.getByTestId('add-thing-modal')).toBeVisible();
+            });
+
+            fireEvent.click(screen.getByTestId('add-thing-close-button'));
+
+            await waitFor(() => {
+                expect(screen.queryByTestId('add-thing-modal')).toBeNull();
+            });
         });
 
-        fireEvent.click(screen.getByTestId('no-button'));
+        it('should call the add thing provider and in case of success call the callback', async () => {
+            const newThing = Builder<Thing>().name('new thing').build();
+            addThingProvider = jest.fn(() => Promise.resolve({thing: newThing}));
 
-        expect(onThingRemoved).not.toHaveBeenCalled();
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={addThingProvider}
+                    onThingAdded={onThingAdded}
+                    onHostChanged={jest.fn()}
+                />
+            );
+
+            fireEvent.click(screen.getByTestId('add-thing-button'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('add-thing-modal')).toBeVisible();
+            });
+
+            typeInputOnTextField('new name');
+
+            fireEvent.click(screen.getByTestId('confirm-button'));
+
+            expect(addThingProvider).toHaveBeenCalledWith(null, ThingType.LAMP, 'new name');
+
+            await waitFor(() => {
+                expect(onThingAdded).toHaveBeenCalledWith(newThing);
+                expect(screen.queryByTestId('add-thing-modal')).toBeNull();
+            });
+        })
     })
 
-    it('should show add thing modal on clicking on add thing', async () => {
-        render(
-            <ThingsPanel
-                things={[
-                    thing,
-                    anotherThing
-                ]}
-                onChangeStatus={onChangeStatus}
-                onThingRemoved={onThingRemoved}
-                idWaitingToBeRemoved={''}
-                switchStatusProvider={jest.fn()}
-                addThingProvider={jest.fn()}
-                onThingAdded={jest.fn()}
-                onHostChanged={jest.fn()}
-            />
-        );
+    describe('Info action', () => {
+        it('should show info modal when info button clicked', async () => {
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={jest.fn()}
+                    onThingAdded={jest.fn()}
+                    onHostChanged={onHostChanged}
+                />
+            );
 
-        fireEvent.click(screen.getByTestId('add-thing-button'));
+            fireEvent.click(screen.getByTestId('info-button-123'));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('add-thing-modal')).toBeVisible();
-        });
+            await waitFor(() => {
+                expect(screen.getByTestId('info-modal')).toBeVisible();
+                expect(screen.getByTestId('info-thing-name')).toBeVisible();
+                expect(screen.getByTestId('info-thing-device')).toBeVisible();
+                expect(screen.getByTestId('info-thing-type')).toBeVisible();
+            });
 
-        fireEvent.click(screen.getByTestId('add-thing-close-button'));
+            fireEvent.click(screen.getByTestId('info-thing-close-button'));
 
-        await waitFor(() => {
-            expect(screen.queryByTestId('add-thing-modal')).toBeNull();
-        });
-    });
+            await waitFor(() => {
+                expect(screen.queryByTestId('info-modal')).toBeNull();
+            });
+        })
 
-    it('should show info modal when info button clicked', async () => {
-        render(
-            <ThingsPanel
-                things={[
-                    thing,
-                    anotherThing
-                ]}
-                onChangeStatus={onChangeStatus}
-                onThingRemoved={onThingRemoved}
-                idWaitingToBeRemoved={''}
-                switchStatusProvider={jest.fn()}
-                addThingProvider={jest.fn()}
-                onThingAdded={jest.fn()}
-                onHostChanged={jest.fn()}
-            />
-        );
+        it('on change host, should close the modal and call the callback', async () => {
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={jest.fn()}
+                    onThingAdded={jest.fn()}
+                    onHostChanged={onHostChanged}
+                />
+            );
 
-        fireEvent.click(screen.getByTestId('info-button-123'));
+            fireEvent.click(screen.getByTestId('info-button-123'));
 
-        await waitFor(() => {
-            expect(screen.getByTestId('info-modal')).toBeVisible();
-            expect(screen.getByTestId('info-thing-name')).toBeVisible();
-            expect(screen.getByTestId('info-thing-device')).toBeVisible();
-            expect(screen.getByTestId('info-thing-type')).toBeVisible();
-        });
+            await waitFor(() => {
+                expect(screen.getByTestId('info-modal')).toBeVisible();
+            });
 
-        fireEvent.click(screen.getByTestId('info-thing-close-button'));
+            fireEvent.change(screen.getByTestId('info-thing-device-host')
+                .querySelector('input')!, {target: {value: 'new host'}});
 
-        await waitFor(() => {
-            expect(screen.queryByTestId('info-modal')).toBeNull();
-        });
+            fireEvent.click(screen.getByTestId('host-change-button'));
+
+            await waitFor(() => {
+                expect(screen.queryByTestId('info-modal')).toBeNull();
+                expect(onHostChanged).toHaveBeenCalledWith('new host', 'XXX');
+            });
+        })
     })
 });
