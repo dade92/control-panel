@@ -295,5 +295,44 @@ describe('ThingsPanel', () => {
                 expect(onHostChanged).toHaveBeenCalledWith('new host', 'XXX');
             });
         })
+
+        it('on change host failed, should close the modal without calling the callback', async () => {
+            changeHostProvider = jest.fn(() => Promise.reject());
+
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={jest.fn()}
+                    onThingAdded={jest.fn()}
+                    onHostChanged={onHostChanged}
+                    changeHostProvider={changeHostProvider}
+                />
+            );
+
+            fireEvent.click(screen.getByTestId('info-button-123'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('info-modal')).toBeVisible();
+            });
+
+            fireEvent.change(screen.getByTestId('info-thing-device-host')
+                .querySelector('input')!, {target: {value: 'new host'}});
+
+            fireEvent.click(screen.getByTestId('host-change-button'));
+
+            await waitFor(() => {
+                expect(changeHostProvider).toHaveBeenCalledWith('XXX', 'new host')
+                expect(screen.queryByTestId('info-modal')).toBeNull();
+                expect(onHostChanged).not.toHaveBeenCalled();
+            });
+
+        })
     })
 });
