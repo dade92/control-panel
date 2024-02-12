@@ -12,6 +12,7 @@ import {AddThingProvider, ThingAddedResponse} from "./logic/AddThingProvider";
 import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
 import {ThingPanelText} from "./Texts";
 import {InfoThingModal} from "./InfoThingModal";
+import {ChangeHostProvider} from "./logic/ChangeHostProvider";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -47,6 +48,7 @@ interface Props {
     addThingProvider: AddThingProvider;
     onThingAdded: (thing: Thing | null) => void;
     onHostChanged: (deviceHost: string, thingId: string) => void;
+    changeHostProvider: ChangeHostProvider
 }
 
 export const ThingsPanel: FC<Props> = ({
@@ -57,7 +59,8 @@ export const ThingsPanel: FC<Props> = ({
                                            idWaitingToBeRemoved,
                                            addThingProvider,
                                            onThingAdded,
-                                           onHostChanged
+                                           onHostChanged,
+                                           changeHostProvider
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
@@ -89,10 +92,16 @@ export const ThingsPanel: FC<Props> = ({
     }
 
     const onChangeHost = (deviceHost: string, deviceId: string) => {
-        //TODO rest call here to update the server properly
-        //TODO in any case, close the modal after the rest call
-        setInfoThing(null);
-        onHostChanged(deviceHost, deviceId);
+        changeHostProvider(deviceId, deviceHost)
+            .then(() => {
+                onHostChanged(deviceHost, deviceId);
+            })
+            .catch(() => {
+                console.log('Error changing host');
+            })
+            .finally(() => {
+                setInfoThing(null);
+            })
     }
 
     return (

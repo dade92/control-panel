@@ -10,6 +10,7 @@ describe('ThingsPanel', () => {
     let addThingProvider: jest.Mock;
     let onHostChanged: jest.Mock;
     let onThingAdded: jest.Mock;
+    let changeHostProvider: jest.Mock;
 
     let thing: Thing;
     let anotherThing: Thing;
@@ -20,6 +21,7 @@ describe('ThingsPanel', () => {
         onHostChanged = jest.fn();
         addThingProvider = jest.fn();
         onThingAdded = jest.fn();
+        changeHostProvider = jest.fn();
 
         thing = Builder<Thing>()
             .id('123')
@@ -57,6 +59,7 @@ describe('ThingsPanel', () => {
                     addThingProvider={jest.fn()}
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
+                    changeHostProvider={changeHostProvider}
                 />
             );
 
@@ -79,6 +82,7 @@ describe('ThingsPanel', () => {
                              addThingProvider={jest.fn()}
                              onThingAdded={jest.fn()}
                              onHostChanged={jest.fn()}
+                             changeHostProvider={jest.fn()}
                 />
             );
 
@@ -101,6 +105,7 @@ describe('ThingsPanel', () => {
                     addThingProvider={jest.fn()}
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
+                    changeHostProvider={changeHostProvider}
                 />
             );
 
@@ -130,6 +135,7 @@ describe('ThingsPanel', () => {
                     addThingProvider={jest.fn()}
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
+                    changeHostProvider={changeHostProvider}
                 />
             );
 
@@ -160,6 +166,7 @@ describe('ThingsPanel', () => {
                     addThingProvider={addThingProvider}
                     onThingAdded={onThingAdded}
                     onHostChanged={jest.fn()}
+                    changeHostProvider={changeHostProvider}
                 />
             );
 
@@ -193,6 +200,7 @@ describe('ThingsPanel', () => {
                     addThingProvider={addThingProvider}
                     onThingAdded={onThingAdded}
                     onHostChanged={jest.fn()}
+                    changeHostProvider={changeHostProvider}
                 />
             );
 
@@ -230,6 +238,7 @@ describe('ThingsPanel', () => {
                     addThingProvider={jest.fn()}
                     onThingAdded={jest.fn()}
                     onHostChanged={onHostChanged}
+                    changeHostProvider={changeHostProvider}
                 />
             );
 
@@ -250,6 +259,8 @@ describe('ThingsPanel', () => {
         })
 
         it('on change host, should close the modal and call the callback', async () => {
+            changeHostProvider = jest.fn(() => Promise.resolve());
+
             render(
                 <ThingsPanel
                     things={[
@@ -263,6 +274,7 @@ describe('ThingsPanel', () => {
                     addThingProvider={jest.fn()}
                     onThingAdded={jest.fn()}
                     onHostChanged={onHostChanged}
+                    changeHostProvider={changeHostProvider}
                 />
             );
 
@@ -278,6 +290,7 @@ describe('ThingsPanel', () => {
             fireEvent.click(screen.getByTestId('host-change-button'));
 
             await waitFor(() => {
+                expect(changeHostProvider).toHaveBeenCalledWith('XXX' ,'new host')
                 expect(screen.queryByTestId('info-modal')).toBeNull();
                 expect(onHostChanged).toHaveBeenCalledWith('new host', 'XXX');
             });

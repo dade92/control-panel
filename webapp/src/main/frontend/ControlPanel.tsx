@@ -7,6 +7,7 @@ import {RetrieveThingsProvider, ThingsRetrieveResponse} from "./logic/RetrieveTh
 import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingProvider} from "./logic/AddThingProvider";
+import {RestChangeHostProvider} from "./logic/ChangeHostProvider";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
@@ -122,6 +123,7 @@ export const ControlPanel: FC<Props> = ({
                 addThingProvider={addThingProvider}
                 onThingAdded={onThingAdded}
                 onHostChanged={onHostChanged}
+                changeHostProvider={RestChangeHostProvider}
             />
             {
                 outcome?.isSuccess && <FeedbackMessage
