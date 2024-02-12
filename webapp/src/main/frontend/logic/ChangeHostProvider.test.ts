@@ -11,7 +11,7 @@ describe('ChangeHostProvider', () => {
 
         const response = await RestChangeHostProvider('123', 'new host');
 
-        expect(mockedRestClient.put).toHaveBeenCalledWith('/v1/things/changeHost/123', {deviceHost: 'new host'});
+        expect(mockedRestClient.put).toHaveBeenCalledWith('/v1/things/changeHost/123', {newHost: 'new host'});
         expect(response).toBe(undefined);
     })
 
