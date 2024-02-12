@@ -5,6 +5,7 @@
       "name": "name",
       "device": "device name",
       "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
+      "deviceHost": "host",
       "type": "LAMP",
       "management": {
         "switch": "OFF"
@@ -15,6 +16,7 @@
       "name": "another name",
       "device": "device name",
       "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
+      "deviceHost": "host",
       "type": "ALARM",
       "management": {
         "switch": "OFF"
@@ -25,6 +27,7 @@
       "name": "another name",
       "device": "another device name",
       "deviceId": "10152e1b-d6d4-4536-8679-52a0446dc753",
+      "deviceHost": "another host",
       "type": "LAMP",
       "management": {
         "switch": "OFF"

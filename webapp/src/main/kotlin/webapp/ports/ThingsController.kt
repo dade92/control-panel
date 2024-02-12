@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.*
 class ThingsController(
     private val retrieveDeviceAction: RetrieveDeviceAction,
     private val removeThingsAction: RemoveThingsAction,
-    private val addThingAction: AddThingAction
+    private val addThingAction: AddThingAction,
+    private val changeHostAction: ChangeHostAction
 ) : BaseApiController() {
 
     private val deviceToThingResponseAdapter = DeviceToThingResponseAdapter()
@@ -57,7 +58,25 @@ class ThingsController(
                 ok(AddThingResponse(it))
             }
         )
+
+    @PutMapping("/v1/things/changeHost/{deviceId}")
+    fun changeDeviceHost(
+        @PathVariable deviceId: DeviceId,
+        @RequestBody changeHostRequest: ChangeHostRequest
+    ): ResponseEntity<*> =
+        changeHostAction.changeHost(deviceId, changeHostRequest.newHost.asDeviceHost()).fold(
+            {
+                internalServerError().body(ErrorResponse(it.javaClass.simpleName))
+            },
+            {
+                noContent().build()
+            }
+        )
 }
+
+data class ChangeHostRequest(
+    val newHost: String
+)
 
 data class AddThingResponse(
     val thing: AddedThing
@@ -78,6 +97,7 @@ data class ThingResponse(
     val name: ThingName,
     val device: DeviceName,
     val deviceId: DeviceId,
+    val deviceHost: DeviceHost,
     val type: ThingType,
     val management: ThingManagement
 )

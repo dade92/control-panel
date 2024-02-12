@@ -11,6 +11,8 @@ import {AddThingModal} from "./AddThingModal";
 import {AddThingProvider, ThingAddedResponse} from "./logic/AddThingProvider";
 import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
 import {ThingPanelText} from "./Texts";
+import {InfoThingModal} from "./InfoThingModal";
+import {ChangeHostProvider} from "./logic/ChangeHostProvider";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -45,6 +47,8 @@ interface Props {
     idWaitingToBeRemoved: string | null;
     addThingProvider: AddThingProvider;
     onThingAdded: (thing: Thing | null) => void;
+    onHostChanged: (deviceHost: string, thingId: string) => void;
+    changeHostProvider: ChangeHostProvider
 }
 
 export const ThingsPanel: FC<Props> = ({
@@ -54,10 +58,13 @@ export const ThingsPanel: FC<Props> = ({
                                            onThingRemoved,
                                            idWaitingToBeRemoved,
                                            addThingProvider,
-                                           onThingAdded
+                                           onThingAdded,
+                                           onHostChanged,
+                                           changeHostProvider
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
+    const [infoThing, setInfoThing] = useState<Thing | null>(null);
 
     const onRemove = (thing: Thing) => {
         setRemovedThing(thing);
@@ -84,6 +91,19 @@ export const ThingsPanel: FC<Props> = ({
         });
     }
 
+    const onChangeHost = (deviceHost: string, deviceId: string) => {
+        changeHostProvider(deviceId, deviceHost)
+            .then(() => {
+                onHostChanged(deviceHost, deviceId);
+            })
+            .catch(() => {
+                console.log('Error changing host');
+            })
+            .finally(() => {
+                setInfoThing(null);
+            })
+    }
+
     return (
         <ThingsPanelWrapper data-testid={'things-panel-wrapper'}>
             <Subtitle subtitle={'Control Panel'}/>
@@ -105,6 +125,7 @@ export const ThingsPanel: FC<Props> = ({
                                 switchStatusProvider={switchStatusProvider}
                                 onThingRemoved={onRemove}
                                 shouldBeLoading={idWaitingToBeRemoved == thing.id}
+                                onInfoClicked={(thing: Thing) => setInfoThing(thing)}
                             />
                             <Divider/>
                         </>
@@ -124,6 +145,9 @@ export const ThingsPanel: FC<Props> = ({
                                                onAddThing(deviceId, thingType, thingName);
                                            }}/>
             }
+            {infoThing != null &&
+                <InfoThingModal onChangeHost={onChangeHost} thing={infoThing}
+                                handleClose={() => setInfoThing(null)}/>}
         </ThingsPanelWrapper>
     );
 }

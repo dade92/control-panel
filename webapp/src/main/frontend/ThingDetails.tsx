@@ -10,14 +10,22 @@ import RollerShadesIcon from '@mui/icons-material/RollerShades';
 import CameraIndoorIcon from '@mui/icons-material/CameraIndoor';
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import {useThingDetailsStore} from "./ThingDetailsStore";
+import {ThingInfoButton} from "./ThingInfoButton";
 
 interface Props {
     thing: Thing;
     switchStatusProvider: SwitchStatusProvider;
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
     onThingRemoved: (thing: Thing) => void;
-    shouldBeLoading: boolean
+    shouldBeLoading: boolean;
+    onInfoClicked: (thing: Thing) => void;
 }
+
+const ActionsWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+`
 
 const Wrapper = styled.div`
   display: flex;
@@ -34,9 +42,10 @@ export const ThingDetails: FC<Props> = ({
                                             onChangeStatus,
                                             switchStatusProvider,
                                             onThingRemoved,
-                                            shouldBeLoading
+                                            shouldBeLoading,
+                                            onInfoClicked
                                         }) => {
-    const store = useThingDetailsStore(thing, switchStatusProvider, onChangeStatus, onThingRemoved);
+    const store = useThingDetailsStore(thing, switchStatusProvider, onChangeStatus, onThingRemoved, onInfoClicked);
 
     const renderIcon = (thingType: ThingType): ReactElement => {
         switch (thingType) {
@@ -59,11 +68,14 @@ export const ThingDetails: FC<Props> = ({
             <ThingDetailText data-testid={'name'}>{thing.name}</ThingDetailText>
             <Switch checked={isOn(store.state.status)} disabled={store.state.disabled}
                     onChange={store.actions.changeStatus}/>
-            <RemoveThingButton
-                loading={shouldBeLoading}
-                thing={thing}
-                onRemoved={() => store.actions.onRemoved(thing)}
-            />
+            <ActionsWrapper>
+                <ThingInfoButton thing={thing} onClick={() => store.actions.onInfoClicked(thing)}/>
+                <RemoveThingButton
+                    loading={shouldBeLoading}
+                    thing={thing}
+                    onRemoved={() => store.actions.onRemoved(thing)}
+                />
+            </ActionsWrapper>
         </Wrapper>
     </>
 }

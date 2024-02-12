@@ -16,6 +16,7 @@ import domain.asThingId
 import domain.asThingName
 import domain.repository.DeviceRepository
 import domain.utils.aDeviceId
+import domain.utils.anotherDeviceHost
 import domain.utils.anotherDeviceId
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
@@ -190,6 +191,8 @@ class MongoDeviceRepositoryTest {
         )
         mongoDeviceRepository.addDevice(newDevice) shouldBe Unit.right()
 
-        mongoDeviceRepository.retrieve(deviceId) shouldBe newDevice.right()
+        mongoDeviceRepository.changeDeviceHost(deviceId, anotherDeviceHost) shouldBe Unit.right()
+
+        mongoDeviceRepository.retrieve(deviceId) shouldBe newDevice.copy(host = anotherDeviceHost).right()
     }
 }

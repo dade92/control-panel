@@ -7,6 +7,7 @@ import {RetrieveThingsProvider, ThingsRetrieveResponse} from "./logic/RetrieveTh
 import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingProvider} from "./logic/AddThingProvider";
+import {RestChangeHostProvider} from "./logic/ChangeHostProvider";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
@@ -79,11 +80,14 @@ export const ControlPanel: FC<Props> = ({
         });
     }
 
-    const giveFeedbackOnThingAdded = (thing: Thing | null) => {
-        //TODO check this bang here
-        if (thing && things) {
-            things.push(thing);
-            setThings(things);
+    const updateThingsList = (newThing: Thing) => {
+        things!.push(newThing);
+        setThings(things);
+    }
+
+    const onThingAdded = (thing: Thing | null) => {
+        if (thing) {
+            updateThingsList(thing);
             setOutcome({
                 isSuccess: true,
                 error: false,
@@ -98,6 +102,16 @@ export const ControlPanel: FC<Props> = ({
         }
     }
 
+    const onHostChanged = (newHost: string, deviceId: string) => {
+        setThings(things!.map((t: Thing) => {
+            if (t.deviceId == deviceId) {
+                return {...t, deviceHost: newHost}
+            } else {
+                return t
+            }
+        }));
+    }
+
     return things == null ? <Loader/> :
         <>
             <ThingsPanel
@@ -107,7 +121,9 @@ export const ControlPanel: FC<Props> = ({
                 onThingRemoved={onThingRemoved}
                 idWaitingToBeRemoved={idToBeRemoved}
                 addThingProvider={addThingProvider}
-                onThingAdded={(thing: Thing | null) => giveFeedbackOnThingAdded(thing)}
+                onThingAdded={onThingAdded}
+                onHostChanged={onHostChanged}
+                changeHostProvider={RestChangeHostProvider}
             />
             {
                 outcome?.isSuccess && <FeedbackMessage

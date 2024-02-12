@@ -1,6 +1,7 @@
 package webapp.configuration
 
 import domain.actions.AddThingAction
+import domain.actions.ChangeHostAction
 import domain.actions.RemoveThingsAction
 import domain.actions.RetrieveDeviceAction
 import domain.repository.DeviceRepository
@@ -24,6 +25,9 @@ class ActionsConfiguration {
     @Bean
     fun addThingsAction(deviceRepository: DeviceRepository): AddThingAction =
         AddThingAction(deviceRepository, RandomIdGenerator(), IdOnDeviceRetriever(), DeviceNameGenerator())
+
+    @Bean
+    fun changeHostAction(deviceRepository: DeviceRepository): ChangeHostAction = ChangeHostAction(deviceRepository)
 
 
 }

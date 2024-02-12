@@ -10,6 +10,7 @@ describe('ThingDetails', () => {
         () => Promise.resolve()
     );
     let onThingRemoved: jest.Mock = jest.fn();
+    let onInfoThingClicked: jest.Mock = jest.fn();
     let statusOFF: Management;
     let thing: Thing;
     let statusON: Management;
@@ -20,6 +21,7 @@ describe('ThingDetails', () => {
             () => Promise.resolve()
         );
         onThingRemoved = jest.fn();
+        onInfoThingClicked = jest.fn();
 
         statusOFF = Builder<Management>().switch(ThingStatus.OFF).build();
         thing = Builder<Thing>().id('123').type(ThingType.LAMP).management(statusOFF).build();
@@ -34,6 +36,7 @@ describe('ThingDetails', () => {
                 switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
+                onInfoClicked={jest.fn()}
             />
         );
 
@@ -60,6 +63,7 @@ describe('ThingDetails', () => {
                 switchStatusProvider={failSwitchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
+                onInfoClicked={jest.fn()}
             />
         )
 
@@ -82,6 +86,7 @@ describe('ThingDetails', () => {
                 switchStatusProvider={switchStatusProvider}
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
+                onInfoClicked={jest.fn()}
             />
         )
 
@@ -95,5 +100,29 @@ describe('ThingDetails', () => {
             expect(onThingRemoved).toHaveBeenCalledWith(thing);
         });
 
+    })
+
+    it('calls the info callback when clicking on the info button', async () => {
+        render(
+            <ThingDetails
+                thing={thing}
+                onChangeStatus={changeStatusCallback}
+                switchStatusProvider={switchStatusProvider}
+                onThingRemoved={onThingRemoved}
+                shouldBeLoading={false}
+                onInfoClicked={onInfoThingClicked}
+            />
+        )
+
+        expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
+
+        fireEvent.click(screen.getByTestId('info-button-123'));
+
+        await waitFor(() => {
+            expect(switchStatusProvider).not.toHaveBeenCalled();
+            expect(changeStatusCallback).not.toHaveBeenCalled();
+            expect(onThingRemoved).not.toHaveBeenCalled();
+            expect(onInfoThingClicked).toHaveBeenCalledWith(thing);
+        });
     })
 });

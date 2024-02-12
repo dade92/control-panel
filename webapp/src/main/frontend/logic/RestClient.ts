@@ -44,6 +44,23 @@ class RestClient {
             }
         });
     }
+
+    put<T, S>(url: string, body: T, headers: Record<string, string> = {'Content-Type': 'application/json'}): Promise<S> {
+        return fetch(this.host + url, {
+            method: 'PUT',
+            body: JSON.stringify(body),
+            headers: headers,
+        }).then(response => {
+            if (response.status == 204) {
+                return {} as Promise<S>
+            } else if (response.status == 200) {
+                return response.json() as Promise<S>
+            } else {
+                console.log('response status is ' + response.status)
+                throw new Error(response.statusText)
+            }
+        });
+    }
 }
 
 export const staticRestClient = new RestClient(host);

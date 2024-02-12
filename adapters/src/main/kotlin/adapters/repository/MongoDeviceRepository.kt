@@ -4,22 +4,9 @@ import arrow.core.Either
 import arrow.core.left
 import arrow.core.right
 import com.mongodb.BasicDBObject
-import domain.Device
-import domain.DeviceId
-import domain.Status
-import domain.Thing
-import domain.ThingId
-import domain.ThingManagement
-import domain.ThingType
-import domain.actions.errors.ActionError.AddError
-import domain.actions.errors.ActionError.RetrieveError
-import domain.actions.errors.ActionError.SwitchError
-import domain.asDeviceHost
-import domain.asDeviceId
-import domain.asDeviceName
-import domain.asIdOnDevice
-import domain.asThingId
-import domain.asThingName
+import domain.*
+import domain.actions.errors.ActionError.*
+import domain.actions.errors.ActionError.UpdateError.UpdateDeviceHostError
 import domain.repository.DeviceRepository
 import domain.utils.NowProvider
 import org.slf4j.LoggerFactory
@@ -28,10 +15,7 @@ import org.springframework.data.mongodb.core.query.Criteria
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
 import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
-import java.time.temporal.TemporalUnit
 
 
 private val COLLECTION_NAME = "device"
@@ -121,6 +105,20 @@ class MongoDeviceRepository(
             AddError.AddDeviceError.left()
         }
     }
+
+    override fun changeDeviceHost(deviceId: DeviceId, deviceHost: DeviceHost): Either<UpdateError, Unit> =
+        try {
+            val query = Query(Criteria.where("_id").`is`(deviceId.value.toString()))
+
+            val update = Update().set("host", deviceHost.value)
+
+            mongoTemplate.updateFirst(query, update, COLLECTION_NAME)
+
+            Unit.right()
+        } catch (e: Exception) {
+            logger.error("Error updating device host for device ${deviceId}", e)
+            UpdateDeviceHostError.left()
+        }
 }
 
 private fun Thing.toMongoThing(): MongoThing = MongoThing(

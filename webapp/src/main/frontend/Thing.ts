@@ -3,6 +3,7 @@ export interface Thing {
     name: string,
     device: string,
     deviceId: string,
+    deviceHost: string,
     type: ThingType,
     management: Management
 }

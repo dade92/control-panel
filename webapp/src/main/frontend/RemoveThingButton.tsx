@@ -5,7 +5,7 @@ import {Thing} from "./Thing";
 
 interface Props {
     thing: Thing
-    onRemoved: (thing: Thing) => void;
+    onRemoved: () => void;
     loading: boolean
 }
 
@@ -13,9 +13,9 @@ export const RemoveThingButton: FC<Props> = ({thing, onRemoved, loading}) =>
     <LoadingButton
         data-testid={`cancel-button-${thing.id}`}
         size="large"
-        onClick={() => onRemoved(thing)}
+        onClick={() => onRemoved()}
         loading={loading}
         color={'error'}
         startIcon={<DeleteIcon/>}
-        sx={{minWidth:'0px', padding:'0px'}}
+        sx={{minWidth: '0px', padding: '0px'}}
     />
