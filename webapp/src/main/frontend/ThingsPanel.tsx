@@ -13,6 +13,7 @@ import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
 import {ThingPanelText} from "./Texts";
 import {InfoThingModal} from "./InfoThingModal";
 import {ChangeHostProvider} from "./logic/ChangeHostProvider";
+import {SwitchOffButton} from "./SwitchOffButton";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -37,6 +38,14 @@ const ListWrapper = styled.div`
   border-radius: 10px;
   border: 1px solid rgba(0, 0, 0, 0.11);
   padding: 16px;
+`
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 16px;
 `
 
 interface Props {
@@ -134,7 +143,10 @@ export const ThingsPanel: FC<Props> = ({
                 {things.length == 0 &&
                     <ThingPanelText>No things at the moment, click on the add button to add a new
                         Thing</ThingPanelText>}
-                <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
+                <ButtonWrapper>
+                    <SwitchOffButton onSwitchOffClicked={() => console.log('switch off everything!')}/>
+                    <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
+                </ButtonWrapper>
             </ListWrapper>
             {removedThing != null &&
                 <RemoveThingConfirmModal thing={removedThing} onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
