@@ -57,7 +57,8 @@ interface Props {
     addThingProvider: AddThingProvider;
     onThingAdded: (thing: Thing | null) => void;
     onHostChanged: (deviceHost: string, thingId: string) => void;
-    changeHostProvider: ChangeHostProvider
+    changeHostProvider: ChangeHostProvider;
+    onSwitchOffButtonClicked: () => void;
 }
 
 export const ThingsPanel: FC<Props> = ({
@@ -69,7 +70,8 @@ export const ThingsPanel: FC<Props> = ({
                                            addThingProvider,
                                            onThingAdded,
                                            onHostChanged,
-                                           changeHostProvider
+                                           changeHostProvider,
+                                           onSwitchOffButtonClicked
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
@@ -144,7 +146,7 @@ export const ThingsPanel: FC<Props> = ({
                     <ThingPanelText>No things at the moment, click on the add button to add a new
                         Thing</ThingPanelText>}
                 <ButtonWrapper>
-                    <SwitchOffButton onSwitchOffClicked={() => console.log('switch off everything!')}/>
+                    <SwitchOffButton onSwitchOffClicked={onSwitchOffButtonClicked}/>
                     <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
                 </ButtonWrapper>
             </ListWrapper>

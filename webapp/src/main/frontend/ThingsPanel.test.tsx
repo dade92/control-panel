@@ -60,6 +60,7 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 
@@ -83,6 +84,7 @@ describe('ThingsPanel', () => {
                              onThingAdded={jest.fn()}
                              onHostChanged={jest.fn()}
                              changeHostProvider={jest.fn()}
+                             onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 
@@ -106,6 +108,7 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 
@@ -136,6 +139,7 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 
@@ -167,6 +171,7 @@ describe('ThingsPanel', () => {
                     onThingAdded={onThingAdded}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 
@@ -201,6 +206,7 @@ describe('ThingsPanel', () => {
                     onThingAdded={onThingAdded}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 
@@ -239,6 +245,7 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={onHostChanged}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 
@@ -275,6 +282,7 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={onHostChanged}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 
@@ -313,6 +321,7 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={onHostChanged}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
                 />
             );
 

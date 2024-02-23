@@ -1,5 +1,5 @@
 import {FC, useEffect, useState} from "react";
-import {Thing} from "./Thing";
+import {Thing, ThingStatus} from "./Thing";
 import {Loader} from "./Loader";
 import {FeedbackMessage} from "./FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
@@ -112,6 +112,16 @@ export const ControlPanel: FC<Props> = ({
         }));
     }
 
+    const onSwitchOffButtonClicked = () => {
+        console.log('Switching off all things');
+        const newThings = things!.map((t: Thing) => {
+            t.management.switch = ThingStatus.OFF;
+            return t;
+        });
+        console.log('New things', newThings);
+        setThings(newThings);
+    }
+
     return things == null ? <Loader/> :
         <>
             <ThingsPanel
@@ -124,6 +134,7 @@ export const ControlPanel: FC<Props> = ({
                 onThingAdded={onThingAdded}
                 onHostChanged={onHostChanged}
                 changeHostProvider={RestChangeHostProvider}
+                onSwitchOffButtonClicked={onSwitchOffButtonClicked}
             />
             {
                 outcome?.isSuccess && <FeedbackMessage
