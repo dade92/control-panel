@@ -11,7 +11,7 @@ describe('RestSwitchAllOffProvider', () => {
     it('calls API correctly', async () => {
         createServer({
             routes() {
-                this.post('/v1/things/switchAll', switchAllOff);
+                this.post('/v1/switch/switchAll', switchAllOff);
             },
         });
 

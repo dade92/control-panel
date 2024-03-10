@@ -6,10 +6,17 @@ import {SwitchAllOffProvider} from "./logic/SwitchAllOffProvider";
 
 interface ControlPanelStore {
     state: {
-
+        things: Thing[] | null;
+        outcome: Outcome,
+        idToBeRemoved: string | null;
     }
     actions: {
-
+        giveFeedback: (isSuccess: boolean, thing: Thing) => void;
+        onThingAdded: (thing: Thing | null) => void;
+        onThingRemoved: (thing: Thing) => void;
+        onHostChanged: (newHost: string, deviceId: string) => void;
+        onSwitchOffButtonClicked: () => void;
+        resetDefaultOutcome: () => void;
     }
 }
 
@@ -125,7 +132,9 @@ export const useControlPanelStore = (
 
     return {
         state: {
-
+            things,
+            outcome,
+            idToBeRemoved
         },
         actions: {
             giveFeedback,
@@ -133,7 +142,7 @@ export const useControlPanelStore = (
             onThingRemoved,
             onHostChanged,
             onSwitchOffButtonClicked,
-            setThings
+            resetDefaultOutcome: () => setOutcome(defaultOutcome),
         }
     }
 }
