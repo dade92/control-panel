@@ -1,7 +1,4 @@
-import {createServer, Response} from "miragejs";
-import {waitFor} from "@testing-library/react";
-import {RestAddThingProvider} from "./AddThingProvider";
-import {Thing, ThingType} from "../Thing";
+import {Thing} from "../Thing";
 import {RestSwitchAllOffProvider} from "./SwitchAllOffProvider";
 import {staticRestClient} from "./RestClient";
 import {Builder} from "builder-pattern";
