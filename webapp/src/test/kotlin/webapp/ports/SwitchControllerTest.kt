@@ -75,4 +75,16 @@ class SwitchControllerTest {
                 .content(Fixtures.readJson("/switchOffRequest.json"))
         ).andExpect(status().is2xxSuccessful())
     }
+
+    @Test
+    fun `in case of error, returns 500 with the specific problem when switching all off`() {
+        `when`(switchAllOffAction.switchOff(listOf(aThingToDevice()))).thenReturn(SwitchError.DeviceNotAvailable.left())
+
+        mvc.perform(
+            post("/api/v1/switch/switchAll")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Fixtures.readJson("/switchOffRequest.json"))
+        ).andExpect(status().is5xxServerError)
+            .andExpect(content().json("""{"error": "DeviceNotAvailable"}"""))
+    }
 }
