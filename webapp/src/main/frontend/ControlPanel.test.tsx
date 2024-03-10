@@ -57,7 +57,7 @@ describe('ControlPanel', () => {
     });
 
     describe('switch thing', () => {
-        it('should switch a thing ON when switch provider is successfull', async () => {
+        it('should switch a thing ON when switch provider is successful', async () => {
             const retrieveThingsProvider = jest.fn(
                 () => Promise.resolve({things: [thing]})
             );
@@ -123,8 +123,6 @@ describe('ControlPanel', () => {
             const retrieveThingsProvider = jest.fn(
                 () => Promise.resolve({things: [thing, anotherThing, thingOn]})
             );
-            const removeThingsProvider = jest.fn();
-            const switchStatusProvider = jest.fn();
 
             let switchAllOffProvider = jest.fn(
                 () => Promise.resolve()
@@ -133,8 +131,8 @@ describe('ControlPanel', () => {
             render(
                 <ControlPanel
                     retrieveThingsProvider={retrieveThingsProvider}
-                    removeThingsProvider={removeThingsProvider}
-                    switchStatusProvider={switchStatusProvider}
+                    removeThingsProvider={jest.fn()}
+                    switchStatusProvider={jest.fn()}
                     addThingProvider={jest.fn()}
                     switchAllOffProvider={switchAllOffProvider}
                 />
@@ -158,13 +156,12 @@ describe('ControlPanel', () => {
                 () => Promise.resolve({things: [thing, anotherThing]})
             );
             const removeThingsProvider = jest.fn(() => Promise.resolve());
-            const switchStatusProvider = jest.fn();
 
             render(
                 <ControlPanel
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={removeThingsProvider}
-                    switchStatusProvider={switchStatusProvider}
+                    switchStatusProvider={jest.fn()}
                     addThingProvider={jest.fn()}
                     switchAllOffProvider={jest.fn()}
                 />
@@ -286,7 +283,7 @@ describe('ControlPanel', () => {
 
             // await selectDeviceId();
             // await selectThingType();
-            await typeInputOnTextField('thing name');
+            typeInputOnTextField('thing name');
 
             fireEvent.click(screen.getByTestId('confirm-button'));
 
@@ -300,10 +297,6 @@ describe('ControlPanel', () => {
         it('add thing fails', async () => {
             const retrieveThingsProvider = jest.fn(
                 () => Promise.resolve({things: [thing]})
-            );
-            const removeThingsProvider = jest.fn();
-            const switchStatusProvider = jest.fn(
-                () => Promise.reject()
             );
 
             const addThingProvider = jest.fn(

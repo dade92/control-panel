@@ -30,7 +30,7 @@ class SwitchAllOffActionTest {
     private val switchAllOffAction = SwitchAllOffAction(deviceRepository, switchClient)
 
     @Test
-    fun `switch all off`() {
+    fun `switch all off successfully`() {
         every { switchClient.switch(aDeviceHost, any(), Status.OFF) } returns Unit.right()
         every { deviceRepository.updateThingStatus(aDeviceId, aThingId, Status.OFF) } returns Unit.right()
 
