@@ -21,9 +21,6 @@ export const useThingDetailsStore = (
     onThingRemoved: (thing: Thing) => void,
     onThingInfoClicked: (thing: Thing) => void
 ): ThingDetailsStore => {
-    if(thing.id == '456') {
-        console.log(thing.management);
-    }
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
 

@@ -1,24 +1,24 @@
 import {createServer, Response} from "miragejs";
 import {waitFor} from "@testing-library/react";
 import {RestAddThingProvider} from "./AddThingProvider";
-import {ThingType} from "../Thing";
+import {Thing, ThingType} from "../Thing";
 import {RestSwitchAllOffProvider} from "./SwitchAllOffProvider";
+import {staticRestClient} from "./RestClient";
+import {Builder} from "builder-pattern";
+
+jest.mock('./RestClient');
+const mockedRestClient = jest.mocked(staticRestClient);
+
 
 describe('RestSwitchAllOffProvider', () => {
+    it('should call the rest client properly', async () => {
+        mockedRestClient.post.mockReturnValue(Promise.resolve());
 
-    const switchAllOff = (): Response => new Response(204);
+        const things = [Builder<Thing>().id('123').build()];
 
-    it('calls API correctly', async () => {
-        createServer({
-            routes() {
-                this.post('/v1/switch/switchAll', switchAllOff);
-            },
-        });
+        await RestSwitchAllOffProvider(things);
 
-        await waitFor(() => {
-            expect(RestSwitchAllOffProvider([]))
-                .toStrictEqual(Promise.resolve())
-        });
-    })
+        expect(mockedRestClient.post).toHaveBeenCalledWith('/v1/switch/switchAll', {things: things});
+    });
 
 })
