@@ -1,10 +1,7 @@
 package domain.actions
 
 import arrow.core.right
-import domain.Status
-import domain.asDeviceHost
-import domain.asDeviceId
-import domain.asThingId
+import domain.*
 import domain.client.SwitchClient
 import domain.repository.DeviceRepository
 import domain.utils.aDeviceHost
@@ -26,12 +23,11 @@ class SwitchAllOffActionTest {
     @MockK
     private val switchClient: SwitchClient = mockk()
 
-
     private val switchAllOffAction = SwitchAllOffAction(deviceRepository, switchClient)
 
     @Test
     fun `switch all off successfully`() {
-        every { switchClient.switch(aDeviceHost, any(), Status.OFF) } returns Unit.right()
+        every { switchClient.switch(aDeviceHost, 1.asIdOnDevice(), Status.OFF) } returns Unit.right()
         every { deviceRepository.updateThingStatus(aDeviceId, aThingId, Status.OFF) } returns Unit.right()
 
         switchAllOffAction.switchOff(
@@ -44,7 +40,7 @@ class SwitchAllOffActionTest {
             )
         ) shouldBe Unit.right()
 
-        verify { switchClient.switch(aDeviceHost, any(), Status.OFF) }
+        verify { switchClient.switch(aDeviceHost, 1.asIdOnDevice(), Status.OFF) }
         verify { deviceRepository.updateThingStatus(aDeviceId, aThingId, Status.OFF) }
     }
 }

@@ -32,7 +32,7 @@ class SwitchController(
         )
 
     @PostMapping("/v1/switch/switchAll")
-    fun switchOff(
+    fun switchAllOff(
         @RequestBody switchOffRequest: SwitchOffRequest
     ): ResponseEntity<*> =
         switchAllOffAction.switchOff(switchOffRequest.things.map { it.toThingToDevice() }).fold(
