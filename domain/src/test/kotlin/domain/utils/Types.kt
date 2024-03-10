@@ -1,7 +1,6 @@
 package domain.utils
 
 import domain.*
-import domain.actions.AddedThing
 
 fun aDevice(
     deviceId: DeviceId = aDeviceId,
@@ -29,14 +28,14 @@ fun aThing(
     idOnDevice
 )
 
-fun anAddedThing(
+fun aThingToDevice(
     thingId: ThingId = aThingId,
     thingName: ThingName = aThingName,
     thingType: ThingType = aThingType,
     thingManagement: ThingManagement = aThingManagement,
     deviceId: DeviceId = aDeviceId,
     deviceName: DeviceName = aDeviceName,
-): AddedThing = AddedThing(
+): ThingToDevice = ThingToDevice(
     thingId,
     thingName,
     thingType,

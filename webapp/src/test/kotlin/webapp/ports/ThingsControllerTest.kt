@@ -4,15 +4,11 @@ import arrow.core.left
 import arrow.core.right
 import com.springexample.utils.Fixtures
 import domain.ThingType
-import domain.actions.AddThingAction
-import domain.actions.ChangeHostAction
-import domain.actions.RemoveThingsAction
-import domain.actions.RetrieveDeviceAction
+import domain.actions.*
 import domain.actions.errors.ActionError.RetrieveError
 import domain.actions.request.AddThingRequest
 import domain.asThingName
 import domain.utils.*
-import org.jmock.auto.Mock
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
@@ -41,6 +37,9 @@ class ThingsControllerTest {
 
     @MockBean
     private lateinit var changeHostAction: ChangeHostAction
+
+    @MockBean
+    private lateinit var switchOffAction: SwitchOffAction
 
     @Test
     fun `retrieve things`() {
@@ -118,7 +117,7 @@ class ThingsControllerTest {
                     ThingType.LAMP
                 )
             )
-        ).thenReturn(anAddedThing().right())
+        ).thenReturn(aThingToDevice().right())
 
         mvc.perform(
             post("/api/v1/things/add")
@@ -141,6 +140,17 @@ class ThingsControllerTest {
             put("/api/v1/things/changeHost/$aDeviceId")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Fixtures.readJson("/changeHostRequest.json"))
+        ).andExpect(status().is2xxSuccessful())
+    }
+
+    @Test
+    fun `switch all things off`() {
+        `when`(switchOffAction.switchOff(listOf(aThingToDevice()))).thenReturn(Unit.right())
+
+        mvc.perform(
+            post("/api/v1/things/switchOff")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Fixtures.readJson("/switchOffRequest.json"))
         ).andExpect(status().is2xxSuccessful())
     }
 }

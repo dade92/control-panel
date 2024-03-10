@@ -5,9 +5,9 @@ import domain.utils.*
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import webapp.ports.DeviceToThingResponseAdapter
-import webapp.ports.ThingResponse
+import webapp.ports.ThingUI
 
-class DeviceToThingResponseAdapterTest {
+class DeviceToThingUIAdapterTest {
 
     private val deviceToThingResponseAdapter = DeviceToThingResponseAdapter()
 
@@ -46,7 +46,7 @@ class DeviceToThingResponseAdapterTest {
 
         deviceToThingResponseAdapter.adapt(devices) shouldBe
             listOf(
-                ThingResponse(
+                ThingUI(
                     id = aThingId,
                     name = aThingName,
                     device = aDeviceName,
@@ -55,7 +55,7 @@ class DeviceToThingResponseAdapterTest {
                     type = ThingType.LAMP,
                     management = ThingManagement(Status.ON)
                 ),
-                ThingResponse(
+                ThingUI(
                     id = anotherThingId,
                     name = anotherThingName,
                     device = anotherDeviceName,

@@ -51,7 +51,7 @@ class AddThingActionTest {
             )
         } returns Unit.right()
 
-        addThingAction.add(AddThingRequest(null, aThingName, ThingType.LAMP)) shouldBe AddedThing(
+        addThingAction.add(AddThingRequest(null, aThingName, ThingType.LAMP)) shouldBe ThingToDevice(
             aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, anotherDeviceName
         ).right()
     }
@@ -72,7 +72,7 @@ class AddThingActionTest {
             )
         } returns Unit.right()
 
-        addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe AddedThing(
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe ThingToDevice(
             aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), aDeviceId, aDeviceName
         ).right()
     }
@@ -124,7 +124,7 @@ class AddThingActionTest {
             )
         } returns Unit.right()
 
-        addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe AddedThing(
+        addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe ThingToDevice(
             aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, anotherDeviceName
         ).right()
     }

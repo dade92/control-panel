@@ -20,7 +20,7 @@ class AddThingAction(
     private val deviceNameGenerator: DeviceNameGenerator
 ) {
 
-    fun add(addThingRequest: AddThingRequest): Either<ActionError, AddedThing> =
+    fun add(addThingRequest: AddThingRequest): Either<ActionError, ThingToDevice> =
         addThingRequest.deviceId?.let {
             deviceRepository.retrieve(addThingRequest.deviceId).fold(
                 { addNewDeviceWithThing(addThingRequest) },
@@ -36,7 +36,7 @@ class AddThingAction(
                         addThingRequest.deviceId,
                         addedThing
                     ).flatMap {
-                        AddedThing(
+                        ThingToDevice(
                             addedThing.id,
                             addedThing.name,
                             addedThing.type,
@@ -51,7 +51,7 @@ class AddThingAction(
 
     private fun addNewDeviceWithThing(
         addThingRequest: AddThingRequest
-    ): Either<ActionError, AddedThing> {
+    ): Either<ActionError, ThingToDevice> {
         val addedThing = Thing(
             randomIdGenerator.retrieveThingId(),
             addThingRequest.name,
@@ -70,7 +70,7 @@ class AddThingAction(
                 listOf(addedThing)
             )
         ).flatMap {
-            AddedThing(
+            ThingToDevice(
                 addedThing.id,
                 addedThing.name,
                 addedThing.type,
@@ -81,12 +81,3 @@ class AddThingAction(
         }
     }
 }
-
-data class AddedThing(
-    val id: ThingId,
-    val name: ThingName,
-    val type: ThingType,
-    val management: ThingManagement,
-    val deviceId: DeviceId,
-    val device: DeviceName
-)
