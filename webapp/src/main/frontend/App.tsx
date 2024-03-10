@@ -6,6 +6,7 @@ import {RestRetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
 import {RestRemoveThingsProvider} from "./logic/RemoveThingsProvider";
 import {RestSwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {RestAddThingProvider} from "./logic/AddThingProvider";
+import {RestSwitchAllOffProvider} from "./logic/SwitchAllOffProvider";
 
 if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'dev') {
     console.log('Local dev mode detected, starting mirage server...');
@@ -26,6 +27,7 @@ export const App: FC = () => {
             removeThingsProvider={RestRemoveThingsProvider}
             switchStatusProvider={RestSwitchStatusProvider}
             addThingProvider={RestAddThingProvider}
+            switchAllOffProvider={RestSwitchAllOffProvider}
         />
     </Wrapper>
 }

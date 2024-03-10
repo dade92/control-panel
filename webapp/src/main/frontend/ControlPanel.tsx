@@ -8,12 +8,14 @@ import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingProvider} from "./logic/AddThingProvider";
 import {RestChangeHostProvider} from "./logic/ChangeHostProvider";
+import {SwitchAllOffProvider} from "./logic/SwitchAllOffProvider";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
     removeThingsProvider: RemoveThingsProvider;
     switchStatusProvider: SwitchStatusProvider;
     addThingProvider: AddThingProvider;
+    switchAllOffProvider: SwitchAllOffProvider
 }
 
 interface Outcome {
@@ -26,7 +28,8 @@ export const ControlPanel: FC<Props> = ({
                                             retrieveThingsProvider,
                                             removeThingsProvider,
                                             switchStatusProvider,
-                                            addThingProvider
+                                            addThingProvider,
+                                            switchAllOffProvider
                                         }) => {
     const [things, setThings] = useState<Thing[] | null>(null);
     const defaultOutcome = {isSuccess: false, error: false, message: null,};
@@ -113,11 +116,16 @@ export const ControlPanel: FC<Props> = ({
     }
 
     const onSwitchOffButtonClicked = () => {
-        console.log('Switching off all things');
-        setThings(things!.map((t: Thing) => {
-            t.management.switch = ThingStatus.OFF;
-            return t;
-        }));
+        switchAllOffProvider(things!.filter((t: Thing) => t.management.switch == ThingStatus.ON))
+            .then(() => {
+                setThings(things!.map((t: Thing) => {
+                    t.management.switch = ThingStatus.OFF;
+                    return t;
+                }));
+            })
+            .catch(() => {
+                console.log('Error switching off all things');
+            })
     }
 
     return things == null ? <Loader/> :
