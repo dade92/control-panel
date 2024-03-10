@@ -25,7 +25,8 @@ class SwitchConfiguration {
         switchClient: SwitchClient,
         deviceRepository: DeviceRepository
     ): SwitchAllOffAction = SwitchAllOffAction(
-        deviceRepository
+        deviceRepository,
+        switchClient
     )
 
 }

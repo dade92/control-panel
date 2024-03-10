@@ -31,7 +31,6 @@ export const useControlPanelStore = (
     retrieveThingsProvider: RetrieveThingsProvider,
     removeThingsProvider: RemoveThingsProvider,
     switchAllOffProvider: SwitchAllOffProvider,
-
 ): ControlPanelStore => {
     const [things, setThings] = useState<Thing[] | null>(null);
     const defaultOutcome = {isSuccess: false, error: false, message: null,};
