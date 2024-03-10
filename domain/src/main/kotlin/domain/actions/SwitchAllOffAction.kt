@@ -6,7 +6,7 @@ import domain.*
 import domain.actions.errors.ActionError
 import domain.repository.DeviceRepository
 
-class SwitchOffAction(private val deviceRepository: DeviceRepository) {
+class SwitchAllOffAction(private val deviceRepository: DeviceRepository) {
 
     fun switchOff(things: List<ThingToDevice>): Either<ActionError, Unit> {
         //TODO perform rest call too!

@@ -5,7 +5,7 @@ import arrow.core.right
 import com.springexample.utils.Fixtures
 import domain.Status
 import domain.actions.SwitchAction
-import domain.actions.SwitchOffAction
+import domain.actions.SwitchAllOffAction
 import domain.actions.errors.ActionError.SwitchError
 import domain.utils.aDeviceId
 import domain.utils.aThingId
@@ -32,7 +32,7 @@ class SwitchControllerTest {
     private lateinit var switchAction: SwitchAction
 
     @MockBean
-    private lateinit var switchOffAction: SwitchOffAction
+    private lateinit var switchAllOffAction: SwitchAllOffAction
 
     @Test
     fun `switch lamp ON successfully`() {
@@ -67,10 +67,10 @@ class SwitchControllerTest {
 
     @Test
     fun `switch all things off`() {
-        `when`(switchOffAction.switchOff(listOf(aThingToDevice()))).thenReturn(Unit.right())
+        `when`(switchAllOffAction.switchOff(listOf(aThingToDevice()))).thenReturn(Unit.right())
 
         mvc.perform(
-            post("/api/v1/things/switchOff")
+            post("/api/v1/switch/switchAll")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Fixtures.readJson("/switchOffRequest.json"))
         ).andExpect(status().is2xxSuccessful())

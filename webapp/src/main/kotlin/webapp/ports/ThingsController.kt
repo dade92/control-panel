@@ -1,7 +1,10 @@
 package webapp.ports
 
 import domain.*
-import domain.actions.*
+import domain.actions.AddThingAction
+import domain.actions.ChangeHostAction
+import domain.actions.RemoveThingsAction
+import domain.actions.RetrieveDeviceAction
 import domain.actions.request.AddThingRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
@@ -12,8 +15,7 @@ class ThingsController(
     private val retrieveDeviceAction: RetrieveDeviceAction,
     private val removeThingsAction: RemoveThingsAction,
     private val addThingAction: AddThingAction,
-    private val changeHostAction: ChangeHostAction,
-    private val switchOffAction: SwitchOffAction
+    private val changeHostAction: ChangeHostAction
 ) : BaseApiController() {
 
     private val deviceToThingResponseAdapter = DeviceToThingResponseAdapter()

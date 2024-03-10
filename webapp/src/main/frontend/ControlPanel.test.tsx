@@ -88,7 +88,7 @@ describe('ControlPanel', () => {
 
         })
 
-        it('should display an error message if switch provider is NOT successfull', async () => {
+        it('should display an error message if switch provider is NOT successful', async () => {
             const retrieveThingsProvider = jest.fn(
                 () => Promise.resolve({things: [thing]})
             );

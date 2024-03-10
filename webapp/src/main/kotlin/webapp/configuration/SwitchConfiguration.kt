@@ -2,7 +2,7 @@ package webapp.configuration
 
 import domain.actions.DefaultSwitchAction
 import domain.actions.SwitchAction
-import domain.actions.SwitchOffAction
+import domain.actions.SwitchAllOffAction
 import domain.repository.DeviceRepository
 import domain.client.SwitchClient
 import org.springframework.context.annotation.Bean
@@ -24,7 +24,7 @@ class SwitchConfiguration {
     fun switchOffAction(
         switchClient: SwitchClient,
         deviceRepository: DeviceRepository
-    ): SwitchOffAction = SwitchOffAction(
+    ): SwitchAllOffAction = SwitchAllOffAction(
         deviceRepository
     )
 
