@@ -19,13 +19,14 @@ export const useThingDetailsStore = (
     switchStatusProvider: SwitchStatusProvider,
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void,
     onThingRemoved: (thing: Thing) => void,
-    onThingInfoClicked: (thing: Thing) => void): ThingDetailsStore => {
+    onThingInfoClicked: (thing: Thing) => void
+): ThingDetailsStore => {
     const [status, setStatus] = useState<Management>(thing.management);
     const [disabled, setDisabled] = useState<boolean>(false);
 
     const changeStatus = () => {
         let newStatus = ThingStatus.OFF;
-        let oldStatus = status.switch;
+        const oldStatus = status.switch;
 
         if (status.switch == "ON") {
             newStatus = ThingStatus.OFF;

@@ -114,12 +114,10 @@ export const ControlPanel: FC<Props> = ({
 
     const onSwitchOffButtonClicked = () => {
         console.log('Switching off all things');
-        const newThings = things!.map((t: Thing) => {
+        setThings(things!.map((t: Thing) => {
             t.management.switch = ThingStatus.OFF;
             return t;
-        });
-        console.log('New things', newThings);
-        setThings(newThings);
+        }));
     }
 
     return things == null ? <Loader/> :

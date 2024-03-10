@@ -41,11 +41,11 @@ const ListWrapper = styled.div`
 `
 
 const ButtonWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    gap: 12px;
-    justify-content: space-between;
-    padding: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 16px;
 `
 
 interface Props {

@@ -60,7 +60,7 @@ export const ThingDetails: FC<Props> = ({
         }
     }
 
-    const isOn = (status: ThingStatus) => status === ThingStatus.ON
+    const isOn = (status: ThingStatus) => status == ThingStatus.ON
 
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
