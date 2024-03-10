@@ -2,13 +2,14 @@ package webapp.ports
 
 import arrow.core.left
 import arrow.core.right
+import com.springexample.utils.Fixtures
 import domain.Status
-import domain.actions.DefaultSwitchAction
 import domain.actions.SwitchAction
-import domain.actions.errors.ActionError
+import domain.actions.SwitchOffAction
 import domain.actions.errors.ActionError.SwitchError
 import domain.utils.aDeviceId
 import domain.utils.aThingId
+import domain.utils.aThingToDevice
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -29,6 +30,9 @@ class SwitchControllerTest {
 
     @MockBean
     private lateinit var switchAction: SwitchAction
+
+    @MockBean
+    private lateinit var switchOffAction: SwitchOffAction
 
     @Test
     fun `switch lamp ON successfully`() {
@@ -61,4 +65,14 @@ class SwitchControllerTest {
         verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
     }
 
+    @Test
+    fun `switch all things off`() {
+        `when`(switchOffAction.switchOff(listOf(aThingToDevice()))).thenReturn(Unit.right())
+
+        mvc.perform(
+            post("/api/v1/things/switchOff")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Fixtures.readJson("/switchOffRequest.json"))
+        ).andExpect(status().is2xxSuccessful())
+    }
 }

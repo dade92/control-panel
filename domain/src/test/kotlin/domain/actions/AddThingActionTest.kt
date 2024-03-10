@@ -37,6 +37,7 @@ class AddThingActionTest {
     fun `no device id provided, create a new one`() {
         val idOnDevice = 1.asIdOnDevice()
         val addedThing = Thing(aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), idOnDevice)
+        val deviceHost = "".asDeviceHost()
 
         every { randomIdGenerator.retrieveThingId() } returns aThingId
         every { randomIdGenerator.retrieveDeviceId() } returns anotherDeviceId
@@ -45,14 +46,15 @@ class AddThingActionTest {
                 Device(
                     anotherDeviceId,
                     anotherDeviceName,
-                    "".asDeviceHost(),
+                    deviceHost,
                     listOf(addedThing)
                 )
             )
         } returns Unit.right()
 
         addThingAction.add(AddThingRequest(null, aThingName, ThingType.LAMP)) shouldBe ThingToDevice(
-            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, anotherDeviceName
+            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, anotherDeviceName,
+            deviceHost
         ).right()
     }
 
@@ -73,7 +75,7 @@ class AddThingActionTest {
         } returns Unit.right()
 
         addThingAction.add(AddThingRequest(aDeviceId, aThingName, ThingType.LAMP)) shouldBe ThingToDevice(
-            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), aDeviceId, aDeviceName
+            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), aDeviceId, aDeviceName, aDeviceHost
         ).right()
     }
 
@@ -109,6 +111,7 @@ class AddThingActionTest {
             ),
             1.asIdOnDevice()
         )
+        val deviceHost = "".asDeviceHost()
 
         every { randomIdGenerator.retrieveThingId() } returns aThingId
         every { randomIdGenerator.retrieveDeviceId() } returns anotherDeviceId
@@ -118,14 +121,15 @@ class AddThingActionTest {
                 Device(
                     anotherDeviceId,
                     anotherDeviceName,
-                    "".asDeviceHost(),
+                    deviceHost,
                     listOf(addedThing)
                 )
             )
         } returns Unit.right()
 
         addThingAction.add(AddThingRequest(aDeviceId, aThingName, thingType)) shouldBe ThingToDevice(
-            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, anotherDeviceName
+            aThingId, aThingName, ThingType.LAMP, ThingManagement(Status.OFF), anotherDeviceId, anotherDeviceName,
+            deviceHost
         ).right()
     }
 

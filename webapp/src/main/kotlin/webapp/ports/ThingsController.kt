@@ -73,21 +73,6 @@ class ThingsController(
                 noContent().build()
             }
         )
-
-    @PostMapping("/v1/things/switchOff")
-    fun switchOff(
-        @RequestBody switchOffRequest: SwitchOffRequest
-    ): ResponseEntity<*> =
-        switchOffAction.switchOff(switchOffRequest.things.map {
-            ThingToDevice(it.id, it.name, it.type, it.management, it.deviceId, it.device)
-        }).fold(
-            {
-                internalServerError().body(ErrorResponse(it.javaClass.simpleName))
-            },
-            {
-                noContent().build()
-            }
-        )
 }
 
 data class ChangeHostRequest(
@@ -104,10 +89,6 @@ data class SwitchRequest(
     val switch: Status
 )
 
-data class SwitchOffRequest(
-    val things: List<ThingUI>
-)
-
 data class ThingsResponse(
     val things: List<ThingUI>
 )
@@ -120,5 +101,7 @@ data class ThingUI(
     val deviceHost: DeviceHost,
     val type: ThingType,
     val management: ThingManagement
-)
+) {
+    fun toThingToDevice() = ThingToDevice(id, name, type, management, deviceId, device, deviceHost)
+}
 

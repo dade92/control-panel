@@ -17,14 +17,14 @@ data class Device(
     val things: List<Thing>
 )
 
-//TODO device host is missing here!
 data class ThingToDevice(
     val id: ThingId,
     val name: ThingName,
     val type: ThingType,
     val management: ThingManagement,
     val deviceId: DeviceId,
-    val device: DeviceName
+    val device: DeviceName,
+    val deviceHost: DeviceHost
 )
 
 

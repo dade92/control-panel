@@ -41,3 +41,17 @@ Accept: application/json
 {
   "newHost": "ciccio"
 }
+
+### switch OFF everything
+
+POST {{host}}/api/v1/things/switchOff
+Content-Type: application/json
+Accept: application/json
+
+{
+  "things": [
+    {
+
+    }
+  ]
+}
