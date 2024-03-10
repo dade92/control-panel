@@ -44,7 +44,7 @@ Accept: application/json
 
 ### switch OFF everything
 
-POST {{host}}/api/v1/things/switchAll
+POST {{host}}/api/v1/switch/switchAll
 Content-Type: application/json
 Accept: application/json
 
