@@ -161,7 +161,8 @@ export const ThingsPanel: FC<Props> = ({
             }
             {infoThing != null &&
                 <InfoThingModal onChangeHost={onChangeHost} thing={infoThing}
-                                handleClose={() => setInfoThing(null)}/>}
+                                handleClose={() => setInfoThing(null)}/>
+            }
         </ThingsPanelWrapper>
     );
 }
