@@ -1,9 +1,8 @@
-import {FC, useEffect, useState} from "react";
-import {Thing, ThingStatus} from "./Thing";
+import {FC} from "react";
 import {Loader} from "./Loader";
 import {FeedbackMessage} from "./FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
-import {RetrieveThingsProvider, ThingsRetrieveResponse} from "./logic/RetrieveThingsProvider";
+import {RetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
 import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingProvider} from "./logic/AddThingProvider";
@@ -19,12 +18,6 @@ interface Props {
     switchAllOffProvider: SwitchAllOffProvider
 }
 
-interface Outcome {
-    isSuccess: boolean;
-    error: boolean;
-    message: string | null;
-}
-
 export const ControlPanel: FC<Props> = ({
                                             retrieveThingsProvider,
                                             removeThingsProvider,
@@ -32,7 +25,11 @@ export const ControlPanel: FC<Props> = ({
                                             addThingProvider,
                                             switchAllOffProvider
                                         }) => {
-    const {state, actions} = useControlPanelStore(retrieveThingsProvider, removeThingsProvider, switchAllOffProvider);
+    const {state, actions} = useControlPanelStore(
+        retrieveThingsProvider,
+        removeThingsProvider,
+        switchAllOffProvider
+    );
 
     return state.things == null ? <Loader/> :
         <>
