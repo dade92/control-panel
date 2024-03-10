@@ -19,7 +19,7 @@ class SwitchAllOffAction(
         things.forEach { thingToDevice ->
             switchClient.switch(
                 thingToDevice.deviceHost,
-                1.asIdOnDevice(),
+                1.asIdOnDevice(),   //TODO: This is a hardcoded value, can we maintain it?
                 Status.OFF
             ).flatMap {
                 deviceRepository.updateThingStatus(
