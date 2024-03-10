@@ -344,4 +344,32 @@ describe('ThingsPanel', () => {
 
         })
     })
+
+    describe('switch off all action', () => {
+        it('shuold call switch off all callback', () => {
+            const onSwitchOffButtonClicked = jest.fn();
+
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={jest.fn()}
+                    onThingAdded={onThingAdded}
+                    onHostChanged={onHostChanged}
+                    changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={onSwitchOffButtonClicked}
+                />
+            );
+
+            fireEvent.click(screen.getByTestId('switch-off-button'));
+
+            expect(onSwitchOffButtonClicked).toHaveBeenCalled();
+        });
+    });
 });
