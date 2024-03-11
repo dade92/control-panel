@@ -1,6 +1,6 @@
 import {Fab} from "@mui/material";
 import {FC} from "react";
-import AdjustIcon from '@mui/icons-material/Adjust';
+import TungstenIcon from '@mui/icons-material/Tungsten';
 
 interface Props {
     onSwitchOffClicked: () => void;
@@ -8,5 +8,5 @@ interface Props {
 
 export const SwitchOffButton: FC<Props> = ({onSwitchOffClicked}) =>
     <Fab data-testid={'switch-off-button'} onClick={onSwitchOffClicked} color="error" aria-label="switch-off">
-        <AdjustIcon/>
+        <TungstenIcon/>
     </Fab>
