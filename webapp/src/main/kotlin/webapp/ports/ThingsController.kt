@@ -9,6 +9,7 @@ import domain.actions.request.AddThingRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
+import webapp.types.ThingUI
 
 @RestController
 class ThingsController(
@@ -94,16 +95,3 @@ data class SwitchRequest(
 data class ThingsResponse(
     val things: List<ThingUI>
 )
-
-data class ThingUI(
-    val id: ThingId,
-    val name: ThingName,
-    val device: DeviceName,
-    val deviceId: DeviceId,
-    val deviceHost: DeviceHost,
-    val type: ThingType,
-    val management: ThingManagement
-) {
-    fun toThingToDevice() = ThingToDevice(id, name, type, management, deviceId, device, deviceHost)
-}
-

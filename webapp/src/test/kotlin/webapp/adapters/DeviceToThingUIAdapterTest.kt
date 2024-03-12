@@ -5,7 +5,7 @@ import domain.utils.*
 import io.kotest.matchers.shouldBe
 import org.junit.jupiter.api.Test
 import webapp.ports.DeviceToThingResponseAdapter
-import webapp.ports.ThingUI
+import webapp.types.ThingUI
 
 class DeviceToThingUIAdapterTest {
 
