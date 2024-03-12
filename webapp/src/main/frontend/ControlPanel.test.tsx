@@ -9,6 +9,7 @@ describe('ControlPanel', () => {
     let thing: Thing;
     let anotherThing: Thing
     let thingOn: Thing;
+    let thingOnAlarm: Thing;
 
     beforeEach(() => {
         thing = Builder<Thing>()
@@ -30,6 +31,13 @@ describe('ControlPanel', () => {
             .id('789')
             .name('switched on thing')
             .type(ThingType.LAMP)
+            .deviceId('789')
+            .management({switch: ThingStatus.ON})
+            .build();
+        thingOnAlarm = Builder<Thing>()
+            .id('789')
+            .name('switched on thing')
+            .type(ThingType.ALARM)
             .deviceId('789')
             .management({switch: ThingStatus.ON})
             .build();
@@ -119,9 +127,9 @@ describe('ControlPanel', () => {
 
         })
 
-        it('should switch all things off', async () => {
+        it('should switch all things off, no feedback', async () => {
             const retrieveThingsProvider = jest.fn(
-                () => Promise.resolve({things: [thing, anotherThing, thingOn]})
+                () => Promise.resolve({things: [thing, anotherThing, thingOn, thingOnAlarm]})
             );
 
             let switchAllOffProvider = jest.fn(
