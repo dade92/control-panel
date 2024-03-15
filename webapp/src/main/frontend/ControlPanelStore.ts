@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {RetrieveThingsProvider, ThingsRetrieveResponse} from "./logic/RetrieveThingsProvider";
-import {Thing, ThingStatus} from "./Thing";
+import {Thing, ThingStatus, ThingType} from "./Thing";
 import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
 import {SwitchAllOffProvider} from "./logic/SwitchAllOffProvider";
 
@@ -117,7 +117,7 @@ export const useControlPanelStore = (
     }
 
     const onSwitchOffButtonClicked = () => {
-        switchAllOffProvider(things!.filter((t: Thing) => t.management.switch == ThingStatus.ON))
+        switchAllOffProvider(things!.filter((t: Thing) => t.management.switch == ThingStatus.ON && t.type == ThingType.LAMP))
             .then(() => {
                 setThings(things!.map((t: Thing) => {
                     t.management.switch = ThingStatus.OFF;

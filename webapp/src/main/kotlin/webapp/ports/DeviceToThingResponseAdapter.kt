@@ -1,6 +1,7 @@
 package webapp.ports
 
 import domain.Device
+import webapp.types.ThingUI
 
 class DeviceToThingResponseAdapter {
 
