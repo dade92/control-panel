@@ -21,10 +21,10 @@ import org.junit.jupiter.api.Test
 class SwitchAllOffActionTest {
 
     @MockK
-    private val deviceRepository: DeviceRepository = mockk()
+    private val deviceRepository = mockk<DeviceRepository>()
 
     @MockK
-    private val switchClient: SwitchClient = mockk()
+    private val switchClient = mockk<SwitchClient>()
 
     private val switchAllOffAction = SwitchAllOffAction(deviceRepository, switchClient)
 

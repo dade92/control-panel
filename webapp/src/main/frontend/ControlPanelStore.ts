@@ -26,7 +26,6 @@ interface Outcome {
     message: string | null;
 }
 
-
 export const useControlPanelStore = (
     retrieveThingsProvider: RetrieveThingsProvider,
     removeThingsProvider: RemoveThingsProvider,
@@ -50,6 +49,8 @@ export const useControlPanelStore = (
                 })
             })
     }, []);
+
+    const isEligible = (thing: Thing) => thing.management.switch == ThingStatus.ON && thing.type == ThingType.LAMP
 
     const onThingRemoved = (thing: Thing) => {
         setIdToBeRemoved(thing.id);
@@ -117,7 +118,7 @@ export const useControlPanelStore = (
     }
 
     const onSwitchOffButtonClicked = () => {
-        switchAllOffProvider(things!.filter((t: Thing) => t.management.switch == ThingStatus.ON && t.type == ThingType.LAMP))
+        switchAllOffProvider(things!.filter((t: Thing) => isEligible(t)))
             .then(() => {
                 setThings(things!.map((t: Thing) => {
                     t.management.switch = ThingStatus.OFF;
