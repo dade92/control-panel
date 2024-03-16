@@ -59,6 +59,7 @@ interface Props {
     onHostChanged: (deviceHost: string, thingId: string) => void;
     changeHostProvider: ChangeHostProvider;
     onSwitchOffButtonClicked: () => void;
+    thingsOFF: Thing[] | null;
 }
 
 export const ThingsPanel: FC<Props> = ({
@@ -71,7 +72,8 @@ export const ThingsPanel: FC<Props> = ({
                                            onThingAdded,
                                            onHostChanged,
                                            changeHostProvider,
-                                           onSwitchOffButtonClicked
+                                           onSwitchOffButtonClicked,
+                                           thingsOFF
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
@@ -137,6 +139,7 @@ export const ThingsPanel: FC<Props> = ({
                                 onThingRemoved={onRemove}
                                 shouldBeLoading={idWaitingToBeRemoved == thing.id}
                                 onInfoClicked={(thing: Thing) => setInfoThing(thing)}
+                                forceOff={thingsOFF != null && thingsOFF.map(t => t.id).includes(thing.id)}
                             />
                             <Divider/>
                         </>

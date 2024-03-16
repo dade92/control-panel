@@ -92,6 +92,7 @@ describe('ControlPanel', () => {
 
             await waitFor(() => {
                 expect(screen.getByTestId('feedback-wrapper-success')).toBeVisible();
+                expect(screen.getByRole('checkbox')).toBeChecked();
             })
 
         })
@@ -127,12 +128,16 @@ describe('ControlPanel', () => {
 
         })
 
-        it('should switch all things off, no feedback', async () => {
+        it('should switch all things off, with feedback', async () => {
             const retrieveThingsProvider = jest.fn(
-                () => Promise.resolve({things: [thing, anotherThing, thingOn, thingOnAlarm]})
+                () => Promise.resolve({things: [thing]})
             );
 
-            let switchAllOffProvider = jest.fn(
+            const switchStatusProvider = jest.fn(
+                () => Promise.resolve()
+            );
+
+            const switchAllOffProvider = jest.fn(
                 () => Promise.resolve()
             );
 
@@ -140,7 +145,7 @@ describe('ControlPanel', () => {
                 <ControlPanel
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={jest.fn()}
-                    switchStatusProvider={jest.fn()}
+                    switchStatusProvider={switchStatusProvider}
                     addThingProvider={jest.fn()}
                     switchAllOffProvider={switchAllOffProvider}
                 />
@@ -150,10 +155,19 @@ describe('ControlPanel', () => {
                 expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
             });
 
+            fireEvent.click(screen.getByRole('checkbox'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('feedback-wrapper-success')).toBeVisible();
+                expect(screen.getByRole('checkbox')).toBeChecked();
+            })
+
             fireEvent.click(screen.getByTestId('switch-off-button'));
 
             await waitFor(() => {
-                expect(switchAllOffProvider).toHaveBeenCalledWith([thingOn]);
+                expect(switchAllOffProvider).toHaveBeenCalledWith([thing]);
+                expect(screen.getByTestId('feedback-wrapper-success')).toBeVisible();
+                expect(screen.getByRole('checkbox')).not.toBeChecked();
             })
         })
     })

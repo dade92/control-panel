@@ -9,6 +9,7 @@ interface ControlPanelStore {
         things: Thing[] | null;
         outcome: Outcome,
         idToBeRemoved: string | null;
+        thingsOFF: Thing[] | null;
     }
     actions: {
         giveFeedback: (isSuccess: boolean, thing: Thing) => void;
@@ -35,6 +36,7 @@ export const useControlPanelStore = (
     const defaultOutcome = {isSuccess: false, error: false, message: null,};
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
     const [idToBeRemoved, setIdToBeRemoved] = useState<string | null>(null);
+    const [thingsOFF, setThingsOFF] = useState<Thing[] | null>(null);
 
     useEffect(() => {
         retrieveThingsProvider()
@@ -118,15 +120,33 @@ export const useControlPanelStore = (
     }
 
     const onSwitchOffButtonClicked = () => {
-        switchAllOffProvider(things!.filter((t: Thing) => isEligible(t)))
+        const thingsOFF = things!.filter((t: Thing) => isEligible(t));
+        setThingsOFF(thingsOFF);
+        switchAllOffProvider(thingsOFF)
             .then(() => {
-                setThings(things!.map((t: Thing) => {
-                    t.management.switch = ThingStatus.OFF;
-                    return t;
-                }));
+                const newThings: Thing[] = [];
+                things!.forEach((t: Thing) => {
+                    if (isEligible(t)) {
+                        t.management.switch = ThingStatus.OFF;
+                    }
+                    newThings.push(t);
+                });
+                setThingsOFF(null);
+                setThings(newThings);
+                setOutcome({
+                    isSuccess: true,
+                    error: false,
+                    message: `All LAMPs switched off successfully`,
+                })
             })
             .catch(() => {
                 console.log('Error switching off all things');
+                setOutcome({
+                    isSuccess: false,
+                    error: true,
+                    message: `Some error occurred while switching off all LAMPs. Please reload the page and try again.`,
+                })
+                setThingsOFF(null);
             })
     }
 
@@ -134,7 +154,8 @@ export const useControlPanelStore = (
         state: {
             things,
             outcome,
-            idToBeRemoved
+            idToBeRemoved,
+            thingsOFF,
         },
         actions: {
             giveFeedback,

@@ -37,6 +37,7 @@ describe('ThingDetails', () => {
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
                 onInfoClicked={jest.fn()}
+                forceOff={false}
             />
         );
 
@@ -45,6 +46,7 @@ describe('ThingDetails', () => {
         fireEvent.click(screen.getByRole('checkbox'));
 
         await waitFor(() => {
+            expect(screen.getByRole('checkbox')).toBeChecked();
             expect(switchStatusProvider).toHaveBeenCalledWith(thing, statusON)
             expect(changeStatusCallback).toHaveBeenCalledTimes(1);
             expect(changeStatusCallback).toHaveBeenCalledWith(true, thing);
@@ -64,6 +66,7 @@ describe('ThingDetails', () => {
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
                 onInfoClicked={jest.fn()}
+                forceOff={false}
             />
         )
 
@@ -75,6 +78,7 @@ describe('ThingDetails', () => {
             expect(failSwitchStatusProvider).toHaveBeenCalledWith(thing, statusOFF);
             expect(changeStatusCallback).toHaveBeenCalledTimes(1);
             expect(changeStatusCallback).toHaveBeenCalledWith(false, thing);
+            // expect(screen.getByRole('checkbox')).not.toBeChecked();
         });
     })
 
@@ -87,6 +91,7 @@ describe('ThingDetails', () => {
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
                 onInfoClicked={jest.fn()}
+                forceOff={false}
             />
         )
 
@@ -111,6 +116,7 @@ describe('ThingDetails', () => {
                 onThingRemoved={onThingRemoved}
                 shouldBeLoading={false}
                 onInfoClicked={onInfoThingClicked}
+                forceOff={false}
             />
         )
 
@@ -123,6 +129,25 @@ describe('ThingDetails', () => {
             expect(changeStatusCallback).not.toHaveBeenCalled();
             expect(onThingRemoved).not.toHaveBeenCalled();
             expect(onInfoThingClicked).toHaveBeenCalledWith(thing);
+        });
+    })
+
+    it('uncheck the switch when forceOffAndDisabled is true', async () => {
+        render(
+            <ThingDetails
+                thing={thing}
+                onChangeStatus={changeStatusCallback}
+                switchStatusProvider={switchStatusProvider}
+                onThingRemoved={onThingRemoved}
+                shouldBeLoading={false}
+                onInfoClicked={onInfoThingClicked}
+                forceOff={true}
+            />
+        )
+
+        await waitFor(() => {
+            expect(screen.getByTestId('thing-wrapper-123')).toBeVisible();
+            expect(screen.getByRole('checkbox')).not.toBeChecked()
         });
     })
 });

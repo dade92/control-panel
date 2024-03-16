@@ -44,6 +44,7 @@ export const ControlPanel: FC<Props> = ({
                 onHostChanged={actions.onHostChanged}
                 changeHostProvider={RestChangeHostProvider}
                 onSwitchOffButtonClicked={actions.onSwitchOffButtonClicked}
+                thingsOFF={state.thingsOFF}
             />
             {
                 state.outcome?.isSuccess && <FeedbackMessage
