@@ -146,8 +146,8 @@ export const ThingsPanel: FC<Props> = ({
                     })}
                 </List>
                 {things.length == 0 &&
-                    <ThingPanelText>No things at the moment, click on the add button to add a new
-                        Thing</ThingPanelText>}
+                    <ThingPanelText>No things at the moment, click on the add button to add a new Thing</ThingPanelText>
+                }
                 <ButtonWrapper>
                     <SwitchOffButton onSwitchOffClicked={onSwitchOffButtonClicked}/>
                     <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
