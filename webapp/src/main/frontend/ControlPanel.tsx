@@ -47,13 +47,13 @@ export const ControlPanel: FC<Props> = ({
                 thingsOFF={state.thingsOFF}
             />
             {
-                state.outcome?.outcomeType == OutcomeType.SUCCESS && <FeedbackMessage
+                state.outcome.outcomeType == OutcomeType.SUCCESS && <FeedbackMessage
                     message={state.outcome.message!}
                     onClose={() => actions.resetDefaultOutcome()}
                     isSuccess={true}/>
             }
             {
-                state.outcome?.outcomeType == OutcomeType.ERROR && <FeedbackMessage
+                state.outcome.outcomeType == OutcomeType.ERROR && <FeedbackMessage
                     message={state.outcome.message!}
                     onClose={() => actions.resetDefaultOutcome()}
                     isSuccess={false}/>
