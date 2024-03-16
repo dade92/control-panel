@@ -21,10 +21,15 @@ interface ControlPanelStore {
     }
 }
 
+export enum OutcomeType {
+    SUCCESS = 'success',
+    ERROR = 'error',
+    NONE = 'none',
+}
+
 interface Outcome {
-    isSuccess: boolean;
-    error: boolean;
     message: string | null;
+    outcomeType: OutcomeType;
 }
 
 export const useControlPanelStore = (
@@ -33,7 +38,7 @@ export const useControlPanelStore = (
     switchAllOffProvider: SwitchAllOffProvider,
 ): ControlPanelStore => {
     const [things, setThings] = useState<Thing[] | null>(null);
-    const defaultOutcome = {isSuccess: false, error: false, message: null,};
+    const defaultOutcome = {isSuccess: false, error: false, message: null, outcomeType: OutcomeType.NONE};
     const [outcome, setOutcome] = useState<Outcome>(defaultOutcome);
     const [idToBeRemoved, setIdToBeRemoved] = useState<string | null>(null);
     const [thingsOFF, setThingsOFF] = useState<Thing[] | null>(null);
@@ -45,9 +50,8 @@ export const useControlPanelStore = (
             })
             .catch(() => {
                 setOutcome({
-                    isSuccess: false,
-                    error: true,
                     message: 'There was an error retrieving Things',
+                    outcomeType: OutcomeType.ERROR,
                 })
             })
     }, []);
@@ -60,16 +64,14 @@ export const useControlPanelStore = (
             .then(() => {
                 setThings(things!.filter((t) => t.id != thing.id));
                 setOutcome({
-                    isSuccess: true,
-                    error: false,
                     message: `Thing ${thing.name} removed successfully`,
+                    outcomeType: OutcomeType.SUCCESS,
                 });
             })
             .catch(() => {
                 setOutcome({
-                    isSuccess: false,
-                    error: true,
                     message: `error while removing thing ${thing.name}`,
+                    outcomeType: OutcomeType.ERROR,
 
                 });
             }).finally(() => {
@@ -78,12 +80,17 @@ export const useControlPanelStore = (
     }
 
     const giveFeedback = (isSuccess: boolean, thing: Thing) => {
+        let outcomeType: OutcomeType;
+        if(isSuccess) {
+            outcomeType = OutcomeType.SUCCESS;
+        } else {
+            outcomeType = OutcomeType.ERROR;
+        }
         setOutcome({
-            isSuccess,
-            error: !isSuccess,
             message: isSuccess ?
                 `${thing!.name} turned ${thing!.management.switch}` :
-                `${thing!.name} couldn't be switched due to some problems with server`
+                `${thing!.name} couldn't be switched due to some problems with server`,
+            outcomeType,
         });
     }
 
@@ -96,15 +103,13 @@ export const useControlPanelStore = (
         if (thing) {
             updateThingsList(thing);
             setOutcome({
-                isSuccess: true,
-                error: false,
                 message: `${thing!.name} added successfully`,
+                outcomeType: OutcomeType.SUCCESS,
             })
         } else {
             setOutcome({
-                isSuccess: false,
-                error: true,
                 message: `the new thing couldn't be added due to some problems with server`,
+                outcomeType: OutcomeType.ERROR,
             })
         }
     }
@@ -134,17 +139,15 @@ export const useControlPanelStore = (
                 setThingsOFF(null);
                 setThings(newThings);
                 setOutcome({
-                    isSuccess: true,
-                    error: false,
                     message: `All LAMPs switched off successfully`,
+                    outcomeType: OutcomeType.SUCCESS,
                 })
             })
             .catch(() => {
                 console.log('Error switching off all things');
                 setOutcome({
-                    isSuccess: false,
-                    error: true,
                     message: `Some error occurred while switching off all LAMPs. Please reload the page and try again.`,
+                    outcomeType: OutcomeType.ERROR,
                 })
                 setThingsOFF(null);
             })

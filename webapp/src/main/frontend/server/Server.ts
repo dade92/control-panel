@@ -99,7 +99,7 @@ export const server: () => Server = () =>
         logging: true,
         routes() {
             this.get('/api/v1/things', things200, {timing: 1000});
-            this.post('/api/v1/switch/:deviceId/:thingId', switchStatus200, {timing: 1000});
+            this.post('/api/v1/switch/:deviceId/:thingId', switchStatus500, {timing: 1000});
             this.post('/api/v1/things/remove/:deviceId/:thingId', removeThing200, {timing: 1000});
             this.post('/api/v1/things/add', addThing200, {timing: 1000});
             this.post('/api/v1/switch/switchAll', switchOff200, {timing: 1000});

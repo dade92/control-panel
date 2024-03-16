@@ -8,7 +8,7 @@ import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 import {AddThingProvider} from "./logic/AddThingProvider";
 import {RestChangeHostProvider} from "./logic/ChangeHostProvider";
 import {SwitchAllOffProvider} from "./logic/SwitchAllOffProvider";
-import {useControlPanelStore} from "./ControlPanelStore";
+import {OutcomeType, useControlPanelStore} from "./ControlPanelStore";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;
@@ -47,16 +47,16 @@ export const ControlPanel: FC<Props> = ({
                 thingsOFF={state.thingsOFF}
             />
             {
-                state.outcome?.isSuccess && <FeedbackMessage
+                state.outcome?.outcomeType == OutcomeType.SUCCESS && <FeedbackMessage
                     message={state.outcome.message!}
                     onClose={() => actions.resetDefaultOutcome()}
-                    isSuccess={state.outcome.isSuccess}/>
+                    isSuccess={true}/>
             }
             {
-                state.outcome?.error && <FeedbackMessage
+                state.outcome?.outcomeType == OutcomeType.ERROR && <FeedbackMessage
                     message={state.outcome.message!}
                     onClose={() => actions.resetDefaultOutcome()}
-                    isSuccess={state.outcome.isSuccess}/>
+                    isSuccess={false}/>
             }
         </>
 }
