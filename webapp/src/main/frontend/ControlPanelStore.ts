@@ -129,14 +129,12 @@ export const useControlPanelStore = (
         setThingsOFF(thingsOFF);
         switchAllOffProvider(thingsOFF)
             .then(() => {
-                const newThings: Thing[] = [];
-                things!.forEach((t: Thing) => {
+                setThings(things!.map((t: Thing) => {
                     if (isEligible(t)) {
                         t.management.switch = ThingStatus.OFF;
                     }
-                    newThings.push(t);
-                });
-                setThings(newThings);
+                    return t;
+                }));
                 setOutcome({
                     message: `All LAMPs switched off successfully`,
                     outcomeType: OutcomeType.SUCCESS,
