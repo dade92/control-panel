@@ -81,7 +81,7 @@ export const useControlPanelStore = (
 
     const giveFeedback = (isSuccess: boolean, thing: Thing) => {
         let outcomeType: OutcomeType;
-        if(isSuccess) {
+        if (isSuccess) {
             outcomeType = OutcomeType.SUCCESS;
         } else {
             outcomeType = OutcomeType.ERROR;
@@ -136,7 +136,6 @@ export const useControlPanelStore = (
                     }
                     newThings.push(t);
                 });
-                setThingsOFF(null);
                 setThings(newThings);
                 setOutcome({
                     message: `All LAMPs switched off successfully`,
@@ -146,11 +145,12 @@ export const useControlPanelStore = (
             .catch(() => {
                 console.log('Error switching off all things');
                 setOutcome({
-                    message: `Some error occurred while switching off all LAMPs. Please reload the page and try again.`,
+                    message: `Some error occurred while switching off LAMPs. Please reload the page and try again.`,
                     outcomeType: OutcomeType.ERROR,
                 })
-                setThingsOFF(null);
-            })
+            }).finally(() => {
+            setThingsOFF(null);
+        });
     }
 
     return {

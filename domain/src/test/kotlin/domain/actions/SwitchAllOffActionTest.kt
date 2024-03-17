@@ -57,7 +57,7 @@ class SwitchAllOffActionTest {
     }
 
     @Test
-    fun `in case one fails, returns error`() {
+    fun `in case at least one fails, returns error`() {
         every { switchClient.switch(aDeviceHost, 1.asIdOnDevice(), Status.OFF) } returns Unit.right()
         every { deviceRepository.updateThingStatus(any(), any(), Status.OFF) } returns Unit.right()
         every { switchClient.switch(anotherDeviceHost, 1.asIdOnDevice(), Status.OFF) } returns ActionError.SwitchError.DeviceNotFound.left()

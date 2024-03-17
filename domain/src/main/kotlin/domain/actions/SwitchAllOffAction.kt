@@ -32,7 +32,10 @@ class SwitchAllOffAction(
             }
             outcomes.add(outcome)
         }
-        return if(outcomes.any { it.isLeft() }) ActionError.SwitchError.SomethingWrongWithSwitchAll.left()
-        else Unit.right()
+        return if (outcomes.any { it.isLeft() }) {
+            ActionError.SwitchError.SomethingWrongWithSwitchAll.left()
+        } else {
+            Unit.right()
+        }
     }
 }

@@ -6,9 +6,7 @@ import webapp.types.ThingUI
 class DeviceToThingResponseAdapter {
 
     fun adapt(devices: List<Device>): List<ThingUI> =
-        devices.flatMap {
-            adaptDevice(it)
-        }
+        devices.flatMap { adaptDevice(it) }
 
     private fun adaptDevice(device: Device): List<ThingUI> =
         device.things.map {
