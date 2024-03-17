@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {Management, Thing, ThingStatus} from "./Thing";
 import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
 
@@ -19,20 +19,28 @@ export const useThingDetailsStore = (
     switchStatusProvider: SwitchStatusProvider,
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void,
     onThingRemoved: (thing: Thing) => void,
-    onThingInfoClicked: (thing: Thing) => void): ThingDetailsStore => {
-    const [status, setStatus] = useState<Management>(thing.management);
+    onThingInfoClicked: (thing: Thing) => void,
+    forceOff: boolean
+): ThingDetailsStore => {
+    const [status, setStatus] = useState<ThingStatus>(thing.management.switch);
     const [disabled, setDisabled] = useState<boolean>(false);
+
+    useEffect(() => {
+        if(forceOff) {
+            setStatus(ThingStatus.OFF);
+        }
+    }, [forceOff]);
 
     const changeStatus = () => {
         let newStatus = ThingStatus.OFF;
-        let oldStatus = status.switch;
+        const oldStatus = status;
 
-        if (status.switch == "ON") {
+        if (status == "ON") {
             newStatus = ThingStatus.OFF;
         } else {
             newStatus = ThingStatus.ON;
         }
-        setStatus({switch: newStatus});
+        setStatus(newStatus);
         setDisabled(true);
 
         switchStatusProvider(thing, {switch: newStatus})
@@ -42,7 +50,7 @@ export const useThingDetailsStore = (
             })
             .catch(() => {
                 onChangeStatus(false, thing);
-                setStatus({switch: oldStatus});
+                setStatus(oldStatus);
             }).finally(() => {
             setDisabled(false);
         });
@@ -58,7 +66,7 @@ export const useThingDetailsStore = (
 
     return {
         state: {
-            status: status.switch,
+            status: status,
             disabled,
         },
         actions: {

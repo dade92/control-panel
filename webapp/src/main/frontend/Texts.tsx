@@ -2,7 +2,7 @@ import {FC, ReactNode} from "react";
 import {TextField, Typography} from "@mui/material";
 
 export const ThingDetailText: FC<{ children: ReactNode }> = ({children}) =>
-    <Typography sx={{width: '70px'}}
+    <Typography sx={{width: '100px'}}
                 variant="body1"
                 gutterBottom>{children}</Typography>
 

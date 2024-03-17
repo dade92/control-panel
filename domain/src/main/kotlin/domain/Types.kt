@@ -17,6 +17,17 @@ data class Device(
     val things: List<Thing>
 )
 
+data class ThingToDevice(
+    val id: ThingId,
+    val name: ThingName,
+    val type: ThingType,
+    val management: ThingManagement,
+    val deviceId: DeviceId,
+    val device: DeviceName,
+    val deviceHost: DeviceHost
+)
+
+
 @JvmInline
 value class DeviceName(val value: String) {
     override fun toString(): String = value

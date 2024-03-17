@@ -1,0 +1,15 @@
+{
+  "things": [
+    {
+      "id": "638a3db2-69e7-471d-90c2-f51360077ae9",
+      "name": "name",
+      "deviceId": "0da34700-1ed4-4ee5-8bac-4c2ab5ddeadb",
+      "deviceHost": "host",
+      "device": "device name",
+      "type": "LAMP",
+      "management": {
+        "switch": "OFF"
+      }
+    }
+  ]
+}

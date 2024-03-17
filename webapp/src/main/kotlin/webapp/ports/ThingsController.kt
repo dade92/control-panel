@@ -1,11 +1,15 @@
 package webapp.ports
 
 import domain.*
-import domain.actions.*
+import domain.actions.AddThingAction
+import domain.actions.ChangeHostAction
+import domain.actions.RemoveThingsAction
+import domain.actions.RetrieveDeviceAction
 import domain.actions.request.AddThingRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.http.ResponseEntity.*
 import org.springframework.web.bind.annotation.*
+import webapp.types.ThingUI
 
 @RestController
 class ThingsController(
@@ -79,7 +83,7 @@ data class ChangeHostRequest(
 )
 
 data class AddThingResponse(
-    val thing: AddedThing
+    val thing: ThingToDevice
 )
 
 data class ErrorResponse(val error: String)
@@ -89,16 +93,5 @@ data class SwitchRequest(
 )
 
 data class ThingsResponse(
-    val things: List<ThingResponse>
+    val things: List<ThingUI>
 )
-
-data class ThingResponse(
-    val id: ThingId,
-    val name: ThingName,
-    val device: DeviceName,
-    val deviceId: DeviceId,
-    val deviceHost: DeviceHost,
-    val type: ThingType,
-    val management: ThingManagement
-)
-

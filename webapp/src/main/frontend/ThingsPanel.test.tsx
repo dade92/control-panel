@@ -60,6 +60,8 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
+                    thingsOFF={[]}
                 />
             );
 
@@ -83,6 +85,8 @@ describe('ThingsPanel', () => {
                              onThingAdded={jest.fn()}
                              onHostChanged={jest.fn()}
                              changeHostProvider={jest.fn()}
+                             onSwitchOffButtonClicked={jest.fn()}
+                             thingsOFF={[]}
                 />
             );
 
@@ -106,6 +110,8 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
+                    thingsOFF={[]}
                 />
             );
 
@@ -136,6 +142,8 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
+                    thingsOFF={[]}
                 />
             );
 
@@ -167,6 +175,8 @@ describe('ThingsPanel', () => {
                     onThingAdded={onThingAdded}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
+                    thingsOFF={[]}
                 />
             );
 
@@ -201,6 +211,8 @@ describe('ThingsPanel', () => {
                     onThingAdded={onThingAdded}
                     onHostChanged={jest.fn()}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
+                    thingsOFF={[]}
                 />
             );
 
@@ -239,6 +251,8 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={onHostChanged}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
+                    thingsOFF={[]}
                 />
             );
 
@@ -275,6 +289,8 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={onHostChanged}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
+                    thingsOFF={[]}
                 />
             );
 
@@ -313,6 +329,8 @@ describe('ThingsPanel', () => {
                     onThingAdded={jest.fn()}
                     onHostChanged={onHostChanged}
                     changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={jest.fn()}
+                    thingsOFF={[]}
                 />
             );
 
@@ -335,4 +353,33 @@ describe('ThingsPanel', () => {
 
         })
     })
+
+    describe('switch off all action', () => {
+        it('shuold call switch off all callback', () => {
+            const onSwitchOffButtonClicked = jest.fn();
+
+            render(
+                <ThingsPanel
+                    things={[
+                        thing,
+                        anotherThing
+                    ]}
+                    onChangeStatus={onChangeStatus}
+                    onThingRemoved={onThingRemoved}
+                    idWaitingToBeRemoved={''}
+                    switchStatusProvider={jest.fn()}
+                    addThingProvider={jest.fn()}
+                    onThingAdded={onThingAdded}
+                    onHostChanged={onHostChanged}
+                    changeHostProvider={changeHostProvider}
+                    onSwitchOffButtonClicked={onSwitchOffButtonClicked}
+                    thingsOFF={[]}
+                />
+            );
+
+            fireEvent.click(screen.getByTestId('switch-off-button'));
+
+            expect(onSwitchOffButtonClicked).toHaveBeenCalled();
+        });
+    });
 });

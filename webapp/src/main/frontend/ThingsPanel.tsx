@@ -13,6 +13,7 @@ import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
 import {ThingPanelText} from "./Texts";
 import {InfoThingModal} from "./InfoThingModal";
 import {ChangeHostProvider} from "./logic/ChangeHostProvider";
+import {SwitchOffButton} from "./SwitchOffButton";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;
@@ -39,6 +40,14 @@ const ListWrapper = styled.div`
   padding: 16px;
 `
 
+const ButtonWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 16px;
+`
+
 interface Props {
     things: Thing[];
     onChangeStatus: (isSuccess: boolean, thing: Thing) => void;
@@ -48,7 +57,9 @@ interface Props {
     addThingProvider: AddThingProvider;
     onThingAdded: (thing: Thing | null) => void;
     onHostChanged: (deviceHost: string, thingId: string) => void;
-    changeHostProvider: ChangeHostProvider
+    changeHostProvider: ChangeHostProvider;
+    onSwitchOffButtonClicked: () => void;
+    thingsOFF: Thing[] | null;
 }
 
 export const ThingsPanel: FC<Props> = ({
@@ -60,7 +71,9 @@ export const ThingsPanel: FC<Props> = ({
                                            addThingProvider,
                                            onThingAdded,
                                            onHostChanged,
-                                           changeHostProvider
+                                           changeHostProvider,
+                                           onSwitchOffButtonClicked,
+                                           thingsOFF
                                        }) => {
     const [removedThing, setRemovedThing] = useState<Thing | null>(null);
     const [addThing, setAddThing] = useState<boolean>(false);
@@ -126,15 +139,19 @@ export const ThingsPanel: FC<Props> = ({
                                 onThingRemoved={onRemove}
                                 shouldBeLoading={idWaitingToBeRemoved == thing.id}
                                 onInfoClicked={(thing: Thing) => setInfoThing(thing)}
+                                forceOff={thingsOFF != null && thingsOFF.map(t => t.id).includes(thing.id)}
                             />
                             <Divider/>
                         </>
                     })}
                 </List>
                 {things.length == 0 &&
-                    <ThingPanelText>No things at the moment, click on the add button to add a new
-                        Thing</ThingPanelText>}
-                <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
+                    <ThingPanelText>No things at the moment, click on the add button to add a new Thing</ThingPanelText>
+                }
+                <ButtonWrapper>
+                    <SwitchOffButton onSwitchOffClicked={onSwitchOffButtonClicked}/>
+                    <AddThingButton onAddThingClicked={() => setAddThing(true)}/>
+                </ButtonWrapper>
             </ListWrapper>
             {removedThing != null &&
                 <RemoveThingConfirmModal thing={removedThing} onConfirm={onRemoveConfirmed} onCancel={onModalClosed}/>}
@@ -147,7 +164,8 @@ export const ThingsPanel: FC<Props> = ({
             }
             {infoThing != null &&
                 <InfoThingModal onChangeHost={onChangeHost} thing={infoThing}
-                                handleClose={() => setInfoThing(null)}/>}
+                                handleClose={() => setInfoThing(null)}/>
+            }
         </ThingsPanelWrapper>
     );
 }

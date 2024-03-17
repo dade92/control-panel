@@ -15,6 +15,7 @@ sealed class ActionError {
         object ThingNotFound : SwitchError()
         object StatusAlreadySwitchedError : SwitchError()
         object StatusNotUpdatedError : SwitchError()
+        object SomethingWrongWithSwitchAll: SwitchError()
     }
 
     sealed class RetrieveError: ActionError() {

@@ -12,7 +12,6 @@ import domain.actions.errors.ActionError.RetrieveError
 import domain.actions.request.AddThingRequest
 import domain.asThingName
 import domain.utils.*
-import org.jmock.auto.Mock
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
@@ -118,7 +117,7 @@ class ThingsControllerTest {
                     ThingType.LAMP
                 )
             )
-        ).thenReturn(anAddedThing().right())
+        ).thenReturn(aThingToDevice().right())
 
         mvc.perform(
             post("/api/v1/things/add")

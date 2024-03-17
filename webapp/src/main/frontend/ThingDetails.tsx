@@ -19,6 +19,7 @@ interface Props {
     onThingRemoved: (thing: Thing) => void;
     shouldBeLoading: boolean;
     onInfoClicked: (thing: Thing) => void;
+    forceOff: boolean;
 }
 
 const ActionsWrapper = styled.div`
@@ -43,9 +44,17 @@ export const ThingDetails: FC<Props> = ({
                                             switchStatusProvider,
                                             onThingRemoved,
                                             shouldBeLoading,
-                                            onInfoClicked
+                                            onInfoClicked,
+                                            forceOff
                                         }) => {
-    const store = useThingDetailsStore(thing, switchStatusProvider, onChangeStatus, onThingRemoved, onInfoClicked);
+    const store = useThingDetailsStore(
+        thing,
+        switchStatusProvider,
+        onChangeStatus,
+        onThingRemoved,
+        onInfoClicked,
+        forceOff
+    );
 
     const renderIcon = (thingType: ThingType): ReactElement => {
         switch (thingType) {
@@ -60,7 +69,7 @@ export const ThingDetails: FC<Props> = ({
         }
     }
 
-    const isOn = (status: ThingStatus) => status === ThingStatus.ON
+    const isOn = (status: ThingStatus) => status == ThingStatus.ON;
 
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>

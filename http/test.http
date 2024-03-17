@@ -41,3 +41,25 @@ Accept: application/json
 {
   "newHost": "ciccio"
 }
+
+### switch OFF everything
+
+POST {{host}}/api/v1/switch/switchAll
+Content-Type: application/json
+Accept: application/json
+
+{
+  "things": [
+    {
+      "id": "19851c6d-89ad-48c9-9b0c-9abb9eb92eea",
+      "name": "dining room lamp",
+      "device": "arduino-uno",
+      "deviceId": "c9e4c231-dbca-428f-9442-b01440f91330",
+      "deviceHost": "http://esp32s3-654e44:8080",
+      "type": "LAMP",
+      "management": {
+        "switch": "ON"
+      }
+    }
+  ]
+}

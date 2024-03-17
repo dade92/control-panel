@@ -1,24 +1,23 @@
 package webapp.ports
 
 import domain.Device
+import webapp.types.ThingUI
 
 class DeviceToThingResponseAdapter {
 
-    fun adapt(devices: List<Device>): List<ThingResponse> =
-        devices.flatMap {
-            adaptDevice(it)
-        }
+    fun adapt(devices: List<Device>): List<ThingUI> =
+        devices.flatMap { adaptDevice(it) }
 
-    private fun adaptDevice(device: Device): List<ThingResponse> =
+    private fun adaptDevice(device: Device): List<ThingUI> =
         device.things.map {
-            ThingResponse(
+            ThingUI(
                 it.id,
                 it.name,
                 device.deviceName,
                 device.deviceId,
                 device.host,
                 it.type,
-                it.management
+                it.management,
             )
         }
 

@@ -8,6 +8,8 @@ describe('ControlPanel', () => {
 
     let thing: Thing;
     let anotherThing: Thing
+    let thingOn: Thing;
+    let thingOnAlarm: Thing;
 
     beforeEach(() => {
         thing = Builder<Thing>()
@@ -25,6 +27,20 @@ describe('ControlPanel', () => {
             .deviceId('789')
             .management({switch: ThingStatus.OFF})
             .build();
+        thingOn = Builder<Thing>()
+            .id('789')
+            .name('switched on thing')
+            .type(ThingType.LAMP)
+            .deviceId('789')
+            .management({switch: ThingStatus.ON})
+            .build();
+        thingOnAlarm = Builder<Thing>()
+            .id('789')
+            .name('switched on thing')
+            .type(ThingType.ALARM)
+            .deviceId('789')
+            .management({switch: ThingStatus.ON})
+            .build();
     })
 
     it('Renders the loader while loading, then the things panel', async () => {
@@ -38,6 +54,7 @@ describe('ControlPanel', () => {
                 removeThingsProvider={jest.fn()}
                 switchStatusProvider={jest.fn()}
                 addThingProvider={jest.fn()}
+                switchAllOffProvider={jest.fn()}
             />);
 
         expect(screen.getByTestId('loader-wrapper')).toBeVisible();
@@ -48,7 +65,7 @@ describe('ControlPanel', () => {
     });
 
     describe('switch thing', () => {
-        it('should switch a thing ON when switch provider is successfull', async () => {
+        it('should switch a thing ON when switch provider is successful', async () => {
             const retrieveThingsProvider = jest.fn(
                 () => Promise.resolve({things: [thing]})
             );
@@ -63,6 +80,7 @@ describe('ControlPanel', () => {
                     removeThingsProvider={removeThingsProvider}
                     switchStatusProvider={switchStatusProvider}
                     addThingProvider={jest.fn()}
+                    switchAllOffProvider={jest.fn()}
                 />
             );
 
@@ -74,11 +92,12 @@ describe('ControlPanel', () => {
 
             await waitFor(() => {
                 expect(screen.getByTestId('feedback-wrapper-success')).toBeVisible();
+                expect(screen.getByRole('checkbox')).toBeChecked();
             })
 
         })
 
-        it('should display an error message if switch provider is NOT successfull', async () => {
+        it('should display an error message if switch provider is NOT successful', async () => {
             const retrieveThingsProvider = jest.fn(
                 () => Promise.resolve({things: [thing]})
             );
@@ -93,6 +112,7 @@ describe('ControlPanel', () => {
                     removeThingsProvider={removeThingsProvider}
                     switchStatusProvider={switchStatusProvider}
                     addThingProvider={jest.fn()}
+                    switchAllOffProvider={jest.fn()}
                 />
             );
 
@@ -107,6 +127,49 @@ describe('ControlPanel', () => {
             })
 
         })
+
+        it('should switch all things off, with feedback', async () => {
+            const retrieveThingsProvider = jest.fn(
+                () => Promise.resolve({things: [thing]})
+            );
+
+            const switchStatusProvider = jest.fn(
+                () => Promise.resolve()
+            );
+
+            const switchAllOffProvider = jest.fn(
+                () => Promise.resolve()
+            );
+
+            render(
+                <ControlPanel
+                    retrieveThingsProvider={retrieveThingsProvider}
+                    removeThingsProvider={jest.fn()}
+                    switchStatusProvider={switchStatusProvider}
+                    addThingProvider={jest.fn()}
+                    switchAllOffProvider={switchAllOffProvider}
+                />
+            );
+
+            await waitFor(() => {
+                expect(screen.getByTestId('things-panel-wrapper')).toBeVisible();
+            });
+
+            fireEvent.click(screen.getByRole('checkbox'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('feedback-wrapper-success')).toBeVisible();
+                expect(screen.getByRole('checkbox')).toBeChecked();
+            })
+
+            fireEvent.click(screen.getByTestId('switch-off-button'));
+
+            await waitFor(() => {
+                expect(switchAllOffProvider).toHaveBeenCalledWith([thing]);
+                expect(screen.getByTestId('feedback-wrapper-success')).toBeVisible();
+                expect(screen.getByRole('checkbox')).not.toBeChecked();
+            })
+        })
     })
 
     describe('Remove thing', () => {
@@ -115,14 +178,14 @@ describe('ControlPanel', () => {
                 () => Promise.resolve({things: [thing, anotherThing]})
             );
             const removeThingsProvider = jest.fn(() => Promise.resolve());
-            const switchStatusProvider = jest.fn();
 
             render(
                 <ControlPanel
                     retrieveThingsProvider={retrieveThingsProvider}
                     removeThingsProvider={removeThingsProvider}
-                    switchStatusProvider={switchStatusProvider}
+                    switchStatusProvider={jest.fn()}
                     addThingProvider={jest.fn()}
+                    switchAllOffProvider={jest.fn()}
                 />
             );
 
@@ -157,6 +220,7 @@ describe('ControlPanel', () => {
                     removeThingsProvider={removeThingsProvider}
                     switchStatusProvider={switchStatusProvider}
                     addThingProvider={jest.fn()}
+                    switchAllOffProvider={jest.fn()}
                 />
             );
 
@@ -185,6 +249,8 @@ describe('ControlPanel', () => {
             fireEvent.change(screen.getByTestId('thing-name-form')
                 .querySelector('input')!, {target: {value: text}});
         }
+
+        //TODO fix these functions
 
         const selectThingType = async () => {
             fireEvent.click(screen.getByTestId('thing-type-selector'));
@@ -223,6 +289,7 @@ describe('ControlPanel', () => {
                     removeThingsProvider={jest.fn()}
                     switchStatusProvider={jest.fn()}
                     addThingProvider={addThingProvider}
+                    switchAllOffProvider={jest.fn()}
                 />
             );
 
@@ -238,7 +305,7 @@ describe('ControlPanel', () => {
 
             // await selectDeviceId();
             // await selectThingType();
-            await typeInputOnTextField('thing name');
+            typeInputOnTextField('thing name');
 
             fireEvent.click(screen.getByTestId('confirm-button'));
 
@@ -253,10 +320,6 @@ describe('ControlPanel', () => {
             const retrieveThingsProvider = jest.fn(
                 () => Promise.resolve({things: [thing]})
             );
-            const removeThingsProvider = jest.fn();
-            const switchStatusProvider = jest.fn(
-                () => Promise.reject()
-            );
 
             const addThingProvider = jest.fn(
                 () => Promise.reject()
@@ -268,6 +331,7 @@ describe('ControlPanel', () => {
                     removeThingsProvider={jest.fn()}
                     switchStatusProvider={jest.fn()}
                     addThingProvider={addThingProvider}
+                    switchAllOffProvider={jest.fn()}
                 />
             );
 

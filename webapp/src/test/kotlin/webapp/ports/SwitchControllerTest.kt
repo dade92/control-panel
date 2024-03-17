@@ -2,13 +2,14 @@ package webapp.ports
 
 import arrow.core.left
 import arrow.core.right
+import com.springexample.utils.Fixtures
 import domain.Status
-import domain.actions.DefaultSwitchAction
 import domain.actions.SwitchAction
-import domain.actions.errors.ActionError
+import domain.actions.SwitchAllOffAction
 import domain.actions.errors.ActionError.SwitchError
 import domain.utils.aDeviceId
 import domain.utils.aThingId
+import domain.utils.aThingToDevice
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
@@ -29,6 +30,9 @@ class SwitchControllerTest {
 
     @MockBean
     private lateinit var switchAction: SwitchAction
+
+    @MockBean
+    private lateinit var switchAllOffAction: SwitchAllOffAction
 
     @Test
     fun `switch lamp ON successfully`() {
@@ -61,4 +65,26 @@ class SwitchControllerTest {
         verify(switchAction).switch(aDeviceId, aThingId, Status.ON)
     }
 
+    @Test
+    fun `switch all things off`() {
+        `when`(switchAllOffAction.switchOff(listOf(aThingToDevice()))).thenReturn(Unit.right())
+
+        mvc.perform(
+            post("/api/v1/switch/switchAll")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Fixtures.readJson("/switchOffRequest.json"))
+        ).andExpect(status().is2xxSuccessful())
+    }
+
+    @Test
+    fun `in case of error, returns 500 with the specific problem when switching all off`() {
+        `when`(switchAllOffAction.switchOff(listOf(aThingToDevice()))).thenReturn(SwitchError.DeviceNotAvailable.left())
+
+        mvc.perform(
+            post("/api/v1/switch/switchAll")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Fixtures.readJson("/switchOffRequest.json"))
+        ).andExpect(status().is5xxServerError)
+            .andExpect(content().json("""{"error": "DeviceNotAvailable"}"""))
+    }
 }
