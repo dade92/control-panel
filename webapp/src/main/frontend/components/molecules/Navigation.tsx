@@ -19,9 +19,10 @@ export const Navigation: FC<Props> = ({onNavigationChange}) => {
             onNavigationChange(newValue);
         }}
         sx={{width: '100%', position: 'fixed', bottom: 0, marginBottom: '24px'}}
+        data-testid={'navigation'}
     >
         <BottomNavigationAction label="Control panel" icon={<AdminPanelSettingsIcon/>}/>
         <BottomNavigationAction label="Configuration" icon={<FavoriteIcon/>}/>
-        <BottomNavigationAction label="New stuff" icon={<LocationOnIcon/>}/>
+        <BottomNavigationAction label="New stuff" data-testid={'new-stuff'} icon={<LocationOnIcon/>}/>
     </BottomNavigation>
 }
