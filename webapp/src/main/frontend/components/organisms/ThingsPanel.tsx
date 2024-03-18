@@ -1,19 +1,19 @@
 import {FC, useState} from "react";
 import {ThingDetails} from "./ThingDetails";
-import {Thing, ThingType} from "./Thing";
+import {Thing, ThingType} from "../../logic/Thing";
 import styled from "styled-components";
 import {Divider, List} from "@mui/material";
-import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
-import {AddThingButton} from "./AddThingButton";
-import {RemoveThingConfirmModal} from "./RemoveThingConfirmModal";
-import {Subtitle} from "./Subtitle";
-import {AddThingModal} from "./AddThingModal";
-import {AddThingProvider, ThingAddedResponse} from "./logic/AddThingProvider";
-import {thingsToDeviceAdapter} from "./logic/ThingsToDeviceAdapter";
-import {ThingPanelText} from "./Texts";
-import {InfoThingModal} from "./InfoThingModal";
-import {ChangeHostProvider} from "./logic/ChangeHostProvider";
-import {SwitchOffButton} from "./SwitchOffButton";
+import {SwitchStatusProvider} from "../../logic/providers/SwitchStatusProvider";
+import {AddThingButton} from "../atoms/AddThingButton";
+import {RemoveThingConfirmModal} from "../molecules/RemoveThingConfirmModal";
+import {Subtitle} from "../atoms/Subtitle";
+import {AddThingModal} from "../molecules/AddThingModal";
+import {AddThingProvider, ThingAddedResponse} from "../../logic/providers/AddThingProvider";
+import {thingsToDeviceAdapter} from "../../logic/adapters/ThingsToDeviceAdapter";
+import {ThingPanelText} from "../atoms/Texts";
+import {InfoThingModal} from "../molecules/InfoThingModal";
+import {ChangeHostProvider} from "../../logic/providers/ChangeHostProvider";
+import {SwitchOffButton} from "../atoms/SwitchOffButton";
 
 const ThingsPanelWrapper = styled.div`
   position: absolute;

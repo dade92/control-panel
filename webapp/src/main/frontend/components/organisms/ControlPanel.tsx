@@ -1,14 +1,14 @@
 import {FC} from "react";
-import {Loader} from "./Loader";
-import {FeedbackMessage} from "./FeedbackMessage";
+import {Loader} from "../atoms/Loader";
+import {FeedbackMessage} from "../molecules/FeedbackMessage";
 import {ThingsPanel} from "./ThingsPanel";
-import {RetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
-import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
-import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
-import {AddThingProvider} from "./logic/AddThingProvider";
-import {RestChangeHostProvider} from "./logic/ChangeHostProvider";
-import {SwitchAllOffProvider} from "./logic/SwitchAllOffProvider";
-import {OutcomeType, useControlPanelStore} from "./ControlPanelStore";
+import {RetrieveThingsProvider} from "../../logic/providers/RetrieveThingsProvider";
+import {RemoveThingsProvider} from "../../logic/providers/RemoveThingsProvider";
+import {SwitchStatusProvider} from "../../logic/providers/SwitchStatusProvider";
+import {AddThingProvider} from "../../logic/providers/AddThingProvider";
+import {RestChangeHostProvider} from "../../logic/providers/ChangeHostProvider";
+import {SwitchAllOffProvider} from "../../logic/providers/SwitchAllOffProvider";
+import {OutcomeType, useControlPanelStore} from "../../logic/stores/ControlPanelStore";
 
 interface Props {
     retrieveThingsProvider: RetrieveThingsProvider;

@@ -1,16 +1,16 @@
 import {FC, ReactElement} from "react";
-import {Thing, ThingStatus, ThingType} from "./Thing";
+import {Thing, ThingStatus, ThingType} from "../../logic/Thing";
 import styled from "styled-components";
 import {Switch} from "@mui/material";
-import {ThingDetailText} from "./Texts";
-import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
-import {RemoveThingButton} from "./RemoveThingButton";
+import {ThingDetailText} from "../atoms/Texts";
+import {SwitchStatusProvider} from "../../logic/providers/SwitchStatusProvider";
+import {RemoveThingButton} from "../atoms/RemoveThingButton";
 import LightIcon from '@mui/icons-material/Light';
 import RollerShadesIcon from '@mui/icons-material/RollerShades';
 import CameraIndoorIcon from '@mui/icons-material/CameraIndoor';
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
-import {useThingDetailsStore} from "./ThingDetailsStore";
-import {ThingInfoButton} from "./ThingInfoButton";
+import {useThingDetailsStore} from "../../logic/stores/ThingDetailsStore";
+import {ThingInfoButton} from "../atoms/ThingInfoButton";
 
 interface Props {
     thing: Thing;

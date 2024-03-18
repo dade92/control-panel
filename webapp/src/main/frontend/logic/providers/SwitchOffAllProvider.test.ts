@@ -1,6 +1,6 @@
 import {Thing} from "../Thing";
 import {RestSwitchAllOffProvider} from "./SwitchAllOffProvider";
-import {staticRestClient} from "./RestClient";
+import {staticRestClient} from "../RestClient";
 import {Builder} from "builder-pattern";
 
 jest.mock('./RestClient');

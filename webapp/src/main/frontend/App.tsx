@@ -1,12 +1,12 @@
 import {FC} from "react";
 import {server} from "./server/Server";
-import {ControlPanel} from "./ControlPanel";
+import {ControlPanel} from "./components/organisms/ControlPanel";
 import styled from "styled-components";
-import {RestRetrieveThingsProvider} from "./logic/RetrieveThingsProvider";
-import {RestRemoveThingsProvider} from "./logic/RemoveThingsProvider";
-import {RestSwitchStatusProvider} from "./logic/SwitchStatusProvider";
-import {RestAddThingProvider} from "./logic/AddThingProvider";
-import {RestSwitchAllOffProvider} from "./logic/SwitchAllOffProvider";
+import {RestRetrieveThingsProvider} from "./logic/providers/RetrieveThingsProvider";
+import {RestRemoveThingsProvider} from "./logic/providers/RemoveThingsProvider";
+import {RestSwitchStatusProvider} from "./logic/providers/SwitchStatusProvider";
+import {RestAddThingProvider} from "./logic/providers/AddThingProvider";
+import {RestSwitchAllOffProvider} from "./logic/providers/SwitchAllOffProvider";
 
 if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'dev') {
     console.log('Local dev mode detected, starting mirage server...');

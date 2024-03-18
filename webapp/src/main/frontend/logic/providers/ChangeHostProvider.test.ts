@@ -1,5 +1,5 @@
 import {RestChangeHostProvider} from "./ChangeHostProvider";
-import {staticRestClient} from "./RestClient";
+import {staticRestClient} from "../RestClient";
 
 jest.mock('./RestClient');
 const mockedRestClient = jest.mocked(staticRestClient);

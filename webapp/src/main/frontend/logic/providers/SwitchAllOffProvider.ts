@@ -1,4 +1,4 @@
-import {staticRestClient} from "./RestClient";
+import {staticRestClient} from "../RestClient";
 import {Thing} from "../Thing";
 
 export type SwitchAllOffProvider = (things: Thing[]) => Promise<void>;

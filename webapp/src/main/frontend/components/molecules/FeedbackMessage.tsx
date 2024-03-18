@@ -1,7 +1,6 @@
 import {FC} from "react";
 import {Alert, Snackbar} from "@mui/material";
 import styled from "styled-components";
-import {Thing} from "./Thing";
 
 interface Props {
     message: string;

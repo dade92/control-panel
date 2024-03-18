@@ -1,4 +1,4 @@
-import {staticRestClient} from "./RestClient";
+import {staticRestClient} from "../RestClient";
 import {Thing, ThingType} from "../Thing";
 
 export interface ThingAddedResponse {

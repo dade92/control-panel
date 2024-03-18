@@ -1,4 +1,4 @@
-import {staticRestClient} from "./RestClient";
+import {staticRestClient} from "../RestClient";
 
 export type ChangeHostProvider = (deviceId: string, deviceHost: string) => Promise<void>;
 

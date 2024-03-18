@@ -2,7 +2,7 @@ import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import {ThingsPanel} from "./ThingsPanel";
 import '@testing-library/jest-dom';
 import {Builder} from "builder-pattern";
-import {Thing, ThingStatus, ThingType} from "./Thing";
+import {Thing, ThingStatus, ThingType} from "../../logic/Thing";
 
 describe('ThingsPanel', () => {
     let onThingRemoved: jest.Mock;

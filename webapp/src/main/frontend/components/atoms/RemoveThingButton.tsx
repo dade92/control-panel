@@ -1,7 +1,7 @@
 import {FC} from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import LoadingButton from "@mui/lab/LoadingButton";
-import {Thing} from "./Thing";
+import {Thing} from "../../logic/Thing";
 
 interface Props {
     thing: Thing

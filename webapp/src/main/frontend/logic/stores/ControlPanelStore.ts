@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import {RetrieveThingsProvider, ThingsRetrieveResponse} from "./logic/RetrieveThingsProvider";
-import {Thing, ThingStatus, ThingType} from "./Thing";
-import {RemoveThingsProvider} from "./logic/RemoveThingsProvider";
-import {SwitchAllOffProvider} from "./logic/SwitchAllOffProvider";
+import {RetrieveThingsProvider, ThingsRetrieveResponse} from "../providers/RetrieveThingsProvider";
+import {Thing, ThingStatus, ThingType} from "../Thing";
+import {RemoveThingsProvider} from "../providers/RemoveThingsProvider";
+import {SwitchAllOffProvider} from "../providers/SwitchAllOffProvider";
 
 interface ControlPanelStore {
     state: {

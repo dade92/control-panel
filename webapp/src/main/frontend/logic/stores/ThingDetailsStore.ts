@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
-import {Management, Thing, ThingStatus} from "./Thing";
-import {SwitchStatusProvider} from "./logic/SwitchStatusProvider";
+import {Management, Thing, ThingStatus} from "../Thing";
+import {SwitchStatusProvider} from "../providers/SwitchStatusProvider";
 
 interface ThingDetailsStore {
     state: {

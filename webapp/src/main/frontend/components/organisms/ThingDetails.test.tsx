@@ -1,7 +1,7 @@
 import {fireEvent, render, screen, waitFor} from "@testing-library/react";
 import {ThingDetails} from "./ThingDetails";
 import {Builder} from "builder-pattern";
-import {Management, Thing, ThingStatus, ThingType} from "./Thing";
+import {Management, Thing, ThingStatus, ThingType} from "../../logic/Thing";
 import '@testing-library/jest-dom';
 
 describe('ThingDetails', () => {

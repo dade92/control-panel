@@ -1,5 +1,5 @@
 import {Thing} from "../Thing";
-import {staticRestClient} from "./RestClient";
+import {staticRestClient} from "../RestClient";
 
 export interface ThingsRetrieveResponse {
     things: Thing[];

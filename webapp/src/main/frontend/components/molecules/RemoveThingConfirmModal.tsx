@@ -1,6 +1,6 @@
 import {FC} from "react";
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography} from "@mui/material";
-import {Thing} from "./Thing";
+import {Thing} from "../../logic/Thing";
 
 interface Props {
     thing: Thing;

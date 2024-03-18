@@ -1,7 +1,7 @@
 import {FC} from "react";
 import {Button} from "@mui/material";
 import InfoIcon from '@mui/icons-material/Info';
-import {Thing} from "./Thing";
+import {Thing} from "../../logic/Thing";
 
 interface Props {
     onClick: () => void;

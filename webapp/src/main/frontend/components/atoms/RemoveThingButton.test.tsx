@@ -1,7 +1,7 @@
 import {fireEvent, render, screen} from "@testing-library/react";
 import {RemoveThingButton} from "./RemoveThingButton";
 import {Builder} from "builder-pattern";
-import {Thing} from "./Thing";
+import {Thing} from "../../logic/Thing";
 
 describe('RemoveThingButton', () => {
 

@@ -1,6 +1,6 @@
 import {fireEvent, render, screen} from "@testing-library/react";
 import {RemoveThingConfirmModal} from "./RemoveThingConfirmModal";
-import {Thing} from "./Thing";
+import {Thing} from "../../logic/Thing";
 import {Builder} from "builder-pattern";
 import '@testing-library/jest-dom';
 

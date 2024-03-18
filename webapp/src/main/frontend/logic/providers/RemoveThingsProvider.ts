@@ -1,4 +1,4 @@
-import {staticRestClient} from "./RestClient";
+import {staticRestClient} from "../RestClient";
 
 export type RemoveThingsProvider = (deviceId: string, thingId: string) => Promise<void>;
 
