@@ -3,7 +3,7 @@ import {RestSwitchAllOffProvider} from "./SwitchAllOffProvider";
 import {staticRestClient} from "../RestClient";
 import {Builder} from "builder-pattern";
 
-jest.mock('./RestClient');
+jest.mock('../RestClient');
 const mockedRestClient = jest.mocked(staticRestClient);
 
 
