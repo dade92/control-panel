@@ -29,11 +29,12 @@ class MongoDeviceRepository(
 
     override fun retrieve(deviceId: DeviceId): Either<RetrieveError, Device> =
         try {
-            mongoTemplate.findById(
+            val foundDevice = mongoTemplate.findById(
                 deviceId.value.toString(),
                 MongoDevice::class.java,
                 COLLECTION_NAME
-            )!!.toDomain().right()
+            )
+            foundDevice?.toDomain()?.right() ?: RetrieveError.DeviceNotFound.left()
         } catch (e: Exception) {
             logger.error("Error retrieving device $deviceId due to ", e)
             RetrieveError.DeviceRetrieveError.left()
@@ -96,15 +97,26 @@ class MongoDeviceRepository(
             AddError.AddThingError.left()
         }
 
-    override fun addDevice(device: Device): Either<AddError, Unit> {
-        return try {
+    override fun addDevice(device: Device): Either<AddError, Unit> =
+        try {
             mongoTemplate.insert(device.toMongoDevice(nowProvider.get()), COLLECTION_NAME)
             Unit.right()
         } catch (e: Exception) {
             logger.error("Error inserting device ${device.deviceId}", e)
             AddError.AddDeviceError.left()
         }
-    }
+
+    override fun removeDevice(deviceId: DeviceId): Either<RetrieveError.DeviceRemoveError, Unit> =
+        try {
+            val query = Query(Criteria.where("_id").`is`(deviceId.value.toString()))
+
+            mongoTemplate.remove(query, COLLECTION_NAME)
+
+            Unit.right()
+        } catch (e: Exception) {
+            logger.error("Error removing device $deviceId due to ", e)
+            RetrieveError.DeviceRemoveError.left()
+        }
 
     override fun changeDeviceHost(deviceId: DeviceId, deviceHost: DeviceHost): Either<UpdateError, Unit> =
         try {

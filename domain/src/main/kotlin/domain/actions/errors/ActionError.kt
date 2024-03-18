@@ -19,6 +19,7 @@ sealed class ActionError {
     }
 
     sealed class RetrieveError: ActionError() {
+        object DeviceNotFound : RetrieveError()
         object DeviceRetrieveError : RetrieveError()
         object DeviceRemoveError : RetrieveError()
     }
