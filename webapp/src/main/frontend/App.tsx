@@ -1,4 +1,4 @@
-import {FC} from "react";
+import {FC, useState} from "react";
 import {server} from "./server/Server";
 import {ControlPanel} from "./components/organisms/ControlPanel";
 import styled from "styled-components";
@@ -19,14 +19,25 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
+enum NavigationStatus {
+    CONTROL_PANEL,
+    FAVOURITES,
+    NEW_STUFF
+}
 
-export const App: FC = () => <Wrapper>
-    <ControlPanel
-        retrieveThingsProvider={RestRetrieveThingsProvider}
-        removeThingsProvider={RestRemoveThingsProvider}
-        switchStatusProvider={RestSwitchStatusProvider}
-        addThingProvider={RestAddThingProvider}
-        switchAllOffProvider={RestSwitchAllOffProvider}
-    />
-    <Navigation onNavigationChange={(index) => console.log('Switching tab to number ' + index)}/>
-</Wrapper>
+export const App: FC = () => {
+    const [navigationStatus, setNavigationStatus] = useState(NavigationStatus.CONTROL_PANEL);
+
+    return <Wrapper>
+        {navigationStatus == NavigationStatus.CONTROL_PANEL && <ControlPanel
+            retrieveThingsProvider={RestRetrieveThingsProvider}
+            removeThingsProvider={RestRemoveThingsProvider}
+            switchStatusProvider={RestSwitchStatusProvider}
+            addThingProvider={RestAddThingProvider}
+            switchAllOffProvider={RestSwitchAllOffProvider}
+        />}
+        {navigationStatus == NavigationStatus.FAVOURITES && <div>Favourites</div>}
+        {navigationStatus == NavigationStatus.NEW_STUFF && <div>New stuff</div>}
+        <Navigation onNavigationChange={(index) => setNavigationStatus(index)}/>
+    </Wrapper>;
+}

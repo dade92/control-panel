@@ -24,7 +24,7 @@ export const Navigation: FC<Props> = ({onNavigationChange}) => {
         data-testid={'navigation'}
     >
         <BottomNavigationAction label="Control panel" icon={<AdminPanelSettingsIcon/>}/>
-        <BottomNavigationAction label="Configuration" icon={<FavoriteIcon/>}/>
+        <BottomNavigationAction label="Favourites" icon={<FavoriteIcon/>}/>
         <BottomNavigationAction label="New stuff" data-testid={'new-stuff'} icon={<LocationOnIcon/>}/>
     </BottomNavigation>
 }
