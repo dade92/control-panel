@@ -7,6 +7,7 @@ import {RestRemoveThingsProvider} from "./logic/providers/RemoveThingsProvider";
 import {RestSwitchStatusProvider} from "./logic/providers/SwitchStatusProvider";
 import {RestAddThingProvider} from "./logic/providers/AddThingProvider";
 import {RestSwitchAllOffProvider} from "./logic/providers/SwitchAllOffProvider";
+import {Navigation} from "./components/molecules/Navigation";
 
 if (process.env.NODE_ENV === 'development' && process.env.REACT_APP_STAGE === 'dev') {
     console.log('Local dev mode detected, starting mirage server...');
@@ -19,15 +20,13 @@ const Wrapper = styled.div`
 `
 
 
-export const App: FC = () => {
-
-    return <Wrapper>
-        <ControlPanel
-            retrieveThingsProvider={RestRetrieveThingsProvider}
-            removeThingsProvider={RestRemoveThingsProvider}
-            switchStatusProvider={RestSwitchStatusProvider}
-            addThingProvider={RestAddThingProvider}
-            switchAllOffProvider={RestSwitchAllOffProvider}
-        />
-    </Wrapper>
-}
+export const App: FC = () => <Wrapper>
+    <ControlPanel
+        retrieveThingsProvider={RestRetrieveThingsProvider}
+        removeThingsProvider={RestRemoveThingsProvider}
+        switchStatusProvider={RestSwitchStatusProvider}
+        addThingProvider={RestAddThingProvider}
+        switchAllOffProvider={RestSwitchAllOffProvider}
+    />
+    <Navigation onNavigationChange={(index) => console.log('Switching tab to number ' + index)}/>
+</Wrapper>
