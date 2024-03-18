@@ -15,7 +15,6 @@ interface Props {
 const InfoWrapper = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 16px;
   align-items: center;
 `
 
@@ -36,7 +35,7 @@ export const InfoThingModal: FC<Props> = ({thing, handleClose, onChangeHost}) =>
             }}>
             <CloseIcon/>
         </IconButton>
-        <DialogContent sx={{display: "flex", flexDirection: "column", gap: "8px"}} dividers>
+        <DialogContent sx={{display: "flex", flexDirection: "column", gap: "16px", paddingRight: '0px'}} dividers>
             <InfoWrapper><InfoLabelText text={'Name:'}/><Typography
                 data-testid={'info-thing-name'}>{thing.name}</Typography></InfoWrapper>
             <InfoWrapper><InfoLabelText text={'Device:'}/><Typography
