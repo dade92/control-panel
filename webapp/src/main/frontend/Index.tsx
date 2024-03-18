@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {AppRouting} from "./AppRouting";
+import {AppRouter} from "./AppRouter";
 
 ReactDOM.render(
-    <AppRouting/>,
+    <AppRouter/>,
     document.getElementById('react')
 )

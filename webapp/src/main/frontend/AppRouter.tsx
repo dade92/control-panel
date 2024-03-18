@@ -25,7 +25,7 @@ enum NavigationStatus {
     NEW_STUFF
 }
 
-export const AppRouting: FC = () => {
+export const AppRouter: FC = () => {
     const [navigationStatus, setNavigationStatus] = useState(NavigationStatus.CONTROL_PANEL);
 
     return <Wrapper>

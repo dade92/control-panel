@@ -1,16 +1,16 @@
 import {fireEvent, render, screen} from "@testing-library/react";
-import {AppRouting} from "./AppRouting";
+import {AppRouter} from "./AppRouter";
 import '@testing-library/jest-dom';
 
-describe('App', () => {
+describe('AppRouter', () => {
     it('should render properly', () => {
-        render(<AppRouting/>)
+        render(<AppRouter/>)
 
         expect(screen.getByTestId('loader-wrapper')).toBeVisible();
     })
 
     it('should change screen when navigating', () => {
-        render(<AppRouting/>)
+        render(<AppRouter/>)
 
         expect(screen.getByTestId('loader-wrapper')).toBeVisible();
         expect(screen.queryByTestId('favourites-wrapper')).not.toBeInTheDocument();
