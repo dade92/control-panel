@@ -16,7 +16,9 @@ export const Navigation: FC<Props> = ({onNavigationChange}) => {
         value={navigationIndex}
         onChange={(event, newValue) => {
             setNavigationIndex(newValue);
-            onNavigationChange(newValue);
+            if(newValue != navigationIndex) {
+                onNavigationChange(newValue);
+            }
         }}
         sx={{width: '100%', position: 'fixed', bottom: 0, marginBottom: '24px'}}
         data-testid={'navigation'}

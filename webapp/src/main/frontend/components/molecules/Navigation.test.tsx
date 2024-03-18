@@ -13,5 +13,9 @@ describe('Navigation', () => {
         fireEvent.click(screen.getByTestId('new-stuff'));
 
         expect(onNavigationChange).toHaveBeenCalledWith(2);
+
+        fireEvent.click(screen.getByTestId('new-stuff'));
+
+        expect(onNavigationChange).toHaveBeenCalledTimes(1);
     })
 })
