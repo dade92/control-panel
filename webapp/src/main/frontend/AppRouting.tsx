@@ -25,7 +25,7 @@ enum NavigationStatus {
     NEW_STUFF
 }
 
-export const App: FC = () => {
+export const AppRouting: FC = () => {
     const [navigationStatus, setNavigationStatus] = useState(NavigationStatus.CONTROL_PANEL);
 
     return <Wrapper>
@@ -36,8 +36,8 @@ export const App: FC = () => {
             addThingProvider={RestAddThingProvider}
             switchAllOffProvider={RestSwitchAllOffProvider}
         />}
-        {navigationStatus == NavigationStatus.FAVOURITES && <div>Favourites</div>}
-        {navigationStatus == NavigationStatus.NEW_STUFF && <div>New stuff</div>}
+        {navigationStatus == NavigationStatus.FAVOURITES && <div data-testid={'favourites-wrapper'}>Favourites</div>}
+        {navigationStatus == NavigationStatus.NEW_STUFF && <div data-testid={'new-stuff-wrapper'}>New stuff</div>}
         <Navigation onNavigationChange={(index) => setNavigationStatus(index)}/>
     </Wrapper>;
 }
