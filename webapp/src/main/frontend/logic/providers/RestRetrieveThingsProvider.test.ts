@@ -1,7 +1,4 @@
 import {RestRetrieveThingsProvider} from "./RetrieveThingsProvider";
-import {createServer, Response} from "miragejs";
-import {Thing} from "../Types";
-import {waitFor} from "@testing-library/react";
 import {staticRestClient} from "../RestClient";
 
 jest.mock('../RestClient');
@@ -41,5 +38,4 @@ describe('RestRetrieveThingsProvider', () => {
         expect(mockedRestClient.get).toHaveBeenCalledWith('/v1/things');
     })
 
-    //TODO test the server error path!
 });
