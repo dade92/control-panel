@@ -1,26 +1,23 @@
 import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
 import {Builder} from "builder-pattern";
 import {Thing, ThingStatus} from "../Types";
-import {createServer, Response} from "miragejs";
-import {waitFor} from "@testing-library/react";
+import {staticRestClient} from "../RestClient";
+
+jest.mock('../RestClient');
+const mockedRestClient = jest.mocked(staticRestClient);
 
 describe('RestSwitchStatusProvider', () => {
 
-    const switchStatus200 = (): Response => new Response(204);
 
     it('changes successfully the status', async () => {
-        createServer({
-            routes() {
-                this.post('/v1/switch/XYZ/123', switchStatus200);
-            },
-        });
+        mockedRestClient.post.mockReturnValue(Promise.resolve());
 
+        const response = await RestSwitchStatusProvider(
+            Builder<Thing>().deviceId('XYZ').id('123').build(),
+            {switch: ThingStatus.ON}
+        );
 
-        await waitFor(() => {
-            expect(RestSwitchStatusProvider(
-                Builder<Thing>().deviceId('XYZ').id('123').build(),
-                {switch: ThingStatus.ON}
-            )).toStrictEqual(Promise.resolve())
-        });
+        expect(mockedRestClient.post).toHaveBeenCalledWith('/v1/switch/XYZ/123', {switch: ThingStatus.ON});
+        expect(response).toBe(undefined);
     })
 });

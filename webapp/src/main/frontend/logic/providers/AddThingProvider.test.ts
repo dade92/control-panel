@@ -1,23 +1,28 @@
-import {createServer, Response} from "miragejs";
-import {waitFor} from "@testing-library/react";
 import {RestAddThingProvider} from "./AddThingProvider";
 import {ThingType} from "../Types";
+import {staticRestClient} from "../RestClient";
+
+jest.mock('../RestClient');
+const mockedRestClient = jest.mocked(staticRestClient);
 
 describe('AddThingProvider', () => {
 
-    const addThing200 = (): Response => new Response(204);
 
-    it('calls API correctly', async () => {
-        createServer({
-            routes() {
-                this.post('/v1/things/add', addThing200);
-            },
-        });
+    it('calls rest client correctly', async () => {
+        mockedRestClient.post.mockReturnValue(Promise.resolve());
 
-        await waitFor(() => {
-            expect(RestAddThingProvider('123', ThingType.LAMP, 'name'))
-                .toStrictEqual(Promise.resolve())
+        let deviceId = '123';
+        let thingType = ThingType.LAMP;
+        let thingName = 'name';
+
+        const response = await RestAddThingProvider(deviceId, thingType, thingName);
+
+        expect(mockedRestClient.post).toHaveBeenCalledWith('/v1/things/add', {
+            deviceId,
+            type: thingType,
+            name: thingName
         });
+        expect(response).toBe(undefined);
     })
 
 })

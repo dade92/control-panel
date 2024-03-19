@@ -1,22 +1,22 @@
-import {createServer, Response} from "miragejs";
 import {RestRemoveThingsProvider} from "./RemoveThingsProvider";
 import {waitFor} from "@testing-library/react";
+import {staticRestClient} from "../RestClient";
+
+jest.mock('../RestClient');
+const mockedRestClient = jest.mocked(staticRestClient);
 
 describe('RemoveThingsProvider', () => {
-    const removeThing200 = (): Response => new Response(204);
 
-    it('calls API correctly', async () => {
+    it('calls restClient correctly', async () => {
+        mockedRestClient.post.mockReturnValue(Promise.resolve());
 
-        createServer({
-            routes() {
-                this.post('/v1/things/remove/123/456', removeThing200);
-            },
-        });
+        const deviceId = '123';
+        const thingId = '456';
 
-        await waitFor(() => {
-            expect(RestRemoveThingsProvider('123', '456'))
-                .toStrictEqual(Promise.resolve())
-        });
+        const response = await RestRemoveThingsProvider(deviceId, thingId);
+
+        expect(mockedRestClient.post).toHaveBeenCalledWith('/v1/things/remove/123/456', {});
+        expect(response).toBe(undefined);
     })
 
 })
