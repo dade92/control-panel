@@ -6,7 +6,6 @@ import {Builder} from "builder-pattern";
 jest.mock('../RestClient');
 const mockedRestClient = jest.mocked(staticRestClient);
 
-
 describe('RestSwitchAllOffProvider', () => {
     it('should call the rest client properly', async () => {
         mockedRestClient.post.mockReturnValue(Promise.resolve());

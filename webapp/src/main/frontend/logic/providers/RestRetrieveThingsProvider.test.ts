@@ -2,6 +2,10 @@ import {RestRetrieveThingsProvider} from "./RetrieveThingsProvider";
 import {createServer, Response} from "miragejs";
 import {Thing} from "../Types";
 import {waitFor} from "@testing-library/react";
+import {staticRestClient} from "../RestClient";
+
+jest.mock('../RestClient');
+const mockedRestClient = jest.mocked(staticRestClient);
 
 describe('RestRetrieveThingsProvider', () => {
     const thingsResponse = {
@@ -27,43 +31,14 @@ describe('RestRetrieveThingsProvider', () => {
         ]
     };
 
-    const thingsSuccessfulResponse = (): Response => new Response(200, {}, thingsResponse);
-    const thingsErrorResponse = (): Response => new Response(500);
 
     it('returns things if server answers correctly', async () => {
-        createServer({
-            routes() {
-                this.get('/v1/things', thingsSuccessfulResponse);
-            },
-        })
+        mockedRestClient.get.mockReturnValue(Promise.resolve(thingsResponse));
 
-        let actualResponse: Thing[];
+        const response = await RestRetrieveThingsProvider();
 
-        RestRetrieveThingsProvider()
-            .then((response) => {
-                actualResponse = response.things
-            });
-
-        await waitFor(() => {
-            expect(actualResponse).toStrictEqual([{
-                id: 123,
-                device: "arduino uno",
-                deviceId: "XYZ",
-                type: "LAMP",
-                management: {
-                    switch: "OFF"
-                }
-            }, {
-                id: 456,
-                device: "arduino uno",
-                deviceId: "XYZ",
-                type: "ALARM",
-                management: {
-                    switch: "OFF"
-                }
-            }
-            ])
-        })
+        expect(response).toEqual(thingsResponse);
+        expect(mockedRestClient.get).toHaveBeenCalledWith('/v1/things');
     })
 
     //TODO test the server error path!
