@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import styled from "styled-components";
 import CloseIcon from '@mui/icons-material/Close';
-import {Device, ThingType} from "../../logic/Thing";
+import {Device, ThingType} from "../../logic/Types";
 import LoadingButton from "@mui/lab/LoadingButton";
 
 const Wrapper = styled.div`

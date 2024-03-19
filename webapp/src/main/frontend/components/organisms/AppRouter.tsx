@@ -19,7 +19,7 @@ const Wrapper = styled.div`
   flex-direction: column;
 `
 
-enum NavigationStatus {
+export enum NavigationStatus {
     CONTROL_PANEL,
     FAVOURITES,
     NEW_STUFF

@@ -1,7 +1,7 @@
 import {fireEvent, render, screen, waitFor, within} from "@testing-library/react";
 import {AddThingModal} from "./AddThingModal";
 import '@testing-library/jest-dom';
-import {Device, ThingType} from "../../logic/Thing";
+import {Device, ThingType} from "../../logic/Types";
 import {Builder} from "builder-pattern";
 
 describe('AddThingModal', () => {

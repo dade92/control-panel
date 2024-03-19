@@ -1,6 +1,6 @@
 import {FC, useState} from "react";
 import {Button, Dialog, DialogContent, DialogTitle, IconButton, Typography} from "@mui/material";
-import {Thing} from "../../logic/Thing";
+import {Thing} from "../../logic/Types";
 import CloseIcon from "@mui/icons-material/Close";
 import styled from "styled-components";
 import {DeviceHostTextField, InfoLabelText} from "../atoms/Texts";

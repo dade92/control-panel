@@ -1,5 +1,5 @@
 import {staticRestClient} from "../RestClient";
-import {Thing, Management} from "../Thing";
+import {Thing, Management} from "../Types";
 
 export type SwitchStatusProvider = (thing: Thing, newStatus: Management) => Promise<void>;
 

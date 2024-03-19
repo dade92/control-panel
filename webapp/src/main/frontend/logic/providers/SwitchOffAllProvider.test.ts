@@ -1,4 +1,4 @@
-import {Thing} from "../Thing";
+import {Thing} from "../Types";
 import {RestSwitchAllOffProvider} from "./SwitchAllOffProvider";
 import {staticRestClient} from "../RestClient";
 import {Builder} from "builder-pattern";

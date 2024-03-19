@@ -1,6 +1,6 @@
 import {RestSwitchStatusProvider} from "./SwitchStatusProvider";
 import {Builder} from "builder-pattern";
-import {Thing, ThingStatus} from "../Thing";
+import {Thing, ThingStatus} from "../Types";
 import {createServer, Response} from "miragejs";
 import {waitFor} from "@testing-library/react";
 

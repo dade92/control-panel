@@ -1,6 +1,6 @@
 import {thingsToDeviceAdapter} from "./ThingsToDeviceAdapter";
 import {Builder} from "builder-pattern";
-import {Thing} from "../Thing";
+import {Thing} from "../Types";
 
 describe('ThingsToDeviceAdapter', () => {
 

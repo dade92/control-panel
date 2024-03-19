@@ -1,4 +1,4 @@
-import {Device, Thing} from "../Thing";
+import {Device, Thing} from "../Types";
 
 export const thingsToDeviceAdapter = (things: Thing[]): Device[] => {
     const devices: Device[] = [];

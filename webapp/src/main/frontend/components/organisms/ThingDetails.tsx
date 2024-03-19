@@ -1,5 +1,5 @@
 import {FC, ReactElement} from "react";
-import {Thing, ThingStatus, ThingType} from "../../logic/Thing";
+import {Thing, ThingStatus, ThingType} from "../../logic/Types";
 import styled from "styled-components";
 import {Switch} from "@mui/material";
 import {ThingDetailText} from "../atoms/Texts";

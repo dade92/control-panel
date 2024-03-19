@@ -1,6 +1,7 @@
 import {fireEvent, render, screen} from "@testing-library/react";
 import {Navigation} from "./Navigation";
 import '@testing-library/jest-dom';
+import {NavigationStatus} from "../organisms/AppRouter";
 
 describe('Navigation', () => {
     it('should render correctly and call the callback when clicked', () => {
@@ -12,7 +13,7 @@ describe('Navigation', () => {
 
         fireEvent.click(screen.getByTestId('new-stuff'));
 
-        expect(onNavigationChange).toHaveBeenCalledWith(2);
+        expect(onNavigationChange).toHaveBeenCalledWith(NavigationStatus.NEW_STUFF);
 
         fireEvent.click(screen.getByTestId('new-stuff'));
 

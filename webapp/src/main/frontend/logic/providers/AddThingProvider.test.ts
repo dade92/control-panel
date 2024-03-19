@@ -1,7 +1,7 @@
 import {createServer, Response} from "miragejs";
 import {waitFor} from "@testing-library/react";
 import {RestAddThingProvider} from "./AddThingProvider";
-import {ThingType} from "../Thing";
+import {ThingType} from "../Types";
 
 describe('AddThingProvider', () => {
 

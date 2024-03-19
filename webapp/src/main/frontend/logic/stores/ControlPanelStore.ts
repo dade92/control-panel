@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {RetrieveThingsProvider, ThingsRetrieveResponse} from "../providers/RetrieveThingsProvider";
-import {Thing, ThingStatus, ThingType} from "../Thing";
+import {Thing, ThingStatus, ThingType} from "../Types";
 import {RemoveThingsProvider} from "../providers/RemoveThingsProvider";
 import {SwitchAllOffProvider} from "../providers/SwitchAllOffProvider";
 

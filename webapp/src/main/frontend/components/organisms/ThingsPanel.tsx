@@ -1,6 +1,6 @@
 import {FC, useState} from "react";
 import {ThingDetails} from "./ThingDetails";
-import {Thing, ThingType} from "../../logic/Thing";
+import {Thing, ThingType} from "../../logic/Types";
 import styled from "styled-components";
 import {Divider, List} from "@mui/material";
 import {SwitchStatusProvider} from "../../logic/providers/SwitchStatusProvider";
