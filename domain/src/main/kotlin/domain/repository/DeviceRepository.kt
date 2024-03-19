@@ -12,5 +12,6 @@ interface DeviceRepository {
     fun removeThing(deviceId: DeviceId, thingId: ThingId): Either<ActionError.RetrieveError, Unit>
     fun addThing(deviceId: DeviceId, thing: Thing): Either<ActionError.AddError, Unit>
     fun addDevice(device: Device): Either<ActionError.AddError, Unit>
+    fun removeDevice(deviceId: DeviceId): Either<ActionError.RetrieveError.DeviceRemoveError, Unit>
     fun changeDeviceHost(deviceId: DeviceId, deviceHost: DeviceHost): Either<UpdateError, Unit>
 }

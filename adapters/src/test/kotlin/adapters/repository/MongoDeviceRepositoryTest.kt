@@ -2,12 +2,14 @@ package adapters.repository
 
 import adapters.configuration.MongoConfiguration
 import adapters.configuration.RepositoryConfiguration
+import arrow.core.left
 import arrow.core.right
 import domain.Device
 import domain.Status
 import domain.Thing
 import domain.ThingManagement
 import domain.ThingType
+import domain.actions.errors.ActionError
 import domain.asDeviceHost
 import domain.asDeviceId
 import domain.asDeviceName
@@ -75,6 +77,8 @@ class MongoDeviceRepositoryTest {
 
     @Test
     fun `retrieve a device`() {
+        val unknownDeviceId = "a567ed0c-18ab-493b-80e2-50983e45c534".asDeviceId()
+
         mongoDeviceRepository.retrieve(anotherDeviceId) shouldBe Device(
             anotherDeviceId,
             "arduino-uno-mega".asDeviceName(),
@@ -89,6 +93,8 @@ class MongoDeviceRepositoryTest {
                 ),
             )
         ).right()
+
+        mongoDeviceRepository.retrieve(unknownDeviceId) shouldBe ActionError.RetrieveError.DeviceNotFound.left()
     }
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
@@ -180,7 +186,7 @@ class MongoDeviceRepositoryTest {
 
     @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     @Test
-    fun `add a new device`() {
+    fun `add and remove a new device`() {
         val deviceId = "ef4a33f3-2513-49a0-947d-5aee3642501e".asDeviceId()
 
         val newDevice = Device(
@@ -194,5 +200,9 @@ class MongoDeviceRepositoryTest {
         mongoDeviceRepository.changeDeviceHost(deviceId, anotherDeviceHost) shouldBe Unit.right()
 
         mongoDeviceRepository.retrieve(deviceId) shouldBe newDevice.copy(host = anotherDeviceHost).right()
+
+        mongoDeviceRepository.removeDevice(deviceId) shouldBe Unit.right()
+
+        mongoDeviceRepository.retrieve(deviceId) shouldBe ActionError.RetrieveError.DeviceNotFound.left()
     }
 }

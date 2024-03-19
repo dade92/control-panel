@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'development') {
     host = "http://raspberrypi:8080/api";
 }
 
-class RestClient {
+export class RestClient {
 
     host: string;
 
