@@ -39,6 +39,10 @@ const Wrapper = styled.div`
   height: 48px;
 `
 
+const ButtonWrapper = styled.div`
+  padding: 16px;
+`;
+
 export const ThingDetails: FC<Props> = ({
                                             thing,
                                             onChangeStatus,
@@ -57,8 +61,8 @@ export const ThingDetails: FC<Props> = ({
         forceOff
     );
 
-    const renderIcon = (thingType: ThingType): ReactElement => {
-        switch (thingType) {
+    const renderIcon = (): ReactElement => {
+        switch (thing.type) {
             case ThingType.ALARM:
                 return <CameraIndoorIcon data-testid={'alarm-icon'}/>;
             case ThingType.LAMP:
@@ -77,7 +81,8 @@ export const ThingDetails: FC<Props> = ({
                                          onChange={store.actions.changeStatus}/>
             case ThingType.ROLLER_SHUTTER:
                 return <SwitchButtonWithLoader isLoading={store.state.status == ThingStatus.ON}
-                                               onChange={store.actions.changeStatus} icon={<RollerShadesIcon/>}/>
+                                                              onChange={store.actions.changeStatus}
+                                                              icon={<RollerShadesIcon/>}/>
             default:
                 return <SwitchLampButton isOn={store.state.status == ThingStatus.ON} disabled={store.state.disabled}
                                          onChange={store.actions.changeStatus}/>
@@ -86,7 +91,7 @@ export const ThingDetails: FC<Props> = ({
 
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
-            {renderIcon(thing.type)}
+            {renderIcon()}
             <ThingDetailText data-testid={'name'}>{thing.name}</ThingDetailText>
             {renderSwitchButton()}
             <ActionsWrapper>

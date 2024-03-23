@@ -9,6 +9,7 @@ interface Props {
 
 export const SwitchButtonWithLoader: FC<Props> = ({isLoading, onChange, icon}) => (
     <LoadingButton
+        sx={{minWidth: '40px', minHeight: '32px', padding: '0px'}}
         size="small"
         onClick={onChange}
         loading={isLoading}
