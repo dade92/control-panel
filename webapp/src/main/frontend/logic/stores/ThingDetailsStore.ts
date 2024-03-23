@@ -40,19 +40,17 @@ export const useThingDetailsStore = (
 
     const onChangeStatusMessageReceived = (message: ChangeStatusMessage) => {
         console.log('Received ws message with fields: ');
-        console.log(message.thingId);
-        console.log(message.status);
-        console.log(message.deviceId);
 
         if (message.thingId === thing.id) {
             console.log('Changing status of thing: ', message.thingId, ' to: ', message.status);
+            setStatus(message.status);
             updateInnerStatus(message.status);
         }
     }
 
     useSubscription(
         "/change-status",
-        (message) => onChangeStatusMessageReceived((message as unknown) as ChangeStatusMessage)
+        (message) => onChangeStatusMessageReceived(JSON.parse(message.body) as ChangeStatusMessage)
     )
 
     const updateInnerStatus = (newStatus: ThingStatus) => {
