@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {Management, Thing, ThingStatus} from "../Types";
 import {SwitchStatusProvider} from "../providers/SwitchStatusProvider";
+import {useSubscription} from "react-stomp-hooks";
 
 interface ThingDetailsStore {
     state: {
@@ -12,6 +13,12 @@ interface ThingDetailsStore {
         onRemoved: (thing: Thing) => void;
         onInfoClicked: (thing: Thing) => void;
     }
+}
+
+export interface ChangeStatusMessage {
+    deviceId: string;
+    thingId: string;
+    status: ThingStatus;
 }
 
 export const useThingDetailsStore = (
@@ -31,6 +38,28 @@ export const useThingDetailsStore = (
         }
     }, [forceOff]);
 
+    const onChangeStatusMessageReceived = (message: ChangeStatusMessage) => {
+        console.log('Received ws message with fields: ');
+        console.log(message.thingId);
+        console.log(message.status);
+        console.log(message.deviceId);
+
+        if (message.thingId === thing.id) {
+            console.log('Changing status of thing: ', message.thingId, ' to: ', message.status);
+            updateInnerStatus(message.status);
+        }
+    }
+
+    useSubscription(
+        "/change-status",
+        (message) => onChangeStatusMessageReceived((message as unknown) as ChangeStatusMessage)
+    )
+
+    const updateInnerStatus = (newStatus: ThingStatus) => {
+        thing.management.switch = newStatus;
+        onChangeStatus(true, thing);
+    };
+
     const changeStatus = () => {
         let newStatus = ThingStatus.OFF;
         const oldStatus = status;
@@ -45,8 +74,7 @@ export const useThingDetailsStore = (
 
         switchStatusProvider(thing, {switch: newStatus})
             .then(() => {
-                thing.management.switch = newStatus;
-                onChangeStatus(true, thing);
+                updateInnerStatus(newStatus);
             })
             .catch(() => {
                 onChangeStatus(false, thing);
