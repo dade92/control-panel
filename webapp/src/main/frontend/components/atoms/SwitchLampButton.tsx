@@ -7,7 +7,6 @@ interface Props {
     onChange: () => void;
 }
 
-//TODO test it!
 export const SwitchLampButton: FC<Props> = ({isOn, disabled, onChange}) =>
-    <Switch checked={isOn} disabled={disabled}
+    <Switch data-testid={'switch-lamp'} checked={isOn} disabled={disabled}
             onChange={onChange}/>
