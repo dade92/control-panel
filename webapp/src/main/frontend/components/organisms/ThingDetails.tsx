@@ -1,7 +1,6 @@
 import {FC, ReactElement} from "react";
 import {Thing, ThingStatus, ThingType} from "../../logic/Types";
 import styled from "styled-components";
-import {Switch} from "@mui/material";
 import {ThingDetailText} from "../atoms/Texts";
 import {SwitchStatusProvider} from "../../logic/providers/SwitchStatusProvider";
 import {RemoveThingButton} from "../atoms/RemoveThingButton";
@@ -11,6 +10,8 @@ import CameraIndoorIcon from '@mui/icons-material/CameraIndoor';
 import LocalLaundryServiceIcon from '@mui/icons-material/LocalLaundryService';
 import {useThingDetailsStore} from "../../logic/stores/ThingDetailsStore";
 import {ThingInfoButton} from "../atoms/ThingInfoButton";
+import {SwitchLampButton} from "../atoms/SwitchLampButton";
+import {SwitchButtonWithLoader} from "../atoms/SwitchButtonWithLoader";
 
 interface Props {
     thing: Thing;
@@ -69,14 +70,25 @@ export const ThingDetails: FC<Props> = ({
         }
     }
 
-    const isOn = (status: ThingStatus) => status == ThingStatus.ON;
+    const renderSwitchButton = (): ReactElement => {
+        switch (thing.type) {
+            case ThingType.LAMP:
+                return <SwitchLampButton isOn={store.state.status == ThingStatus.ON} disabled={store.state.disabled}
+                                         onChange={store.actions.changeStatus}/>
+            case ThingType.ROLLER_SHUTTER:
+                return <SwitchButtonWithLoader isLoading={store.state.status == ThingStatus.ON}
+                                               onChange={store.actions.changeStatus} icon={<RollerShadesIcon/>}/>
+            default:
+                return <SwitchLampButton isOn={store.state.status == ThingStatus.ON} disabled={store.state.disabled}
+                                         onChange={store.actions.changeStatus}/>
+        }
+    }
 
     return <>
         <Wrapper data-testid={`thing-wrapper-${thing.id}`}>
             {renderIcon(thing.type)}
             <ThingDetailText data-testid={'name'}>{thing.name}</ThingDetailText>
-            <Switch checked={isOn(store.state.status)} disabled={store.state.disabled}
-                    onChange={store.actions.changeStatus}/>
+            {renderSwitchButton()}
             <ActionsWrapper>
                 <ThingInfoButton thing={thing} onClick={() => store.actions.onInfoClicked(thing)}/>
                 <RemoveThingButton

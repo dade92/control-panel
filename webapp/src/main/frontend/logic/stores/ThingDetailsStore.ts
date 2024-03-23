@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Management, Thing, ThingStatus} from "../Types";
+import {Thing, ThingStatus} from "../Types";
 import {SwitchStatusProvider} from "../providers/SwitchStatusProvider";
 import {useSubscription} from "react-stomp-hooks";
 
@@ -33,7 +33,7 @@ export const useThingDetailsStore = (
     const [disabled, setDisabled] = useState<boolean>(false);
 
     useEffect(() => {
-        if(forceOff) {
+        if (forceOff) {
             setStatus(ThingStatus.OFF);
         }
     }, [forceOff]);
