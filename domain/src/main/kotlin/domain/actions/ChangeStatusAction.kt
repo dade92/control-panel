@@ -1,6 +1,5 @@
 package domain.actions
 
-import arrow.core.flatMap
 import domain.messages.ChangeStatusMessage
 import domain.messages.ChangeStatusMessageBroker
 import domain.repository.DeviceRepository
