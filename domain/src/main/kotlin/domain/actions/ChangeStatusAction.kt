@@ -1,14 +1,19 @@
 package domain.actions
 
+import arrow.core.flatMap
 import domain.messages.ChangeStatusMessage
 import domain.messages.ChangeStatusMessageBroker
+import domain.repository.DeviceRepository
 
 class ChangeStatusAction(
-    private val changeStatusMessageBroker: ChangeStatusMessageBroker
+    private val changeStatusMessageBroker: ChangeStatusMessageBroker,
+    private val deviceRepository: DeviceRepository
 ) {
 
     fun changeStatus(request: ChangeStatusMessage) {
-        changeStatusMessageBroker.sendChangeStatusMessage(request)
+        deviceRepository.updateThingStatus(request.deviceId, request.thingId, request.status).map {
+            changeStatusMessageBroker.sendChangeStatusMessage(request)
+        }
     }
 
 }
