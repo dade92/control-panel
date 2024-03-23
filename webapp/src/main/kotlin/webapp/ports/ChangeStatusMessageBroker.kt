@@ -8,7 +8,7 @@ class WebSocketChangeStatusMessageBroker(
     private val template: SimpMessagingTemplate
 ) : ChangeStatusMessageBroker {
     override fun sendChangeStatusMessage(request: ChangeStatusMessage) {
-        template.convertAndSend("/topic/change-status", request)
+        template.convertAndSend("/change-status", request)
     }
 
 

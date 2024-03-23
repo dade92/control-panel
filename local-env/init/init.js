@@ -10,7 +10,7 @@ db.device.insert([
         "things": [{
             _id: '8a1ea8db-fffa-4c6f-935e-39a34eba871c',
             name: 'kitchen lamp',
-            type: 'LAMP',
+            type: 'ROLLER_SHUTTER',
             management: {switch: 'OFF'},
             idOnDevice: 1
         }, {
@@ -28,7 +28,7 @@ db.device.insert([
         "host": "http://esp32s3-654e44:8080",
         "things": [{
             _id: '392325c0-f023-4a87-95d2-2ca041bb5627', name: 'kitchen lamp',
-            type: 'ALARM',
+            type: 'LAMP',
             management: {switch: 'OFF'},
             idOnDevice: 1
         }],
