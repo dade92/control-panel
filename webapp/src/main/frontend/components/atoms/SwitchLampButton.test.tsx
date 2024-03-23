@@ -10,7 +10,6 @@ describe('SwitchLampButton', () => {
             <SwitchLampButton isOn={true} disabled={true} onChange={onChange}/>
         );
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
-        // expect(screen.getByRole('checkbox')).toBeDisabled();
 
         fireEvent.click(screen.getByRole('checkbox'));
 
