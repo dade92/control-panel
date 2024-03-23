@@ -90,6 +90,7 @@ const switchStatus200 = (): Response => new Response(204);
 const removeThing200 = (): Response => new Response(204);
 const addThing200 = (): Response => new Response(200, {}, thingAddedResponse);
 const switchOff200 = (): Response => new Response(204, {});
+const webSocket200 = (): Response => new Response(204, {});
 const switchOff500 = (): Response => new Response(500, {});
 const addThing500 = (): Response => new Response(500, {});
 const switchStatus500 = (): Response => new Response(500);
@@ -103,5 +104,6 @@ export const server: () => Server = () =>
             this.post('/api/v1/things/remove/:deviceId/:thingId', removeThing200, {timing: 1000});
             this.post('/api/v1/things/add', addThing200, {timing: 1000});
             this.post('/api/v1/switch/switchAll', switchOff200, {timing: 1000});
+            this.get('/ws-message/info?t=:id ', webSocket200)
         },
     });

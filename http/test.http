@@ -63,3 +63,15 @@ Accept: application/json
     }
   ]
 }
+
+### notify change in status
+
+POST {{host}}/api/v1/notification/change-status
+Content-Type: application/json
+Accept: application/json
+
+{
+  "deviceId": "c9e4c231-dbca-428f-9442-b01440f91330",
+  "thingId": "19851c6d-89ad-48c9-9b0c-9abb9eb92eea",
+  "status": "OFF"
+}
