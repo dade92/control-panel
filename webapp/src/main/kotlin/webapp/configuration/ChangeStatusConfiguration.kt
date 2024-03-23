@@ -1,6 +1,7 @@
 package webapp.configuration
 
 import domain.actions.ChangeStatusAction
+import domain.repository.DeviceRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.SimpMessagingTemplate
@@ -10,8 +11,12 @@ import webapp.ports.WebSocketChangeStatusMessageBroker
 class ChangeStatusConfiguration {
 
     @Bean
-    fun changeStatusAction(template: SimpMessagingTemplate): ChangeStatusAction = ChangeStatusAction(
-        WebSocketChangeStatusMessageBroker(template)
+    fun changeStatusAction(
+        template: SimpMessagingTemplate,
+        deviceRepository: DeviceRepository
+    ): ChangeStatusAction = ChangeStatusAction(
+        WebSocketChangeStatusMessageBroker(template),
+        deviceRepository
     )
 
 }
