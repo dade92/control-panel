@@ -39,10 +39,7 @@ export const useThingDetailsStore = (
     }, [forceOff]);
 
     const onChangeStatusMessageReceived = (message: ChangeStatusMessage) => {
-        console.log('Received ws message with fields: ');
-
         if (message.thingId === thing.id) {
-            console.log('Changing status of thing: ', message.thingId, ' to: ', message.status);
             setStatus(message.status);
             updateInnerStatus(message.status);
         }
