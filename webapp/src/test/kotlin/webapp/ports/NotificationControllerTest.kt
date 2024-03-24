@@ -7,7 +7,6 @@ import domain.utils.aDeviceId
 import domain.utils.aThingId
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
-import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -26,7 +25,7 @@ class NotificationControllerTest {
     private lateinit var changeStatusAction: ChangeStatusAction
 
     @Test
-    fun `change status`() {
+    fun `change status successfully`() {
         mvc.perform(
             post("/api/v1/notification/change-status")
                 .contentType(MediaType.APPLICATION_JSON)
