@@ -9,7 +9,7 @@ describe('SwitchButtonWithLoader', () => {
         const onChange = jest.fn();
 
         render(
-            <SwitchButtonWithLoader isLoading={false} onChange={onChange} icon={<RollerShadesIcon/>}/>
+            <SwitchButtonWithLoader isLoading={false} onClick={onChange} icon={<RollerShadesIcon/>}/>
         );
         expect(screen.getByRole('button')).toBeInTheDocument();
 

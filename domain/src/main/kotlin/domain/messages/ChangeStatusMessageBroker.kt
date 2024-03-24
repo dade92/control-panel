@@ -1,5 +1,5 @@
 package domain.messages
 
 interface ChangeStatusMessageBroker {
-    fun sendChangeStatusMessage(request: ChangeStatusMessage)
+    fun sendChangeStatusMessage(message: ChangeStatusMessage)
 }

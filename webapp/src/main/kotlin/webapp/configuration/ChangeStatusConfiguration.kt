@@ -5,7 +5,7 @@ import domain.repository.DeviceRepository
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.messaging.simp.SimpMessagingTemplate
-import webapp.ports.WebSocketChangeStatusMessageBroker
+import webapp.messages.WebSocketChangeStatusMessageBroker
 
 @Configuration
 class ChangeStatusConfiguration {

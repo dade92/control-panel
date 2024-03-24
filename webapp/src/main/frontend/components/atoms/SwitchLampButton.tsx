@@ -4,9 +4,9 @@ import {Switch} from "@mui/material";
 interface Props {
     isOn: boolean;
     disabled: boolean;
-    onChange: () => void;
+    onClick: () => void;
 }
 
-export const SwitchLampButton: FC<Props> = ({isOn, disabled, onChange}) =>
+export const SwitchLampButton: FC<Props> = ({isOn, disabled, onClick}) =>
     <Switch data-testid={'switch-lamp'} checked={isOn} disabled={disabled}
-            onChange={onChange}/>
+            onChange={onClick}/>

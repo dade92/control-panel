@@ -7,7 +7,7 @@ describe('SwitchLampButton', () => {
         const onChange = jest.fn();
 
         render(
-            <SwitchLampButton isOn={true} disabled={true} onChange={onChange}/>
+            <SwitchLampButton isOn={true} disabled={true} onClick={onChange}/>
         );
         expect(screen.getByRole('checkbox')).toBeInTheDocument();
 

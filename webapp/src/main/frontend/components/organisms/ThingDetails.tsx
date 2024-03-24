@@ -78,14 +78,14 @@ export const ThingDetails: FC<Props> = ({
         switch (thing.type) {
             case ThingType.LAMP:
                 return <SwitchLampButton isOn={store.state.status == ThingStatus.ON} disabled={store.state.disabled}
-                                         onChange={store.actions.changeStatus}/>
+                                         onClick={store.actions.changeStatus}/>
             case ThingType.ROLLER_SHUTTER:
                 return <SwitchButtonWithLoader isLoading={store.state.status == ThingStatus.ON}
-                                                              onChange={store.actions.changeStatus}
+                                                              onClick={store.actions.changeStatus}
                                                               icon={<RollerShadesIcon/>}/>
             default:
                 return <SwitchLampButton isOn={store.state.status == ThingStatus.ON} disabled={store.state.disabled}
-                                         onChange={store.actions.changeStatus}/>
+                                         onClick={store.actions.changeStatus}/>
         }
     }
 
