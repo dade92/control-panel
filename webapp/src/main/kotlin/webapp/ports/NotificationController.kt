@@ -1,10 +1,7 @@
 package webapp.ports
 
-import domain.Status
 import domain.actions.ChangeStatusAction
-import domain.asDeviceId
-import domain.asThingId
-import domain.messages.ChangeStatusMessage
+import domain.actions.ChangeStatusRequest
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -21,19 +18,7 @@ class NotificationController(
     fun changeStatus(
         @RequestBody request: ChangeStatusRequest
     ): ResponseEntity<Any> {
-        changeStatusAction.changeStatus(request.toMessage())
+        changeStatusAction.changeStatus(request)
         return ResponseEntity.noContent().build()
     }
-}
-
-data class ChangeStatusRequest(
-    val deviceId: String,
-    val thingId: String,
-    val status: String
-) {
-    fun toMessage() = ChangeStatusMessage(
-        deviceId = deviceId.asDeviceId(),
-        thingId = thingId.asThingId(),
-        status = Status.valueOf(status)
-    )
 }

@@ -5,8 +5,7 @@ import domain.Status
 import domain.messages.ChangeStatusMessage
 import domain.messages.ChangeStatusMessageBroker
 import domain.repository.DeviceRepository
-import domain.utils.aDeviceId
-import domain.utils.aThingId
+import domain.utils.*
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
@@ -26,12 +25,45 @@ class ChangeStatusActionTest {
     @Test
     fun `happy path`() {
         every { deviceRepository.updateThingStatus(any(), any(), any()) } returns Unit.right()
+        every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
+            things = listOf(
+                aThing(
+                    thingId = aThingId,
+                    idOnDevice = anIdOnDevice
+                )
+            )
+        ).right()
         every { changeStatusMessageBroker.sendChangeStatusMessage(any()) } returns Unit
 
-        changeStatusAction.changeStatus(ChangeStatusMessage(aDeviceId, aThingId, Status.OFF))
+        changeStatusAction.changeStatus(ChangeStatusRequest(aDeviceId, Status.OFF, anIdOnDevice))
 
         verify { deviceRepository.updateThingStatus(aDeviceId, aThingId, Status.OFF) }
         verify {
+            changeStatusMessageBroker.sendChangeStatusMessage(
+                ChangeStatusMessage(
+                    aDeviceId,
+                    aThingId,
+                    Status.OFF
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `in case of wrong id on device, do nothing`() {
+        every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
+            things = listOf(
+                aThing(
+                    thingId = aThingId,
+                    idOnDevice = anotherIdOnDevice
+                )
+            )
+        ).right()
+
+        changeStatusAction.changeStatus(ChangeStatusRequest(aDeviceId, Status.OFF, anIdOnDevice))
+
+        verify(exactly = 0) { deviceRepository.updateThingStatus(aDeviceId, aThingId, Status.OFF) }
+        verify(exactly = 0) {
             changeStatusMessageBroker.sendChangeStatusMessage(
                 ChangeStatusMessage(
                     aDeviceId,

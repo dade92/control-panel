@@ -2,9 +2,11 @@ package webapp.ports
 
 import domain.Status
 import domain.actions.ChangeStatusAction
+import domain.actions.ChangeStatusRequest
 import domain.messages.ChangeStatusMessage
 import domain.utils.aDeviceId
 import domain.utils.aThingId
+import domain.utils.anIdOnDevice
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.verify
 import org.springframework.beans.factory.annotation.Autowired
@@ -33,14 +35,14 @@ class NotificationControllerTest {
                     """
                     {
                         "deviceId": "$aDeviceId",
-                        "thingId": "$aThingId",
+                        "idOnDevice": "$anIdOnDevice",
                         "status": "OFF"
                     }
                     """.trimIndent()
                 )
         ).andExpect(status().isNoContent)
 
-        verify(changeStatusAction).changeStatus(ChangeStatusMessage(aDeviceId, aThingId, Status.OFF))
+        verify(changeStatusAction).changeStatus(ChangeStatusRequest(aDeviceId, Status.OFF, anIdOnDevice))
     }
 
 }
