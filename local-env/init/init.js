@@ -27,7 +27,8 @@ db.device.insert([
         "deviceName": "arduino-uno-mega",
         "host": "http://esp32s3-654e44:8080",
         "things": [{
-            _id: '392325c0-f023-4a87-95d2-2ca041bb5627', name: 'kitchen lamp',
+            _id: '392325c0-f023-4a87-95d2-2ca041bb5627',
+            name: 'kitchen lamp',
             type: 'LAMP',
             management: {switch: 'OFF'},
             idOnDevice: 1
