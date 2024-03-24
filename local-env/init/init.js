@@ -9,7 +9,7 @@ db.device.insert([
         "host": "http://esp32s3-654e44:8080",
         "things": [{
             _id: '8a1ea8db-fffa-4c6f-935e-39a34eba871c',
-            name: 'kitchen lamp',
+            name: 'dining room roller shutter',
             type: 'ROLLER_SHUTTER',
             management: {switch: 'OFF'},
             idOnDevice: 1
