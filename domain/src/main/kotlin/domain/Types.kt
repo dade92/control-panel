@@ -27,7 +27,6 @@ data class ThingToDevice(
     val deviceHost: DeviceHost
 )
 
-
 @JvmInline
 value class DeviceName(val value: String) {
     override fun toString(): String = value
@@ -59,15 +58,6 @@ value class DeviceId(val value: UUID) {
     override fun toString(): String = value.toString()
 }
 
-
-fun String.asThingName() = ThingName(this)
-fun String.asDeviceName() = DeviceName(this)
-fun String.asDeviceHost() = DeviceHost(this)
-
-fun String.asThingId() = ThingId(UUID.fromString(this))
-fun String.asDeviceId() = DeviceId(UUID.fromString(this))
-fun Int.asIdOnDevice() = IdOnDevice(this)
-
 data class ThingManagement(
     val switch: Status
 )
@@ -79,3 +69,10 @@ enum class Status {
 enum class ThingType {
     LAMP, ALARM, ROLLER_SHUTTER, APPLIANCE
 }
+
+fun String.asThingName() = ThingName(this)
+fun String.asDeviceName() = DeviceName(this)
+fun String.asDeviceHost() = DeviceHost(this)
+fun String.asThingId() = ThingId(UUID.fromString(this))
+fun String.asDeviceId() = DeviceId(UUID.fromString(this))
+fun Int.asIdOnDevice() = IdOnDevice(this)

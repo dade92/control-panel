@@ -74,17 +74,19 @@ export const ThingDetails: FC<Props> = ({
         }
     }
 
+    const isOn = () => store.state.status == ThingStatus.ON;
+
     const renderSwitchButton = (): ReactElement => {
         switch (thing.type) {
             case ThingType.LAMP:
-                return <SwitchLampButton isOn={store.state.status == ThingStatus.ON} disabled={store.state.disabled}
+                return <SwitchLampButton isOn={isOn()} disabled={store.state.disabled}
                                          onClick={store.actions.changeStatus}/>
             case ThingType.ROLLER_SHUTTER:
-                return <SwitchButtonWithLoader isLoading={store.state.status == ThingStatus.ON}
-                                                              onClick={store.actions.changeStatus}
-                                                              icon={<RollerShadesIcon/>}/>
+                return <SwitchButtonWithLoader isLoading={isOn()}
+                                               onClick={store.actions.changeStatus}
+                                               icon={<RollerShadesIcon/>}/>
             default:
-                return <SwitchLampButton isOn={store.state.status == ThingStatus.ON} disabled={store.state.disabled}
+                return <SwitchLampButton isOn={isOn()} disabled={store.state.disabled}
                                          onClick={store.actions.changeStatus}/>
         }
     }
