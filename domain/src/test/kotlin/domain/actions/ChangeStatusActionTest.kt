@@ -1,11 +1,18 @@
 package domain.actions
 
+import arrow.core.left
 import arrow.core.right
 import domain.Status
+import domain.actions.errors.ActionError
 import domain.messages.ChangeStatusMessage
 import domain.messages.ChangeStatusMessageBroker
 import domain.repository.DeviceRepository
-import domain.utils.*
+import domain.utils.aDevice
+import domain.utils.aDeviceId
+import domain.utils.aThing
+import domain.utils.aThingId
+import domain.utils.anIdOnDevice
+import domain.utils.anotherIdOnDevice
 import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
@@ -63,6 +70,32 @@ class ChangeStatusActionTest {
         changeStatusAction.changeStatus(ChangeStatusRequest(aDeviceId, Status.OFF, anIdOnDevice))
 
         verify(exactly = 0) { deviceRepository.updateThingStatus(aDeviceId, aThingId, Status.OFF) }
+        verify(exactly = 0) {
+            changeStatusMessageBroker.sendChangeStatusMessage(
+                ChangeStatusMessage(
+                    aDeviceId,
+                    aThingId,
+                    Status.OFF
+                )
+            )
+        }
+    }
+
+    @Test
+    fun `in case it cannot update the status on the db, don't send the message`() {
+        every { deviceRepository.updateThingStatus(any(), any(), any()) } returns ActionError.SwitchError.StatusNotUpdatedError.left()
+        every { deviceRepository.retrieve(aDeviceId) } returns aDevice(
+            things = listOf(
+                aThing(
+                    thingId = aThingId,
+                    idOnDevice = anIdOnDevice
+                )
+            )
+        ).right()
+
+        changeStatusAction.changeStatus(ChangeStatusRequest(aDeviceId, Status.OFF, anIdOnDevice))
+
+        verify { deviceRepository.updateThingStatus(aDeviceId, aThingId, Status.OFF) }
         verify(exactly = 0) {
             changeStatusMessageBroker.sendChangeStatusMessage(
                 ChangeStatusMessage(
