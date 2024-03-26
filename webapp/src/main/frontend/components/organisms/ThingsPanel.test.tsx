@@ -1,8 +1,12 @@
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {ThingsPanel} from "./ThingsPanel";
 import '@testing-library/jest-dom';
 import {Builder} from "builder-pattern";
 import {Thing, ThingStatus, ThingType} from "../../logic/Types";
+import {render} from "../../testUtils/TestUtils";
+import { TextEncoder, TextDecoder } from 'util';
+
+Object.assign(global, { TextDecoder, TextEncoder });
 
 describe('ThingsPanel', () => {
     let onThingRemoved: jest.Mock;

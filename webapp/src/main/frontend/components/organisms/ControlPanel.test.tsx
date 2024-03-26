@@ -1,15 +1,17 @@
-import {fireEvent, render, screen, waitFor, within} from "@testing-library/react";
+import {fireEvent, screen, waitFor, within} from "@testing-library/react";
 import {ControlPanel} from "./ControlPanel";
 import {Builder} from "builder-pattern";
 import {Management, Thing, ThingStatus, ThingType} from "../../logic/Types";
 import '@testing-library/jest-dom';
+import {render} from "../../testUtils/TestUtils";
+import {TextDecoder, TextEncoder} from 'util';
+
+Object.assign(global, {TextDecoder, TextEncoder});
 
 describe('ControlPanel', () => {
 
     let thing: Thing;
     let anotherThing: Thing
-    let thingOn: Thing;
-    let thingOnAlarm: Thing;
 
     beforeEach(() => {
         thing = Builder<Thing>()
@@ -27,20 +29,6 @@ describe('ControlPanel', () => {
             .deviceId('789')
             .management({switch: ThingStatus.OFF})
             .build();
-        thingOn = Builder<Thing>()
-            .id('789')
-            .name('switched on thing')
-            .type(ThingType.LAMP)
-            .deviceId('789')
-            .management({switch: ThingStatus.ON})
-            .build();
-        thingOnAlarm = Builder<Thing>()
-            .id('789')
-            .name('switched on thing')
-            .type(ThingType.ALARM)
-            .deviceId('789')
-            .management({switch: ThingStatus.ON})
-            .build();
     })
 
     it('Renders the loader while loading, then the things panel', async () => {
@@ -48,15 +36,14 @@ describe('ControlPanel', () => {
             () => Promise.resolve({things: [thing, anotherThing]})
         );
 
-        render(
-            <ControlPanel
+        render(<ControlPanel
                 retrieveThingsProvider={retrieveThingsProvider}
                 removeThingsProvider={jest.fn()}
                 switchStatusProvider={jest.fn()}
                 addThingProvider={jest.fn()}
                 switchAllOffProvider={jest.fn()}
-            />);
-
+            />
+        )
         expect(screen.getByTestId('loader-wrapper')).toBeVisible();
 
         await waitFor(() => {

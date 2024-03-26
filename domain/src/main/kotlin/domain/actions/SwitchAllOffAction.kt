@@ -19,7 +19,7 @@ class SwitchAllOffAction(
     fun switchOff(things: List<ThingToDevice>): Either<ActionError, Unit> {
         val outcomes = ArrayList<Either<ActionError.SwitchError, Unit>>()
         things.forEach { thingToDevice ->
-            val outcome: Either<ActionError.SwitchError, Unit> = switchClient.switch(
+            val outcome = switchClient.switch(
                 thingToDevice.deviceHost,
                 1.asIdOnDevice(),   //TODO: This is a hardcoded value, can we maintain it?
                 Status.OFF

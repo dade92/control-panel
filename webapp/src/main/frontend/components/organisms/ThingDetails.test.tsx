@@ -1,8 +1,12 @@
-import {fireEvent, render, screen, waitFor} from "@testing-library/react";
+import {fireEvent, screen, waitFor} from "@testing-library/react";
 import {ThingDetails} from "./ThingDetails";
 import {Builder} from "builder-pattern";
 import {Management, Thing, ThingStatus, ThingType} from "../../logic/Types";
 import '@testing-library/jest-dom';
+import {render} from "../../testUtils/TestUtils";
+import { TextEncoder, TextDecoder } from 'util';
+
+Object.assign(global, { TextDecoder, TextEncoder });
 
 describe('ThingDetails', () => {
     let changeStatusCallback: jest.Mock;

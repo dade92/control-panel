@@ -1,6 +1,6 @@
 package domain
 
-import java.util.*
+import java.util.UUID
 
 data class Thing(
     val id: ThingId,
@@ -15,7 +15,15 @@ data class Device(
     val deviceName: DeviceName,
     val host: DeviceHost,
     val things: List<Thing>
-)
+) {
+
+    operator fun get(thingId: ThingId): Thing? = things.firstOrNull { it.id == thingId }
+
+    operator fun get(idOnDevice: IdOnDevice): Thing? = things.firstOrNull { it.idOnDevice == idOnDevice }
+
+    fun hasThingsConnected(): Boolean = things.isNotEmpty()
+
+}
 
 data class ThingToDevice(
     val id: ThingId,
@@ -26,7 +34,6 @@ data class ThingToDevice(
     val device: DeviceName,
     val deviceHost: DeviceHost
 )
-
 
 @JvmInline
 value class DeviceName(val value: String) {
@@ -59,15 +66,6 @@ value class DeviceId(val value: UUID) {
     override fun toString(): String = value.toString()
 }
 
-
-fun String.asThingName() = ThingName(this)
-fun String.asDeviceName() = DeviceName(this)
-fun String.asDeviceHost() = DeviceHost(this)
-
-fun String.asThingId() = ThingId(UUID.fromString(this))
-fun String.asDeviceId() = DeviceId(UUID.fromString(this))
-fun Int.asIdOnDevice() = IdOnDevice(this)
-
 data class ThingManagement(
     val switch: Status
 )
@@ -79,3 +77,10 @@ enum class Status {
 enum class ThingType {
     LAMP, ALARM, ROLLER_SHUTTER, APPLIANCE
 }
+
+fun String.asThingName() = ThingName(this)
+fun String.asDeviceName() = DeviceName(this)
+fun String.asDeviceHost() = DeviceHost(this)
+fun String.asThingId() = ThingId(UUID.fromString(this))
+fun String.asDeviceId() = DeviceId(UUID.fromString(this))
+fun Int.asIdOnDevice() = IdOnDevice(this)
