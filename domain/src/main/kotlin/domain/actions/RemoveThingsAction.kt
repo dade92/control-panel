@@ -14,7 +14,7 @@ class RemoveThingsAction(
     fun remove(deviceId: DeviceId, thingId: ThingId): Either<ActionError, Unit> =
         deviceRepository.removeThing(deviceId, thingId).flatMap {
             deviceRepository.retrieve(deviceId).flatMap { device ->
-                if(device.things.isEmpty()) {
+                if(!device.hasThingsConnected()) {
                     deviceRepository.removeDevice(deviceId)
                 }
                 Unit.right()

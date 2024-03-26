@@ -1,6 +1,6 @@
 package domain
 
-import java.util.*
+import java.util.UUID
 
 data class Thing(
     val id: ThingId,
@@ -15,7 +15,15 @@ data class Device(
     val deviceName: DeviceName,
     val host: DeviceHost,
     val things: List<Thing>
-)
+) {
+
+    operator fun get(thingId: ThingId): Thing? = things.firstOrNull { it.id == thingId }
+
+    operator fun get(idOnDevice: IdOnDevice): Thing? = things.firstOrNull { it.idOnDevice == idOnDevice }
+
+    fun hasThingsConnected(): Boolean = things.isNotEmpty()
+
+}
 
 data class ThingToDevice(
     val id: ThingId,

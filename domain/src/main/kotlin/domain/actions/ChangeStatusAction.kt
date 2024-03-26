@@ -13,7 +13,7 @@ class ChangeStatusAction(
 ) {
     fun changeStatus(request: ChangeStatusRequest) {
         deviceRepository.retrieve(request.deviceId).map { device ->
-            device.things.firstOrNull { it.idOnDevice == request.idOnDevice }?.let { thing ->
+            device[request.idOnDevice]?.let { thing ->
                 deviceRepository.updateThingStatus(request.deviceId, thing.id, request.status).map {
                     changeStatusMessageBroker.sendChangeStatusMessage(
                         ChangeStatusMessage(
