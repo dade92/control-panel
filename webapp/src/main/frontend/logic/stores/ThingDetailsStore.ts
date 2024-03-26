@@ -18,7 +18,7 @@ interface ThingDetailsStore {
 export interface ChangeStatusMessage {
     deviceId: string;
     thingId: string;
-    status: ThingStatus;
+    newStatus: ThingStatus;
 }
 
 export const useThingDetailsStore = (
@@ -40,8 +40,8 @@ export const useThingDetailsStore = (
 
     const onChangeStatusMessageReceived = (message: ChangeStatusMessage) => {
         if (message.thingId === thing.id) {
-            setStatus(message.status);
-            updateInnerStatus(message.status);
+            setStatus(message.newStatus);
+            updateInnerStatus(message.newStatus);
         }
     }
 

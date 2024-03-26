@@ -36,7 +36,7 @@ class NotificationControllerTest {
                     {
                         "deviceId": "$aDeviceId",
                         "idOnDevice": "$anIdOnDevice",
-                        "status": "OFF"
+                        "newStatus": "OFF"
                     }
                     """.trimIndent()
                 )
