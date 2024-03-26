@@ -7,5 +7,5 @@ import domain.ThingId
 data class ChangeStatusMessage(
     val deviceId: DeviceId,
     val thingId: ThingId,
-    val status: Status
+    val newStatus: Status
 )
