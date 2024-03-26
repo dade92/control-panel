@@ -14,12 +14,12 @@ class ChangeStatusAction(
     fun changeStatus(request: ChangeStatusRequest) {
         deviceRepository.retrieve(request.deviceId).map { device ->
             device[request.idOnDevice]?.let { thing ->
-                deviceRepository.updateThingStatus(request.deviceId, thing.id, request.status).map {
+                deviceRepository.updateThingStatus(request.deviceId, thing.id, request.newStatus).map {
                     changeStatusMessageBroker.sendChangeStatusMessage(
                         ChangeStatusMessage(
                             request.deviceId,
                             thing.id,
-                            request.status
+                            request.newStatus
                         )
                     )
                 }
@@ -31,6 +31,6 @@ class ChangeStatusAction(
 
 data class ChangeStatusRequest(
     val deviceId: DeviceId,
-    val status: Status,
+    val newStatus: Status,
     val idOnDevice: IdOnDevice
 )
